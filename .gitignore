@@ -15,7 +15,10 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
+###> other folders ###
 /specs/
+###< other folders ###
+
 ###> symfony/web-server-bundle ###
 /.web-server-pid
 ###< symfony/web-server-bundle ###
