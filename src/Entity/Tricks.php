@@ -43,7 +43,7 @@ class Tricks
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="tricks")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $catgory;
+    private $category;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks")
@@ -154,14 +154,14 @@ class Tricks
         return $this;
     }
 
-    public function getCatgory(): ?Category
+    public function getCategory(): ?Category
     {
-        return $this->catgory;
+        return $this->category;
     }
 
-    public function setCatgory(?Category $catgory): self
+    public function setCategory(?Category $category): self
     {
-        $this->catgory = $catgory;
+        $this->category = $category;
 
         return $this;
     }

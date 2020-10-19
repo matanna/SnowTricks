@@ -28,10 +28,10 @@ final class Version20201018094728 extends AbstractMigration
         $this->addSql('ALTER TABLE photo ADD tricks_id INT NOT NULL');
         $this->addSql('ALTER TABLE photo ADD CONSTRAINT FK_14B784183B153154 FOREIGN KEY (tricks_id) REFERENCES tricks (id)');
         $this->addSql('CREATE INDEX IDX_14B784183B153154 ON photo (tricks_id)');
-        $this->addSql('ALTER TABLE tricks ADD catgory_id INT NOT NULL, ADD user_id INT NOT NULL');
+        $this->addSql('ALTER TABLE tricks ADD category_id INT NOT NULL, ADD user_id INT NOT NULL');
         $this->addSql('ALTER TABLE tricks ADD CONSTRAINT FK_E1D902C11CE52F7 FOREIGN KEY (catgory_id) REFERENCES category (id)');
         $this->addSql('ALTER TABLE tricks ADD CONSTRAINT FK_E1D902C1A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
-        $this->addSql('CREATE INDEX IDX_E1D902C11CE52F7 ON tricks (catgory_id)');
+        $this->addSql('CREATE INDEX IDX_E1D902C11CE52F7 ON tricks (category_id)');
         $this->addSql('CREATE INDEX IDX_E1D902C1A76ED395 ON tricks (user_id)');
         $this->addSql('ALTER TABLE video ADD tricks_id INT NOT NULL');
         $this->addSql('ALTER TABLE video ADD CONSTRAINT FK_7CC7DA2C3B153154 FOREIGN KEY (tricks_id) REFERENCES tricks (id)');
@@ -53,7 +53,7 @@ final class Version20201018094728 extends AbstractMigration
         $this->addSql('ALTER TABLE tricks DROP FOREIGN KEY FK_E1D902C1A76ED395');
         $this->addSql('DROP INDEX IDX_E1D902C11CE52F7 ON tricks');
         $this->addSql('DROP INDEX IDX_E1D902C1A76ED395 ON tricks');
-        $this->addSql('ALTER TABLE tricks DROP catgory_id, DROP user_id');
+        $this->addSql('ALTER TABLE tricks DROP category_id, DROP user_id');
         $this->addSql('ALTER TABLE video DROP FOREIGN KEY FK_7CC7DA2C3B153154');
         $this->addSql('DROP INDEX IDX_7CC7DA2C3B153154 ON video');
         $this->addSql('ALTER TABLE video DROP tricks_id');
