@@ -1,6 +1,11 @@
+
 body {
     background-image: url("../img/background_home.jpg");
     background-repeat: no-repeat;
+}
+
+main {
+    height: 1000px;
 }
 
 .navbar {
