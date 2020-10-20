@@ -56,6 +56,11 @@ class Tricks
      */
     private $messages;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $dateAtCreated;
+
     public function __construct()
     {
         $this->photos = new ArrayCollection();
@@ -205,6 +210,18 @@ class Tricks
                 $message->setTricks(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateAtCreated(): ?\DateTimeInterface
+    {
+        return $this->dateAtCreated;
+    }
+
+    public function setDateAtCreated(\DateTimeInterface $dateAtCreated): self
+    {
+        $this->dateAtCreated = $dateAtCreated;
 
         return $this;
     }

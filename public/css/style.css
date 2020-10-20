@@ -5,9 +5,22 @@ body {
 }
 
 main {
-    height: 1000px;
+    height: 850px;
 }
 
 .navbar {
     background-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.card-header {
+    height: 4rem;
+    vertical-align: center;
+}
+
+.card .badge {
+    font-size: 100% !important;
+}
+
+footer {
+    height: 200px;
 }

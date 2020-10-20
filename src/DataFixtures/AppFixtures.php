@@ -42,16 +42,20 @@ class AppFixtures extends Fixture
     
                 for ($j=1; $j<=rand(1, 5); $j++) {
                     $tricks = new Tricks();
+
+                    $dateTricks = $faker->dateTimeBetween('-3 months', 'now', 'Europe/Paris');
+
                     $tricks -> setName($faker->sentence(3, true))
                             -> setDescription($description)
                             -> setCategory($category)
-                            -> setUser($user);
+                            -> setUser($user)
+                            -> setDateAtCreated($dateTricks);
 
                     $manager->persist($tricks);
                     
                     for ($l=1; $l<=rand(1, 4); $l++) {
                         $photo = new Photo();
-                        $photo -> setName($faker->imageUrl(640, 480))
+                        $photo -> setName("https://loremflickr.com/640/360")
                                -> setTricks($tricks);
 
                         $manager->persist($photo);
@@ -68,7 +72,7 @@ class AppFixtures extends Fixture
                     for ($n=1; $n<=rand(1, 10); $n++) {
                         $message = new Message();
                         $message -> setContent($faker->paragraph(rand(1, 3), true))
-                                 -> setDateMessage($faker->dateTimeBetween('-3 months', 'now', 'Europe/Paris'))
+                                 -> setDateMessage($faker->dateTimeBetween($dateTricks, 'now', 'Europe/Paris'))
                                  -> setTricks($tricks)
                                  -> setUser($user);
                         

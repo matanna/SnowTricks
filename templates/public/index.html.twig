@@ -9,10 +9,19 @@
 </main>
 <div class="row">
 {% for tricks in tricks %}
-    <div class="col-3">
-        <h3>{{ tricks.name }}</h3>
-        <p class="text-lef"><img src="{{ tricks.photos[0].name }}" alt="Snowboard"></p>
-
+    <div class="col-xl-3">
+        <div class="card border-primary m-5">
+            <img style="height: 200px; width: 100%; display: block;" src="{{ tricks.photos[0].name }}" alt="Snowboard">
+            <h4 class="card-header">{{ tricks.name | u.truncate(30)}}</h4>
+            <div class="card-body">
+                <a href="#" class="btn btn-outline-primary btn-sm">Voir le tricks</a>
+            </div>
+            <div class="card-footer text-muted">
+                <p>Style : <span class="badge badge-primary">{{ tricks.category.name }}</span></p>
+                <p>Crée le {{ tricks.dateAtCreated | date("m/d/Y") }}<br />
+                   Ajouté par {{ tricks.user.fullname }}</p>
+            </div>
+          </div>
     </div>
 {% endfor %}
 </div>

@@ -19,22 +19,22 @@ class TricksRepository extends ServiceEntityRepository
         parent::__construct($registry, Tricks::class);
     }
 
-    // /**
-    //  * @return Tricks[] Returns an array of Tricks objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+    /**
+    * @return Tricks[] Returns an array of Tricks objects
     */
+    public function findFirstTricks($limit)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT tricks
+             FROM App\Entity\Tricks tricks
+             ORDER BY tricks.dateAtCreated DESC' 
+        )->setMaxResults($limit);
+
+        return $query->getResult();
+
+    }
 
     /*
     public function findOneBySomeField($value): ?Tricks

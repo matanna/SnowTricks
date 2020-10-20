@@ -13,7 +13,7 @@ class PublicController extends AbstractController
      */
     public function index(TricksRepository $tricksRepository)
     {
-        $tricks = $tricksRepository->findAll();
+        $tricks = $tricksRepository->findFirstTricks(12);
 
         return $this->render('public/index.html.twig', [
             'tricks' => $tricks
