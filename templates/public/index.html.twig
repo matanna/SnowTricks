@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+<main>
+    <h1 class="text-center mt-5">SNOWTRICKS</h1>
+    <p class="text-center mb-5">catchphrase</p>
+</main>
+<div class="row">
+{% for tricks in tricks %}
+    <div class="col-3">
+        <h3>{{ tricks.name }}</h3>
+        <p class="text-lef"><img src="{{ tricks.photos[0].name }}" alt="Snowboard"></p>
+
+    </div>
+{% endfor %}
+</div>
+
+
+
+{% endblock %}
