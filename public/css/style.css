@@ -1,22 +1,51 @@
 
 body {
-    background-image: url("../img/background_home.jpg");
-    background-repeat: no-repeat;
+    min-height: 850px;
+}
+
+.container-fluid {
+    padding-left: 0;
+    padding-right: 0;
 }
 
 main {
-    margin-top: 10rem;
-    height: 850px;
+    height: 900px;
+}
+
+#homeImage {
+    position: absolute;
+    object-fit: cover;
+    max-height: 900px;
+    width: 100%;
+    z-index: -1;
+}
+
+main h1, main p {
+    position: relative;
+    top: 150px;
+}
+
+main .arrow {
+    position: relative;
+    color: rgba(26, 26, 26);
+    top: 30px;
+    right: 30px;
 }
 
 header {
     position: fixed;
     top: 0;
     width: 100%;
+    z-index: 10;
 }
 
-.navbar {
-    background-color: rgba(255, 255, 255, 0.6) !important;
+#homeMenu {
+    background-color: rgba(255, 255, 255, 0);
+}
+
+#menu {
+    background-color: rgba(247, 247, 247);
+    border-bottom: 1px solid rgba(26, 26, 26);
 }
 
 .card-header {
@@ -26,6 +55,14 @@ header {
 
 .card .badge {
     font-size: 100% !important;
+}
+.container {
+    margin-top: 15vh;
+    min-height: 90vh;
+}
+.container img{
+    width:100%;
+    position: absolute;
 }
 
 footer {
