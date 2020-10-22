@@ -7,54 +7,84 @@
     <div class="row">
         <div class="col-12">
             <div class="card mb-3 border border-primary">
-                <div>
+                <div class="featuredImage">
                     <img src="{{ tricks.photos[0].name }}" alt="photo snowboard">
+                    <h1 class="text-center">{{ tricks.name }}</h1>
                 </div>
-                <div class="card-body">
-                    <div class="row">
+                <div class="card-body border-top border-primary">
+                    <div class="row slider">
                         {% for photos in tricks.photos %}
-                        <div class="col-xl-2">
-                            <div><img src="{{ photos.name }}" alt="photos snowboard"></div>   
+                        <div class="col-xl-4">
+                            <div class="border border-primary"><img src="{{ photos.name }}" alt="photos snowboard"></div>   
                         </div>
                         {% endfor %} 
+                        {% for videos in tricks.videos %}
+                        <div class="col-xl-4">
+                            <iframe class="player border border-primary" src="{{ videos.link }}" type="text/html"></iframe>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="card-body">
                   <p class="card-text">{{ tricks.description | raw }}</p>
+                  <table class="table table-hover mt-5">
+                    <thead>
+                      <tr class="text-center">
+                        <th scope="col">Ajouté par :</th>
+                        <th scope="col">Style :</th>
+                        <th scope="col">Ajouté le :</th>
+                        <th scope="col">Modifié le :</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="text-center">
+                        <th scope="row"><span class="border p-2">{{ tricks.user.fullname }}</span></th>
+                        <td><span class="border p-2">{{ tricks.category.name }}</span></td>
+                        <td><span class="border p-2">{{ tricks.dateAtCreated | date("m/d/Y") }}</span></td>
+                        <td><span class="border p-2">{{ tricks.dateAtUpdate | date("m/d/Y")  }}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="card-body border">
+                  <h3>//Ajouter un commentaire//</h3>
+                </div>
+
+                <div class="card-footer comment">
                   <div class="row">
-                    <div class="col-xl-2 offset-xl-2 text-center">{{ tricks.user.fullname }}</div>
-                    <div class="col-xl-2 text-center">{{ tricks.category.name }}</div>
-                    <div class="col-xl-2 text-center">Ajouté le : {{ tricks.dateAtCreated | date("m/d/Y") }}</div>
-                    <div class="col-xl-2 text-center">Modifié le : {{ tricks.dateAtUpdate | date("m/d/Y")  }}</div>
+                    <div class="col-8 offset-2">
+                      {% for message in tricks.messages %}
+                        <div class="row">
+                          <div class="offset-3 col-9">
+                            <span class="date-comment text-muted">Le {{ message.dateMessage | date("l j F Y \\à H\\h i\\m\\i\\n s\\s", "Europe/Paris") }}</span>
+                          </div>
+                        </div>
+                        <div class="row mb-4 d-flex align-items-center p-3">
+                          <div class="col-1">
+                            <div class="text-right"><img src="{{ message.user.profilPicture }}" alt="photo de profil" class="profilPicture align-middle"></div>
+                          </div>
+                          <div class="col-2 text-center">
+                            <span class="mt-2 d-inline">{{ message.user.username }}</span>
+                          </div>
+                          <div class="col-9  border p-3 bg-light">
+                            <span class="">{{ message.content }}</span>
+                          </div>
+                        </div>
+                        <hr>
+                        
+                      {% endfor %}
+                    </div>
                   </div>
-                </div>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">Cras justo odio</li>
-                  <li class="list-group-item">Dapibus ac facilisis in</li>
-                  <li class="list-group-item">Vestibulum at eros</li>
-                </ul>
-                <div class="card-body">
-                  <a href="#" class="card-link">Card link</a>
-                  <a href="#" class="card-link">Another link</a>
-                </div>
-                <div class="card-footer text-muted">
-                  2 days ago
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Card title</h4>
-                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="card-link">Card link</a>
-                  <a href="#" class="card-link">Another link</a>
+                    
                 </div>
               </div>
             
         </div>
     </div>
 </div>
-
-
 {% endblock %}
 
+{% block javascripts %}
+  <script type="text/javascript" src="{{ asset('js/slider.js')}}"></script>
+{% endblock %}

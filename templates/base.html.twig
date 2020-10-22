@@ -6,6 +6,8 @@
         {% block stylesheets %}
             <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.min.css">
             <link rel="stylesheet" href="{{ asset('css/style.css')}}" />
+            <link rel="stylesheet" type="text/css" href="{{ asset('slick/slick.css') }}"/>
+            <link rel="stylesheet" type="text/css" href="{{ asset('slick/slick-theme.css') }}"/>
         {% endblock %}
     </head>
     <body>
@@ -41,13 +43,19 @@
         <div class="container-fluid">
           {% block body %}{% endblock %}
         </div>
-        {% block javascripts %}{% endblock %}
+
+        
+        
 
     </body>
+    
     <footer class="bg-primary">
       <p class="text-center text-bg-light p-5">Copyright - All rights reserved</p>
     </footer>
     
-    
-    
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="{{ asset('slick/slick.min.js') }}"></script>
+    {% block javascripts %}{% endblock %}
+
 </html>

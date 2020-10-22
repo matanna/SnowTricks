@@ -62,7 +62,49 @@ header {
 }
 .container img{
     width:100%;
-  
+    height: 100%;
+    object-fit: fill;
+}
+
+.featuredImage {
+    position: relative;
+}
+.featuredImage h1 {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-shadow: 1px 1px 1px rgba(247, 247, 247);
+}
+
+.player {
+    width: 100%;
+    object-fit: fill;
+}
+
+.slick-next, .slick-prev{
+    display: none !important;
+}
+
+thead th {
+    padding: 1rem !important;
+}
+tbody .border {
+    border: 2px solid  rgba(26, 26, 26)!important;
+}
+
+.comment .border {
+    border: 1px solid  rgba(26, 26, 26)!important;
+}
+
+.profilPicture {
+    width: 50px !important;
+    height: 50px;
+    border-radius: 50px;
+}
+
+.date-comment {
+    font-size: 0.8em;
 }
 
 footer {
