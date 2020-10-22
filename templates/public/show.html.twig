@@ -6,8 +6,51 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
+            <div class="card mb-3 border border-primary">
+                <div>
+                    <img src="{{ tricks.photos[0].name }}" alt="photo snowboard">
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for photos in tricks.photos %}
+                        <div class="col-xl-2">
+                            <div><img src="{{ photos.name }}" alt="photos snowboard"></div>   
+                        </div>
+                        {% endfor %} 
+                    </div>
+                </div>
+                <div class="card-body">
+                  <p class="card-text">{{ tricks.description | raw }}</p>
+                  <div class="row">
+                    <div class="col-xl-2 offset-xl-2 text-center">{{ tricks.user.fullname }}</div>
+                    <div class="col-xl-2 text-center">{{ tricks.category.name }}</div>
+                    <div class="col-xl-2 text-center">Ajouté le : {{ tricks.dateAtCreated | date("m/d/Y") }}</div>
+                    <div class="col-xl-2 text-center">Modifié le : {{ tricks.dateAtUpdate | date("m/d/Y")  }}</div>
+                  </div>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">Cras justo odio</li>
+                  <li class="list-group-item">Dapibus ac facilisis in</li>
+                  <li class="list-group-item">Vestibulum at eros</li>
+                </ul>
+                <div class="card-body">
+                  <a href="#" class="card-link">Card link</a>
+                  <a href="#" class="card-link">Another link</a>
+                </div>
+                <div class="card-footer text-muted">
+                  2 days ago
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Card title</h4>
+                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="card-link">Card link</a>
+                  <a href="#" class="card-link">Another link</a>
+                </div>
+              </div>
             
-            <img src="{{ tricks.photos[0].name }}" alt="photo snowboard">
         </div>
     </div>
 </div>

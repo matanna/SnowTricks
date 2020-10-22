@@ -61,6 +61,11 @@ class Tricks
      */
     private $dateAtCreated;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateAtUpdate;
+
     public function __construct()
     {
         $this->photos = new ArrayCollection();
@@ -222,6 +227,18 @@ class Tricks
     public function setDateAtCreated(\DateTimeInterface $dateAtCreated): self
     {
         $this->dateAtCreated = $dateAtCreated;
+
+        return $this;
+    }
+
+    public function getDateAtUpdate(): ?\DateTimeInterface
+    {
+        return $this->dateAtUpdate;
+    }
+
+    public function setDateAtUpdate(?\DateTimeInterface $dateAtUpdate): self
+    {
+        $this->dateAtUpdate = $dateAtUpdate;
 
         return $this;
     }
