@@ -1,4 +1,8 @@
 
+.text-light {
+    color: rgba(255, 255, 255);
+}
+
 body {
     min-height: 850px;
 }
