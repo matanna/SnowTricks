@@ -533,7 +533,10 @@
         "version": "v5.1.7"
     },
     "twig/extra-bundle": {
-        "version": "v3.0.5"
+        "version": "v3.1.0"
+    },
+    "twig/intl-extra": {
+        "version": "v3.1.0"
     },
     "twig/string-extra": {
         "version": "v3.0.5"

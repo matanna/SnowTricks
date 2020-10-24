@@ -25,6 +25,7 @@ class PublicController extends AbstractController
      */
     public function show(TricksRepository $tricksRepository, $id)
     {
+       
         $tricks = $tricksRepository->find($id);
 
         return $this->render('public/show.html.twig', [

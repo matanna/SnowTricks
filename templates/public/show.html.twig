@@ -6,21 +6,21 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <div class="card mb-3 border border-primary shadow">
+            <div class="card mb-3 shadow">
                 <div class="featuredImage">
                     <img src="{{ tricks.photos[0].name }}" alt="photo snowboard">
                     <h1 class="text-center">{{ tricks.name }}</h1>
                 </div>
-                <div class="card-body border-top border-primary">
+                <div class="card-body border-top">
                     <div class="row slider">
                         {% for photos in tricks.photos %}
                         <div class="col-xl-4">
-                            <div class="border border-primary shadow"><img src="{{ photos.name }}" alt="photos snowboard"></div>   
+                            <div><img src="{{ photos.name }}" alt="photos snowboard" class="shadow"></div>   
                         </div>
                         {% endfor %} 
                         {% for videos in tricks.videos %}
                         <div class="col-xl-4">
-                            <iframe class="player border border-primary shadow" src="{{ videos.link }}" type="text/html"></iframe>
+                            <iframe class="player shadow" src="{{ videos.link }}" type="text/html"></iframe>
                         </div>
                         {% endfor %}
                     </div>
@@ -57,7 +57,7 @@
                       {% for message in tricks.messages %}
                         <div class="row">
                           <div class="offset-3 col-9">
-                            <span class="date-comment text-muted">Le {{ message.dateMessage | date("l j F Y \\à H\\h i\\m\\i\\n s\\s", "Europe/Paris") }}</span>
+                            <span class="date-comment text-muted">Le {{ message.dateMessage | format_datetime('full', 'medium', locale='fr') }}</span>
                           </div>
                         </div>
                         <div class="row mb-4 d-flex align-items-center p-3 shadow">
