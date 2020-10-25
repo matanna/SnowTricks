@@ -31,9 +31,26 @@ class TricksRepository extends ServiceEntityRepository
              FROM App\Entity\Tricks tricks
              ORDER BY tricks.dateAtCreated DESC' 
         )->setMaxResults($limit);
-
+        
         return $query->getResult();
 
+    }
+
+    /**
+    * @return Tricks[] Returns an array of Tricks objects
+    */
+    public function findMoreTricks($offset)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT tricks
+             FROM App\Entity\Tricks tricks
+             ORDER BY tricks.dateAtCreated DESC' 
+        )->setFirstResult($offset);
+        
+        return $query->getResult();
+        
     }
 
     /*

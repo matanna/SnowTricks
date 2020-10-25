@@ -1,3 +1,6 @@
+html {
+    scroll-behavior: smooth;
+}
 
 .text-light {
     color: rgba(255, 255, 255);
@@ -5,6 +8,7 @@
 
 body {
     min-height: 850px;
+    height: 100%;
 }
 
 .container-fluid {
@@ -29,18 +33,19 @@ main h1, main p {
     top: 150px;
 }
 
-main .arrow {
-    position: relative;
-    color: rgba(26, 26, 26);
-    top: 30px;
-    right: 30px;
+main h1 {
+    font-size: 4rem;
+}
+
+main p{
+    font-size: 2rem;
 }
 
 header {
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 10;
+    z-index: 100;
 }
 
 #homeMenu {
@@ -50,6 +55,11 @@ header {
 #menu {
     background-color: rgba(247, 247, 247);
     border-bottom: 1px solid rgba(26, 26, 26);
+}
+
+#tricks:target {
+    padding-top: 9em;
+    margin-top: -7em !important;
 }
 
 .card {
@@ -116,5 +126,22 @@ tbody .border {
 }
 
 footer {
+    position: relative;
     height: 200px;
+}
+
+#arrowDown, #arrowUp {
+    position: fixed;
+    color: rgba(26, 26, 26);
+    bottom: 10%;
+    right: 3%;
+    z-index: 10;
+}
+
+#arrowDown {
+    visibility: visible;
+}
+
+#arrowUp {
+    visibility: hidden;
 }

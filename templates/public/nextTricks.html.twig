@@ -1,0 +1,17 @@
+
+{% for tricks in tricks %}
+<div class="col-xl-3">
+    <div class="card m-5 shadow">
+        <img style="height: 200px; width: 100%; display: block;" src="{{ tricks.photos[0].name }}" alt="Snowboard">
+        <h4 class="card-header">{{ tricks.name | u.truncate(20)}}</h4>
+        <div class="card-body">
+            <a href="{{ path('show_tricks', {'id': tricks.id} ) }}" class="btn btn-outline-primary btn-sm">Voir le tricks</a>
+        </div>
+        <div class="card-footer text-muted">
+            <p>Style : <span class="badge badge-primary">{{ tricks.category.name }}</span></p>
+            <p>Crée le {{ tricks.dateAtCreated | date("m/d/Y") }}<br />
+               Ajouté par {{ tricks.user.fullname }}</p>
+        </div>
+      </div>
+</div>
+{% endfor %}
