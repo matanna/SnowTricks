@@ -1,6 +1,6 @@
 
 {% for tricks in tricks %}
-<div class="col-xl-3">
+<div class="col-xl-3 more-tricks">
     <div class="card m-5 shadow">
         <img style="height: 200px; width: 100%; display: block;" src="{{ tricks.photos[0].name }}" alt="Snowboard">
         <h4 class="card-header">{{ tricks.name | u.truncate(20)}}</h4>

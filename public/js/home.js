@@ -24,38 +24,26 @@ $(document).ready(function(){
     $("#moreTricks").on("click", function(event){
         $.ajax({
             url:        '{{ path('/') }}',
-            type:       'GET',
+            type:       'POST',
             dataType:   'json',
             async:      true,
 
             success: function(data,status) {
-                var data_length = data.length;
-                $("#firstTricks").after('<div class="row" id="nextTricks">');
-                for(i = 0; i < data_length; i++) {
-                    var photo = data[i]['photo'];
-                    var name = data[i]['name'];
-                    var id = data[i]['id'];
-                    var category = data[i]['category'];
-                    $("#nextTricks").append(
-                                            '<div class="col-xl-3">\
-                                                <div class="card m-5 shadow">\
-                                                    <img style="height: 200px; width: 100%; display: block;" src="'+photo+'" alt="Snowboard" id="photoTricks">\
-                                                    <h4 class="card-header nameTricks">'+name+'</h4>\
-                                                    <div class="card-body">\
-                                                        <a href="/tricks/'+id+'" class="btn btn-outline-primary btn-sm">Voir le tricks</a>\
-                                                    </div>\
-                                                    <div class="card-footer text-muted">\
-                                                        <p>Style : <span class="badge badge-primary">'+category+'</span></p>\
-                                                        <p>Crée le {{ tricks.dateAtCreated | date("m/d/Y") }}<br />\
-                                                           Ajouté par {{ tricks.user.fullname }}</p>\
-                                                    </div>'
-                    );
-                }  
+                $('#firstTricks').append(data.body); 
+                $('#moreTricksAction').html('<a href="/#firstTricks" id="lessTricks" class="btn btn-outline-primary text-center">Voir moins de tricks</a>');
             },
-
             error : function(xhr, textStatus, errorThrown) {  
                 alert('Demande échouée.');  
             }
         })
+
+    })
+    
+});
+
+$(document).ready(function(){
+    $("#lessTricks").on("click", function(event){
+        $(".more-tricks").remove();
     })
 });
+

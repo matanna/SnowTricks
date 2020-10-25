@@ -17,32 +17,11 @@ class PublicController extends AbstractController
     {
         
         if ($request->isXmlHttpRequest()) {
-
-            $allTricks = $tricksRepository->findMoreTricks(12);
-            /*
-            $allTricks = $tricksRepository->findMoreTricks(12);
-            $jsonResponse = [];
-            $i = 0;
-            foreach ($allTricks as $oneTricks) {
-                
-                $photos = $oneTricks->getPhotos();
-
-                $result = array(
-                    'id' => $oneTricks->getId(),
-                    'name' => $oneTricks->getName(),
-                    'description' => $oneTricks->getDescription(),
-                    'category' => $oneTricks->getCategory(),
-                    'user' => $oneTricks->getUser(),
-                    'dateAtCreated' => $oneTricks->getDateAtCreated(),
-                    'dateAtUpdate' => $oneTricks->getDateAtUpdate(),
-                    'photo' => $photos[0]->getName()
-                );
-                $jsonResponse[$i++] = $result;
-            }
             
-            return new JsonResponse($jsonResponse);
-            */
-            return $this->render('nextTricks.html.twig', array('tricks' => $allTricks));
+            $allTricks = $tricksRepository->findMoreTricks(12);
+            
+            $jsonResponse = $this->render('public/nextTricks.html.twig', array('tricks' => $allTricks));
+            return new JsonResponse(['body' => $jsonResponse->getContent()]);
 
         } else {
             
