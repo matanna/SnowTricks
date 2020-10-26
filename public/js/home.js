@@ -21,7 +21,7 @@ window.onscroll = function () {
 }
 
 $(document).ready(function(){
-    $("#moreTricks").on("click", function(event){
+    $("#moreOrLessTricks").on("click", "#moreTricks", function(event){
         $.ajax({
             url:        '{{ path('/') }}',
             type:       'POST',
@@ -30,20 +30,18 @@ $(document).ready(function(){
 
             success: function(data,status) {
                 $('#firstTricks').append(data.body); 
-                $('#moreTricksAction').html('<a href="/#firstTricks" id="lessTricks" class="btn btn-outline-primary text-center">Voir moins de tricks</a>');
+                $('#moreOrLessTricks').html('<a href="/#tricks" id="lessTricks" class="btn btn-outline-primary text-center">Voir moins de tricks</a>');
             },
             error : function(xhr, textStatus, errorThrown) {  
                 alert('Demande échouée.');  
             }
         })
+    });
 
-    })
-    
+    $("#moreOrLessTricks").on("click", "#lessTricks", function(event){
+        $(".ajaxTricks").remove();
+        $('#moreOrLessTricks').html('<a href="#moreTricks" id="moreTricks" class="btn btn-outline-primary text-center">Voir plus de tricks</a>');
+    }); 
 });
 
-$(document).ready(function(){
-    $("#lessTricks").on("click", function(event){
-        $(".more-tricks").remove();
-    })
-});
 
