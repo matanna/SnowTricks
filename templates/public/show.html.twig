@@ -48,13 +48,13 @@
                 </div>
 
                 <div class="card-body border">
-                  <h3>//Ajouter un commentaire//</h3>
+                  <h3 id="message">//Ajouter un commentaire//</h3>
                 </div>
 
                 <div class="card-footer comment">
                   <div class="row">
-                    <div class="col-8 offset-2">
-                      {% for message in tricks.messages %}
+                    <div class="col-8 offset-2" id="commentList">
+                      {% for message in messages %}
                         <div class="row">
                           <div class="offset-3 col-9">
                             <span class="date-comment text-muted">Le {{ message.dateMessage | format_datetime('full', 'medium', locale='fr') }}</span>
@@ -75,11 +75,21 @@
                         
                       {% endfor %}
                     </div>
-                  </div>
-                    
+                  </div> 
+                  {% set pages = (numberMessages // 10)+1 %}
+                  <div class="d-flex justify-content-around">
+                    <ul class="pagination pagination">
+
+                      {% for i in 1..pages %}
+                      <li class="page-item num-page">
+                        <a class="page-link" id="{{ 'page' ~ i }}" href="#message">{{ i }}</a>
+                      </li>
+                      {% endfor %}
+
+                    </ul>
+                  </div>  
                 </div>
               </div>
-            
         </div>
     </div>
 </div>
@@ -87,4 +97,5 @@
 
 {% block javascripts %}
   <script type="text/javascript" src="{{ asset('js/slider.js')}}"></script>
+  <script type="text/javascript" src="{{ asset('js/show.js')}}"></script>
 {% endblock %}

@@ -23,9 +23,9 @@ window.onscroll = function () {
 $(document).ready(function(){
     $("#moreOrLessTricks").on("click", "#moreTricks", function(event){
         $.ajax({
-            url:        '{{ path('/') }}',
-            type:       'POST',
-            dataType:   'json',
+            url:        "{{ path("/") }}",
+            type:       "POST",
+            dataType:   "json",
             async:      true,
 
             success: function(data,status) {

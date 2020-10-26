@@ -43,7 +43,7 @@ class AppFixtures extends Fixture
                     $description .= '<p>'.$paragraphs[$y].'</p>';
                 }
     
-                for ($j=1; $j<=rand(1, 5); $j++) {
+                for ($j=1; $j<=rand(4, 10); $j++) {
                     $tricks = new Tricks();
 
                     $dateTricks = $faker->dateTimeBetween('-3 months', 'now', 'Europe/Paris');
@@ -72,7 +72,7 @@ class AppFixtures extends Fixture
                         $manager->persist($video);
                     }
 
-                    for ($n=1; $n<=rand(1, 10); $n++) {
+                    for ($n=1; $n<=rand(15, 35); $n++) {
                         $message = new Message();
                         $message -> setContent($faker->paragraph(rand(1, 3), true))
                                  -> setDateMessage($faker->dateTimeBetween($dateTricks, 'now', 'Europe/Paris'))
