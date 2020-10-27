@@ -2,15 +2,26 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(
+ *      fields={"email"},
+ *      message="Cet email est déjà utilisé"
+ * )
+ * @UniqueEntity(
+ *      fields={"username"},
+ *      message="Ce pseudo est déjà utilisé"
+ * )
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -21,16 +32,41 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min=5, 
+     *      max=30,
+     *      minMessage = "Votre pseudo doit contenir au mons 5 caractères",
+     *      maxMessage = "Votre pseudo ne doit pas dépasser 30 caractères",
+     *      allowEmptyString = false
+     * )
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min=5,
+     *      min=50,
+     *      minMessage="Votre mot de passe doit contenir au moins 8 caractères",
+     *      maxMessage="Votre mot de passe ne doit pas dépasser 50 caractères",
+     *      allowEmptyString = false
+     * )
      */
     private $password;
 
     /**
+     * @Assert\EqualTo(
+     *      propertyPath="password",
+     *      message="Les mots de passes doivent être identiques"
+     * )
+     */
+    private $confirmPassword;
+
+    /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email(
+     *      message="Cet email n'est pas valide"
+     * )
      */
     private $email;
 
@@ -85,6 +121,18 @@ class User
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getConfirmPassword(): ?string
+    {
+        return $this->confirmPassword;
+    }
+
+    public function setConfirmPassword(string $confirmPassword): self
+    {
+        $this->confirmPassword = $confirmPassword;
 
         return $this;
     }
@@ -186,4 +234,13 @@ class User
 
         return $this;
     }
+
+    public function getRoles()
+    {
+    
+    }
+
+    public function getSalt() {}
+
+    public function eraseCredentials() {}
 }
