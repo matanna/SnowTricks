@@ -3,9 +3,9 @@ $(document).ready(function(){
     $("#page1").parent("li.num-page").addClass('active');
 
     $('.num-page a').click(function(){
-        var pageId = $(this).attr('id');
-        var numPage = $(this).html();
-        var pathName = window.location.pathname;
+        let pageId = $(this).attr('id');
+        let numPage = $(this).html();
+        let pathName = window.location.pathname;
 
         $.ajax({
             url:        pathName,
