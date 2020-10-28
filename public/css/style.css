@@ -1,13 +1,147 @@
+html {
+    scroll-behavior: smooth;
+}
+
+.text-light {
+    color: rgba(255, 255, 255);
+}
 
 body {
-    background-image: url("../img/background_home.jpg");
-    background-repeat: no-repeat;
+    min-height: 850px;
+    height: 100%;
+}
+
+.container-fluid {
+    padding-left: 0;
+    padding-right: 0;
 }
 
 main {
-    height: 1000px;
+    height: 900px;
 }
 
-.navbar {
-    background-color: rgba(255, 255, 255, 0.6) !important;
+#homeImage {
+    position: absolute;
+    object-fit: cover;
+    max-height: 900px;
+    width: 100%;
+    z-index: -1;
+}
+
+main h1, main p {
+    position: relative;
+    top: 150px;
+}
+
+main h1 {
+    font-size: 4rem;
+}
+
+main p{
+    font-size: 2rem;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+#homeMenu {
+    background-color: rgba(255, 255, 255, 0);
+}
+
+#menu {
+    background-color: rgba(247, 247, 247);
+    border-bottom: 1px solid rgba(26, 26, 26);
+}
+
+#tricks:target {
+    padding-top: 9em;
+    margin-top: -7em !important;
+}
+
+.card {
+    border: none;
+}
+
+.card-header {
+    height: 4rem;
+    vertical-align: center;
+}
+
+.card .badge {
+    font-size: 100% !important;
+}
+.container {
+    margin-top: 15vh;
+    min-height: 90vh;
+}
+.container img{
+    width:100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+.featuredImage {
+    position: relative;
+}
+.featuredImage h1 {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-shadow: 1px 1px 1px rgba(247, 247, 247);
+}
+
+.player {
+    width: 100%;
+    object-fit: fill;
+}
+
+.slick-next, .slick-prev{
+    display: none !important;
+}
+
+thead th {
+    padding: 1rem !important;
+}
+tbody .border {
+    border: 2px solid  rgba(26, 26, 26)!important;
+}
+
+.comment .border {
+    border: 1px solid  rgba(26, 26, 26)!important;
+}
+
+.profilPicture {
+    width: 50px !important;
+    height: 50px;
+    border-radius: 50px;
+}
+
+.date-comment {
+    font-size: 0.8em;
+}
+
+footer {
+    position: relative;
+    height: 200px;
+}
+
+#arrowDown, #arrowUp {
+    position: fixed;
+    color: rgba(26, 26, 26);
+    bottom: 10%;
+    right: 3%;
+    z-index: 10;
+}
+
+#arrowDown {
+    visibility: visible;
+}
+
+#arrowUp {
+    visibility: hidden;
 }

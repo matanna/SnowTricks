@@ -1,22 +1,51 @@
 {% extends 'base.html.twig' %}
 
-
-
 {% block body %}
-<main>
-    <h1 class="text-center mt-5">SNOWTRICKS</h1>
+<main id="header">
+    <img src="../img/background_home.jpg" alt="Snowboard" id="homeImage">
+    <h1 class="text-center">SNOWTRICKS</h1>
     <p class="text-center mb-5">catchphrase</p>
 </main>
-<div class="row">
+<h2 class="text-left m-5" id="tricks">Les derniers tricks ajoutés...</h2>
+<hr class="ml-5 mr-5">
+<div class="row" id="firstTricks">
 {% for tricks in tricks %}
-    <div class="col-3">
-        <h3>{{ tricks.name }}</h3>
-        <p class="text-lef"><img src="{{ tricks.photos[0].name }}" alt="Snowboard"></p>
-
+    <div class="col-xl-3">
+        <div class="card m-5 shadow">
+            <img style="height: 200px; width: 100%; display: block;" src="{{ tricks.photos[0].name }}" alt="Snowboard">
+            <h4 class="card-header">{{ tricks.name | u.truncate(15)}}</h4>
+            <div class="card-body">
+                <a href="{{ path('show_tricks', {'id': tricks.id} ) }}" class="btn btn-outline-primary btn-sm">Voir le tricks</a>
+            </div>
+            <div class="card-footer text-muted">
+                <p>Style : <span class="badge badge-primary">{{ tricks.category.name }}</span></p>
+                <p>Crée le {{ tricks.dateAtCreated | date("m/d/Y") }}<br />
+                   Ajouté par {{ tricks.user.fullname }}</p>
+            </div>
+          </div>
     </div>
 {% endfor %}
 </div>
 
+<p class="text-center" id="moreOrLessTricks"><a href="#moreTricks" id="moreTricks" class="btn btn-outline-primary text-center">Voir plus de tricks</a></p>
 
+<div class="arrow text-right" id="arrowDown">
+    <a href="#tricks">
+        <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-arrow-down-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+        </svg>
+    </a>
+</div>
+<div class="arrow text-right" id="arrowUp">
+    <a href="#header">
+        <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-arrow-up-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+        </svg>
+    </a>
+</div>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('js/home.js') }}"></script>
 {% endblock %}

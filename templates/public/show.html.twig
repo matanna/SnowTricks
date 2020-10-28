@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Snowtricks - {{ tricks.name }}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-3 shadow">
+                <div class="featuredImage">
+                    <img src="{{ tricks.photos[0].name }}" alt="photo snowboard">
+                    <h1 class="text-center">{{ tricks.name }}</h1>
+                </div>
+                <div class="card-body border-top">
+                    <div class="row slider">
+                        {% for photos in tricks.photos %}
+                        <div class="col-xl-4">
+                            <div><img src="{{ photos.name }}" alt="photos snowboard" class="shadow"></div>   
+                        </div>
+                        {% endfor %} 
+                        {% for videos in tricks.videos %}
+                        <div class="col-xl-4">
+                            <iframe class="player shadow" src="{{ videos.link }}" type="text/html"></iframe>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="card-body">
+                  <p class="card-text">{{ tricks.description | raw }}</p>
+                  <table class="table table-hover mt-5">
+                    <thead>
+                      <tr class="text-center">
+                        <th scope="col">Ajouté par :</th>
+                        <th scope="col">Style :</th>
+                        <th scope="col">Ajouté le :</th>
+                        <th scope="col">Modifié le :</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="text-center">
+                        <th scope="row"><span class="border text-light bg-primary p-2 shadow">{{ tricks.user.fullname }}</span></th>
+                        <td><span class="border text-light bg-primary p-2 shadow">{{ tricks.category.name }}</span></td>
+                        <td><span class="border text-light bg-primary p-2 shadow">{{ tricks.dateAtCreated | date("m/d/Y") }}</span></td>
+                        <td><span class="border text-light bg-primary p-2 shadow">{{ tricks.dateAtUpdate | date("m/d/Y")  }}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="card-body border">
+                  <h3 id="message">//Ajouter un commentaire//</h3>
+                </div>
+
+                <div class="card-footer comment">
+                  <div class="row">
+                    <div class="col-8 offset-2" id="commentList">
+                      {% for message in messages %}
+                        <div class="row">
+                          <div class="offset-3 col-9">
+                            <span class="date-comment text-muted">Le {{ message.dateMessage | format_datetime('full', 'medium', locale='fr') }}</span>
+                          </div>
+                        </div>
+                        <div class="row mb-4 d-flex align-items-center p-3 shadow">
+                          <div class="col-1">
+                            <div class="text-right"><img src="{{ message.user.profilPicture }}" alt="photo de profil" class="profilPicture align-middle"></div>
+                          </div>
+                          <div class="col-2 text-center">
+                            <span class="mt-2 d-inline">{{ message.user.username }}</span>
+                          </div>
+                          <div class="col-9 p-3 bg-light">
+                            <span class="">{{ message.content }}</span>
+                          </div>
+                        </div>
+                        <hr>
+                        
+                      {% endfor %}
+                    </div>
+                  </div> 
+                  {% set pages = (numberMessages // 10)+1 %}
+                  <div class="d-flex justify-content-around">
+                    <ul class="pagination pagination">
+
+                      {% for i in 1..pages %}
+                      <li class="page-item num-page">
+                        <a class="page-link" id="{{ 'page' ~ i }}" href="#message">{{ i }}</a>
+                      </li>
+                      {% endfor %}
+
+                    </ul>
+                  </div>  
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+  <script type="text/javascript" src="{{ asset('js/slider.js')}}"></script>
+  <script type="text/javascript" src="{{ asset('js/show.js')}}"></script>
+{% endblock %}

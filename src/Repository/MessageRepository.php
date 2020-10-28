@@ -19,22 +19,31 @@ class MessageRepository extends ServiceEntityRepository
         parent::__construct($registry, Message::class);
     }
 
-    // /**
-    //  * @return Message[] Returns an array of Message objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+    /** 
+    * @return Message[] Returns an array of Message objects
     */
+    public function findByTricks($id, $limit, $offset)
+    {
+        return $this->createQueryBuilder('message')
+                    ->where('message.tricks = :id')
+                    ->setParameter('id', $id)
+                    ->orderBy('message.dateMessage', 'DESC')
+                    ->setMaxResults($limit)
+                    ->setFirstResult($offset)
+                    ->getQuery()
+                    ->getResult();
+    }
+
+    public function countByTricks($id)
+    {
+        return $this->createQueryBuilder('message')
+                    ->select('count(message.id)')
+                    ->where('message.tricks = :id')
+                    ->setParameter('id', $id)
+                    ->getQuery()
+                    ->getSingleScalarResult();
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Message

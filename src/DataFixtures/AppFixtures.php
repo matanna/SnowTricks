@@ -36,39 +36,46 @@ class AppFixtures extends Fixture
             
                 $manager->persist($user);
 
-                $paragraphs = $faker->paragraphs(2, false);
+                $paragraphs = $faker->paragraphs(4, false);
                 $description = '<p>'.$paragraphs[0].'</p>';
-                $description .= '<p>'.$paragraphs[1].'</p>';
+
+                for ($y=1; $y<=3; $y++) {
+                    $description .= '<p>'.$paragraphs[$y].'</p>';
+                }
     
-                for ($j=1; $j<=rand(1, 5); $j++) {
+                for ($j=1; $j<=rand(4, 10); $j++) {
                     $tricks = new Tricks();
+
+                    $dateTricks = $faker->dateTimeBetween('-3 months', 'now', 'Europe/Paris');
+
                     $tricks -> setName($faker->sentence(3, true))
                             -> setDescription($description)
                             -> setCategory($category)
-                            -> setUser($user);
+                            -> setUser($user)
+                            -> setDateAtCreated($dateTricks);
 
                     $manager->persist($tricks);
                     
-                    for ($l=1; $l<=rand(1, 4); $l++) {
+                    for ($l=1; $l<=rand(2, 6); $l++) {
                         $photo = new Photo();
-                        $photo -> setName($faker->imageUrl(640, 480))
+                        $photo -> setName("https://loremflickr.com/640/360")
                                -> setTricks($tricks);
 
                         $manager->persist($photo);
                     }
 
-                    for ($m=1; $m<=rand(1, 3); $m++) {
+                    for ($m=1; $m<=rand(2, 6); $m++) {
                         $video = new Video();
-                        $video -> setLink($faker->youtubeEmbedCode())
+                        $video -> setLink($faker->youtubeEmbedUri())
                                -> setTricks($tricks);
                         
                         $manager->persist($video);
                     }
 
-                    for ($n=1; $n<=rand(1, 10); $n++) {
+                    for ($n=1; $n<=rand(15, 35); $n++) {
                         $message = new Message();
                         $message -> setContent($faker->paragraph(rand(1, 3), true))
-                                 -> setDateMessage($faker->dateTimeBetween('-3 months', 'now', 'Europe/Paris'))
+                                 -> setDateMessage($faker->dateTimeBetween($dateTricks, 'now', 'Europe/Paris'))
                                  -> setTricks($tricks)
                                  -> setUser($user);
                         
