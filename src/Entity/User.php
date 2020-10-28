@@ -90,6 +90,11 @@ class User implements UserInterface
      */
     private $messages;
 
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
@@ -237,10 +242,43 @@ class User implements UserInterface
 
     public function getRoles()
     {
-    
+        $roles = $this->roles;
+        
+        $roles = ['ROLE_USER'];
+
+        return array_unique($roles);
+    }
+
+    public function setRoles($roles)
+    {
+        $this->roles[] = $roles;
     }
 
     public function getSalt() {}
 
     public function eraseCredentials() {}
+
+    /** 
+     * @see \Serializable::unserialize() 
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+        ));
+    }
+
+    /** 
+     * @see \Serializable::unserialize() 
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+        ) = unserialize($serialized, array('allowed_classes' => false));
+    }
 }
