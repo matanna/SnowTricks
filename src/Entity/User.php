@@ -99,7 +99,6 @@ class User implements UserInterface
     {
         $this->tricks = new ArrayCollection();
         $this->messages = new ArrayCollection();
-        $this->setRoles('ROLE_USER');
 
     }
 
@@ -242,14 +241,18 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
-        return $this->roles;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+        return array_unique($roles);
     }
 
-    public function setRoles($roles)
+    public function setRoles(array $roles): self
     {
-        $this->roles = [$roles];
+        $this->roles = $roles;
+        return $this;
     }
 
     public function getSalt() {}
