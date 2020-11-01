@@ -95,6 +95,11 @@ class User implements UserInterface
      */
     private $roles = [];
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
+     */
+    private $token;
+
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
@@ -281,5 +286,17 @@ class User implements UserInterface
             $this->username,
             $this->password,
         ) = unserialize($serialized, array('allowed_classes' => false));
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): self
+    {
+        $this->token = $token;
+
+        return $this;
     }
 }

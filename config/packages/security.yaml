@@ -22,16 +22,23 @@ security:
             lazy: true
             provider: in_database
             form-login:
-                login_path: "login"
-                check_path: "login"
-
-
+                login_path: login
+                check_path: login
+            
 
             # activate different ways to authenticate
+            guard:
+                authenticators: 
+                    - App\Security\TokenAuthenticator
+            
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
+
+            logout: 
+                path: logout
+                target: home
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
