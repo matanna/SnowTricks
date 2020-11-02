@@ -4,11 +4,11 @@
 namespace App\Security;
 
 use App\Entity\User;
-use Firebase\JWT\JWT;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
@@ -34,7 +34,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function supports(Request $request)
     {
-        return $request->headers->has('Authorization');
+        return $request->cookies->has('Authorization');
     }
 
     /**
@@ -43,24 +43,19 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        return $request->headers->get('Authorization');
+        return $request->cookies->get('Authorization');
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         try {
-            $credentials = str_replace('Bearer ', '', $credentials);
-            $jwt = (array) JWT::decode(
-                              $credentials, 
-                              $this->params->get('jwt_secret'),
-                              ['HS256']
-                            );
             return $this->em->getRepository(User::class)
                     ->findOneBy([
-                            'username' => $jwt['user'],
+                            'token' => $credentials,
                     ]);
+
         }catch (\Exception $exception) {
-                throw new AuthenticationException($exception->getMessage());
+            throw new AuthenticationException($exception->getMessage());
         }
     }
 
@@ -75,14 +70,16 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
+        dump('connecte');
         return;
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        return new JsonResponse([
-            'message' => $exception->getMessage()
-        ], Response::HTTP_UNAUTHORIZED);
+        
+        $response = new RedirectResponse("/deconnexion");
+        $response->headers->clearCookie('Authorization');
+        return $response;
     }
 
     /**
@@ -101,10 +98,5 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     public function supportsRememberMe()
     {
         return false;
-    }
-
-    public function createAuthenticatedToken(UserInterface $user, string $providerKey)
-    {
-
     }
 }

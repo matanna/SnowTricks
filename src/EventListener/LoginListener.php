@@ -4,60 +4,45 @@
 
 namespace App\EventListener;
 
-use App\Entity\User;
-use DateTime;
-use Firebase\JWT\JWT;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 class LoginListener
 {
     private $manager;
 
-    private $token;
+    private $security;
 
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager, Security $security)
     {
         $this->manager = $manager;
+        $this->security = $security;    
     }
 
-    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
+    public function onKernelResponse(ResponseEvent $event) 
     {
-        $user = $event->getAuthenticationToken()->getUser();
-        
+        $user = $this->security->getUser();
         $token = md5(uniqid());
-        
-        $user->setToken($token);
-        $this->token = $token;
-        
-        $this->manager->persist($user);
-        $this->manager->flush(); 
+        $request = $event->getRequest();
 
-        $this->sendToken();
-    }
-    
-    public function sendToken() 
-    {
-        $response = new RedirectResponse("/membre/ajout");
+        if ($user && $request->getMethod() == "POST" && $request->getRequestUri() == "/connexion") {
+            
+            $user->setToken($token);
+            $this->manager->persist($user);
+            $this->manager->flush(); 
 
-        $cookie = Cookie::create('Authorization')
-                    ->withValue($this->token)
+            $cookie = Cookie::create('Authorization')
+                    ->withValue($token)
                     ->withExpires(new \DateTime('+1 hour'))
-                    ->withSecure(true)
+                    ->withSecure(false)
                     ->withHttpOnly(true);
 
-        $response->headers->setCookie($cookie);
-
-        $response->send();
+            $response = $event->getResponse();
+            $response->headers->setCookie($cookie);
+            $event->setResponse($response);
+        }
         
     }
 }
