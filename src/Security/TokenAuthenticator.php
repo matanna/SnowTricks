@@ -19,12 +19,10 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 class TokenAuthenticator extends AbstractGuardAuthenticator
 {
     private $em;
-    private $param;
 
-    public function __construct(EntityManagerInterface $em, ContainerBagInterface $params)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->params = $params;
     }
 
     /**

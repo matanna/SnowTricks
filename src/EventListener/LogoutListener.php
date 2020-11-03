@@ -3,19 +3,25 @@
  
 namespace App\EventListener;
  
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  
 class LogoutListener
 {
+    private $_manager;
+
+    public function __construct(EntityManagerInterface $manager)
+    {
+        $this->_manager = $manager;
+    }
     public function onSymfonyComponentSecurityHttpEventLogoutEvent(LogoutEvent $event)
     {
         $response = $event->getResponse();
-
         $response->headers->clearCookie('Authorization');
+
+        $user = $event->getToken()->getUser()->setToken(null);
+        $this->_manager->persist($user);
+        $this->_manager->flush();
         
         return $event->setResponse($response);
     }

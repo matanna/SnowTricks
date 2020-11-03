@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationType;
+use App\EventListener\LogoutListener;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -43,11 +46,15 @@ class SecurityController extends AbstractController
     /**
      * @Route("/connexion", name="login")
      */
-    public function login(AuthenticationUtils $authenticationUtils)  
+    public function login(AuthenticationUtils $authenticationUtils, Security $security)  
     {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
         
+        if ($security->getUser()) {
+            return $this->redirectToRoute('logout');
+        }
+
         return $this->render('security/login.html.twig', [
             'lastUsername' => $lastUsername,
             'error'        => $error,
