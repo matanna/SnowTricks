@@ -8,11 +8,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class LoginListener
 {
     private $manager;
-
+    private $cookie;
     private $security;
 
     public function __construct(EntityManagerInterface $manager, Security $security)
@@ -26,9 +28,10 @@ class LoginListener
         $user = $this->security->getUser();
         $token = md5(uniqid());
         $request = $event->getRequest();
+       
 
-        if ($user && $request->getMethod() == "POST" && $request->getRequestUri() == "/connexion") {
-            
+        if ($user && $request->getMethod() == "POST" && $request->attributes->get('_route') == 'login') {
+            dump($request);
             $user->setToken($token);
             $this->manager->persist($user);
             $this->manager->flush(); 
@@ -45,4 +48,5 @@ class LoginListener
         }
         
     }
+
 }

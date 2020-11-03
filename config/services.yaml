@@ -34,6 +34,7 @@ services:
     App\EventListener\LoginListener:
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.response', method: 'onKernelResponse' }
+            
     
     App\EventListener\LogoutListener:
         tags:
