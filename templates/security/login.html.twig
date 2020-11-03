@@ -16,8 +16,8 @@
                 <label for="password">Entrez votre mot de passe</label>
                 <input type="password" class="form-control" name="_password" id="password" />
             </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
             <button type="submit" class="btn btn-outline-primary">Se Connecter !</button>
-            <input type="hidden" name="_target_path" value="/"/>
         </form>
         {% if error %}
             <div class="mt-3">{{ error.messageKey|trans(error.messageData, 'security', 'fr') }}</div>

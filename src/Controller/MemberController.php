@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Tricks;
+use App\Form\TricksType;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
 * @Route("/membre", name="member_")
@@ -15,6 +17,12 @@ class MemberController extends AbstractController
      */
     public function addTricks()
     {
-        return $this->render('member/addTricks.html.twig');
+        $tricks = new Tricks();
+
+        $formTricks = $this->createForm(TricksType::class, $tricks);
+
+        return $this->render('member/addTricks.html.twig', [
+            'formTricks' => $formTricks->createView()
+        ]);
     }
 }

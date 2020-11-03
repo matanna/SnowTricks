@@ -68,7 +68,6 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        dump('connecte');
         return;
     }
 
