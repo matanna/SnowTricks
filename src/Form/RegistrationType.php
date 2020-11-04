@@ -20,7 +20,9 @@ class RegistrationType extends AbstractType
             ->add('confirmPassword', PasswordType::class)
             ->add('email', EmailType::class)
             ->add('fullName')
-            ->add('profilPicture', FileType::class, ['required' => false])
+            ->add('profilPicture', FileType::class, [
+                'required' => false, 'block_name' => 'file',
+            ])
         ;
     }
 

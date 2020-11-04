@@ -90,10 +90,21 @@ class User implements UserInterface
      */
     private $messages;
 
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
+     */
+    private $token;
+
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
         $this->messages = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -235,12 +246,57 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
-    
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+        return $this;
     }
 
     public function getSalt() {}
 
     public function eraseCredentials() {}
+
+    /** 
+     * @see \Serializable::unserialize() 
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+        ));
+    }
+
+    /** 
+     * @see \Serializable::unserialize() 
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+        ) = unserialize($serialized, array('allowed_classes' => false));
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): self
+    {
+        $this->token = $token;
+
+        return $this;
+    }
 }

@@ -4,6 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    jwt_secret: 73e92a6874877339cb8152549ba1f7a3
 
 services:
     # default configuration for services in *this* file
@@ -29,4 +30,15 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\EventListener\LoginListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.response', method: 'onKernelResponse' }
+            
     
+    App\EventListener\LogoutListener:
+        tags:
+            - name: 'kernel.event_listener'
+              event: 'Symfony\Component\Security\Http\Event\LogoutEvent'
+              method: 'onSymfonyComponentSecurityHttpEventLogoutEvent'
+              
