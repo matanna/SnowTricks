@@ -6,6 +6,7 @@ use App\Entity\Tricks;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class TricksType extends AbstractType
 {
@@ -14,10 +15,12 @@ class TricksType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('dateAtCreated')
-            ->add('dateAtUpdate')
+            ->add('photos', CollectionType::class, [
+                'entry_type' => PhotoType::class,
+                'entry_options' => ['label' => false]
+            ])
+            //->add(['videos' => VideoType::class])
             //->add('category')
-            //->add('user')
         ;
     }
 
