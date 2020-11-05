@@ -5,9 +5,12 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationType;
 use App\Event\RegisterUserEvent;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -46,6 +49,28 @@ class RegisterController extends AbstractController
 
         return $this->render('register/registration.html.twig', [
             'registrationForm' => $registrationForm->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/activation/{activationToken}", name="activation")
+     */
+    public function activateAccount($activationToken, 
+        UserRepository $userRepository, EntityManagerInterface $manager,
+        Session $session
+    ) {
+        $user = $userRepository->findOneBy(['activationToken' => $activationToken]);
+
+        if (!$user) {
+            throw new HttpException(404, 'Cette page n\'éxiste pas');
+        }
+
+        $user->setActivationToken('');
+        $manager->persist($user);
+        $manager->flush();
+
+        return $this->render('register/accountIsActivate.html.twig', [
+            'user' => $user
         ]);
     }
 }
