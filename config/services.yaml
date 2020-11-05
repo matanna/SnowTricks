@@ -48,7 +48,7 @@ services:
         tags:
             - name: 'user.registered'
               event: 'App\Event\RegisterUserEvent'
-              method: 'onRegisterUser'
+              method: 'activationAccountMailSended'
         bind:
               $sender: '%app.notifications.email_sender%'
               $url: '%url_pattern%'

@@ -4,8 +4,8 @@ namespace App\EventListener;
 
 use App\Event\RegisterUserEvent;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class RegisterSubscriber implements EventSubscriberInterface
@@ -26,20 +26,23 @@ class RegisterSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RegisterUserEvent::NAME => 'onRegisterUser'
+            RegisterUserEvent::NAME => 'activationAccountMailSended'
         ];
     }
 
-    public function onRegisterUser(RegisterUserEvent $event)
+    public function activationAccountMailSended(RegisterUserEvent $event)
     {
         dump($this->_mailer);
-        $activeAccountUrl = $this->_url.'?active='.$event->getUser()->getToken(); 
+        $activeAccountUrl = $this->_url.'/'.$event->getUser()->getActivationToken(); 
+        dump($activeAccountUrl);
         $email = (new Email())
             ->from($this->_sender)
             ->to($event->getUser()->getEmail())
-            ->subject('Valdier votre compte SnowTricks !!!')
+            ->subject('Valider votre compte SnowTricks !!!')
             ->text('Suivez ce lien pour activer votre compte : ')
-            ->html('<p>Cliquez sur ce lien pour <a href="'.$activeAccountUrl.'">activer votre compte</a>');
+            ->html($this->render('register/accountValidation.html.twig', [
+                "activeAccountUrl" => $activeAccountUrl
+            ]));
         
             $this->_mailer->send($email);
     }
