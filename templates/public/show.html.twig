@@ -8,14 +8,14 @@
         <div class="col-12">
             <div class="card mb-3 shadow">
                 <div class="featuredImage">
-                    <img src="{{ tricks.photos[0].name }}" alt="photo snowboard">
+                    <img src="{{ asset('img_uploads/' ~ tricks.photos[0].namePhoto) }}" alt="photo snowboard">
                     <h1 class="text-center">{{ tricks.name }}</h1>
                 </div>
                 <div class="card-body border-top">
                     <div class="row slider">
                         {% for photos in tricks.photos %}
                         <div class="col-xl-4">
-                            <div><img src="{{ photos.name }}" alt="photos snowboard" class="shadow"></div>   
+                            <div><img src="{{ asset('img_uploads/' ~ photos.namePhoto) }}" alt="photos snowboard" class="shadow"></div>   
                         </div>
                         {% endfor %} 
                         {% for videos in tricks.videos %}

@@ -8,8 +8,35 @@
         <h1>Ajouter un tricks</h1>
         <hr>
         {{ form_start(formTricks) }}
-        {{ form_widget(formTricks) }}
-        {{ form_end(formTricks) }}
-    </div>
+            {{ form_row(formTricks.name, {'label': 'Nom du tricks'}) }}
+            {{ form_row(formTricks.description) }}
+            {{ form_row(formTricks.category, {'label': 'Category du tricks :'}) }}
 
+            <ul class="photos" data-prototype="{{ form_widget(formTricks.photos.vars.prototype)|e('html_attr') }}">
+                {% for photo in formTricks.photos %}
+                    <li>{{ form_row(formTricks.photos.vars.prototype.namePhoto)|e }}</li>
+                {% endfor %}
+            </ul>
+            <button type="button" class="btn btn-outline-primary btn-sm add-photos" data-collection-holder-class="photos">Ajouter une Photo</button>
+
+            <ul class="videos" data-prototype="{{ form_widget(formTricks.videos.vars.prototype)|e('html_attr') }}">
+                {% for photo in formTricks.videos %}
+                    <li>{{ form_row(formTricks.videos.vars.prototype.link)|e }}</li>
+                {% endfor %}
+            </ul>
+            <button type="button" class="btn btn-outline-primary btn-sm add-videos" data-collection-holder-class="videos">Ajouter une Vidéo</button>
+
+            {{ form_row(formTricks.photos) }}
+        
+        <button type="submit" class="btn btn-outline-primary">Créer le tricks</button>
+        {{ form_end(formTricks) }}
+
+
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('js/addTricksPhotos.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('js/addTricksVideos.js')}}"></script>
 {% endblock %}

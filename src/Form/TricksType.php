@@ -3,9 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Tricks;
+use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class TricksType extends AbstractType
@@ -16,11 +19,20 @@ class TricksType extends AbstractType
             ->add('name')
             ->add('description')
             ->add('photos', CollectionType::class, [
-                'entry_type' => PhotoType::class,
-                'entry_options' => ['label' => false]
+                'entry_type' => FileType::class,
+                'label' => false,
+                'allow_add' => true,
+                'mapped' => false
             ])
-            //->add(['videos' => VideoType::class])
-            //->add('category')
+            ->add('videos', CollectionType::class, [
+                'entry_type' => VideoType::class,
+                'allow_add' => true,
+                'label' => false,
+            ])
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+            ])
         ;
     }
 
