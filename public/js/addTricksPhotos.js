@@ -26,7 +26,7 @@ function addFormToCollection($collectionHolderClass) {
     // You need this only if you didn't set 'label' => false in your tags field in TaskType
     // Replace '__name__label__' in the prototype's HTML to
     // instead be a number based on how many items we have
-    // newForm = newForm.replace(/__name__label__/g, index);
+    //newForm = newForm.replace(/__name__label__/g, index);
 
     // Replace '__name__' in the prototype's HTML to
     // instead be a number based on how many items we have
@@ -40,3 +40,6 @@ function addFormToCollection($collectionHolderClass) {
     // Add the new form at the end of the list
     $collectionHolder.append($newFormLi)
 }
+
+
+

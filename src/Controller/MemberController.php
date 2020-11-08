@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Photo;
 use App\Entity\Tricks;
 use App\Form\TricksType;
+use App\Repository\TricksRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,29 +19,31 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class MemberController extends AbstractController
 {
     /**
-     * @Route("/ajout", name="addTricks")
+     * @Route("/ajout",     name="addTricks")
+     * @Route("/edit/{id}", name="editTricks")
      */
-    public function addTricks(UserInterface $user, Request $request, EntityManagerInterface $manager)
+    public function addTricks(UserInterface $user, Request $request, EntityManagerInterface $manager, TricksRepository $tricksRepository = null, $id = null)
     {
         //We check if the user has activated his account 
         if ($user->getActivationToken() != '') {
             throw new \Exception('Vous devez activez votre compte !!');
         }
-
-        $tricks = new Tricks();
-
+        
+        if ($id == null) {
+            $tricks = new Tricks();
+        } else {
+            $tricks = $tricksRepository->findOneBy(['id' => $id]);
+        }
+        
         $formTricks = $this->createForm(TricksType::class, $tricks);
-
         $formTricks->handleRequest($request);
 
         if ($formTricks->isSubmitted() && $formTricks->isValid()) {
 
             //We copy the images to the server
             $photos = $formTricks->get('photos')->getData();
-            
             if ($photos) {
                 foreach ($photos as $photo) {
-
                     //We call private method in this controller
                     $file = $this->copyTricksPhotosOnServer($photo);
 
@@ -48,7 +51,6 @@ class MemberController extends AbstractController
                     $photoTricks = new Photo();
                     $photoTricks->setNamePhoto($file);
                     $tricks->addPhoto($photoTricks);
-                    
                 }
             }
             $tricks->setDateAtCreated(new \Datetime())
@@ -57,16 +59,15 @@ class MemberController extends AbstractController
             $manager->persist($tricks);
             $manager->flush();
             
-            return $this->render('public/show.html.twig', [
-                'tricks' => $tricks
-            ]);
+            return $this->redirect('/tricks/' . $tricks->getId());
         }
 
         return $this->render('member/addTricks.html.twig', [
-            'formTricks' => $formTricks->createView()
+            'formTricks' => $formTricks->createView(),
+            'tricks' => $tricks
         ]);
     }
-
+    
     /**
      * This function is use for copy images on server
      */

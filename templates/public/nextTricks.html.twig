@@ -2,7 +2,11 @@
 {% for tricks in tricks %}
 <div class="col-xl-3 ajaxTricks">
     <div class="card m-5 shadow">
-        <img style="height: 200px; width: 100%; display: block;" src="{{ tricks.photos[0].name }}" alt="Snowboard">
+        {% if tricks.photos[0].namePhoto is not defined %}
+            <img src="{{ asset('img/default_image.jpg') }}" alt="photo snowboard" class="homeFeaturedImage">
+        {% else %}
+            <img style="height: 200px; width: 100%; display: block;" src="{{ tricks.photos[0].name }}" alt="Snowboard">
+        {% endif %}
         <h4 class="card-header">{{ tricks.name | u.truncate(20)}}</h4>
         <div class="card-body">
             <a href="{{ path('show_tricks', {'id': tricks.id} ) }}" class="btn btn-outline-primary btn-sm">Voir le tricks</a>

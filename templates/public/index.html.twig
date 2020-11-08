@@ -12,9 +12,11 @@
 {% for tricks in tricks %}
     <div class="col-xl-3">
         <div class="card m-5 shadow">
-            
+            {% if tricks.photos[0].namePhoto is not defined %}
+                <img src="{{ asset('img/default_image.jpg') }}" alt="photo snowboard" class="homeFeaturedImage">
+            {% else %}
                 <img style="height: 200px; width: 100%; display: block;" src="{{ asset('img_uploads/' ~ tricks.photos[0].namePhoto) }}" alt="Snowboard">
-
+            {% endif %}
             <h4 class="card-header">{{ tricks.name | u.truncate(15)}}</h4>
             <div class="card-body">
                 <a href="{{ path('show_tricks', {'id': tricks.id} ) }}" class="btn btn-outline-primary btn-sm">Voir le tricks</a>
