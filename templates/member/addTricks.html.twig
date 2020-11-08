@@ -5,7 +5,7 @@
 {% block body %}
 
     <div class="container">
-        <!--//////////////-->
+
         {{ form_start(formTricks) }}
         <div class="row">
             <div class="col-12">
@@ -19,19 +19,33 @@
                         {{ form_row(formTricks.name, {'attr': {'class': 'input-tricksName', 'placeholder': 'Nom du tricks'}}) }}
                     </div>
                     <div class="card-body border-top">
+                        <div class="row slider">
+                            {% for photos in tricks.photos %}
+                            <div class="col-xl-4">
+                                <div><img src="{{ asset('img_uploads/' ~ photos.namePhoto) }}" alt="photos snowboard" class="shadow"></div>   
+                            </div>
+                            {% endfor %} 
+                            {% for videos in tricks.videos %}
+                            <div class="col-xl-4 videos-tricks">
+                                {{ videos.link | raw }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="card-body border-top">
                         
                         <ul class="photos d-inline-flex list-unstyled flex-wrap" data-prototype="{{ form_widget(formTricks.photos.vars.prototype)|e('html_attr') }}">
                             {% for photo in formTricks.photos %}
-                                <li>{{ form_row(formTricks.photos.vars.prototype.namePhoto)|e }}</li>
+                                {#<li>{{ form_row(formTricks.photos.vars.prototype.namePhoto)|e }}</li>#}
                             {% endfor %}
                         </ul>
                         <div><button type="button" class="btn btn-outline-primary btn-sm add-photos mb-4" data-collection-holder-class="photos">Ajouter une Photo</button></div>
                         
-                        {#<ul class="videos d-inline-flex list-unstyled flex-wrap" data-prototype="{{ form_widget(formTricks.videos.vars.prototype)|e('html_attr') }}">
+                        <ul class="videos d-inline-flex list-unstyled flex-wrap" data-prototype="{{ form_widget(formTricks.videos.vars.prototype)|e('html_attr') }}">
                             {% for video in formTricks.videos %}
-                                <li>{{ form_row(formTricks.videos.vars.prototype.link)|e }}</li>
+                                {#<li>{{ form_row(formTricks.videos.vars.prototype.link)|e }}</li>#}
                             {% endfor %}
-                        </ul>#}
+                        </ul>
                         <div><button type="button" class="btn btn-outline-primary btn-sm add-videos" data-collection-holder-class="videos">Ajouter une Vidéo</button></div>
                     </div>
                     
@@ -46,13 +60,14 @@
                 </div>
             </div>
         </div>
-        {{ form_end(formTricks) }}
+        {{ form_end(formTricks, {'render_rest': false}) }}
         
     </div>
 {% endblock %}
 
 {% block javascripts %}
-    
+    <script type="text/javascript" src="{{ asset('js/slider.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('js/show.js')}}"></script>
     <script type="text/javascript" src="{{ asset('js/addTricksPhotos.js')}}"></script>
     <script type="text/javascript" src="{{ asset('js/addTricksVideos.js')}}"></script>
 {% endblock %}

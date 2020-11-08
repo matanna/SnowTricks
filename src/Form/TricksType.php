@@ -28,7 +28,7 @@ class TricksType extends AbstractType
                 'entry_type' => FileType::class,
                 'label' => false,
                 'allow_add' => true,
-                'mapped' => false
+                'mapped' => false,
             ])
             ->add('videos', CollectionType::class, [
                 'entry_type' => VideoType::class,
