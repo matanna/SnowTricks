@@ -53,7 +53,7 @@ class MemberController extends AbstractController
                     $tricks->addPhoto($photoTricks);
                 }
             }
-            
+            dump($tricks);
             $tricks->setDateAtCreated(new \Datetime())
                    ->setUser($user);
 

@@ -28,13 +28,17 @@ class TricksType extends AbstractType
                 'entry_type' => FileType::class,
                 'label' => false,
                 'allow_add' => true,
+                'allow_delete' => true,
                 'mapped' => false,
+                'prototype' => true,
             ])
             ->add('videos', CollectionType::class, [
                 'entry_type' => VideoType::class,
                 'allow_add' => true,
+                'allow_delete' => true,
                 'label' => false,
-                'by_reference' => false
+                'by_reference' => false,
+                'prototype' => true,
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,

@@ -33,15 +33,15 @@
                         </div>
                     </div>
                     <div class="card-body border-top">
-                        
-                        <ul class="photos d-inline-flex list-unstyled flex-wrap" data-prototype="{{ form_widget(formTricks.photos.vars.prototype)|e('html_attr') }}">
+                    
+                        <ul class="photos list-unstyled" data-prototype="{{ form_widget(formTricks.photos.vars.prototype)|e('html_attr') }}">
                             {% for photo in formTricks.photos %}
                                 {#<li>{{ form_row(formTricks.photos.vars.prototype.namePhoto)|e }}</li>#}
                             {% endfor %}
                         </ul>
                         <div><button type="button" class="btn btn-outline-primary btn-sm add-photos mb-4" data-collection-holder-class="photos">Ajouter une Photo</button></div>
                         
-                        <ul class="videos d-inline-flex list-unstyled flex-wrap" data-prototype="{{ form_widget(formTricks.videos.vars.prototype)|e('html_attr') }}">
+                        <ul class="videos list-unstyled" data-prototype="{{ form_widget(formTricks.videos.vars.prototype)|e('html_attr') }}">
                             {% for video in formTricks.videos %}
                                 {#<li>{{ form_row(formTricks.videos.vars.prototype.link)|e }}</li>#}
                             {% endfor %}
@@ -60,8 +60,7 @@
                 </div>
             </div>
         </div>
-        {{ form_end(formTricks, {'render_rest': false}) }}
-        
+        {{ form_end(formTricks) }}
     </div>
 {% endblock %}
 
