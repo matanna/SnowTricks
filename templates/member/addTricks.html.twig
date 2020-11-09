@@ -33,17 +33,19 @@
                         </div>
                     </div>
                     <div class="card-body border-top">
-                    
-                        <ul class="photos list-unstyled" data-prototype="{{ form_widget(formTricks.photos.vars.prototype)|e('html_attr') }}">
+
+                        <ul class="photos list-unstyled" data-prototype="{{ form_row(formTricks.photos.vars.prototype)|e('html_attr') }}">
                             {% for photo in formTricks.photos %}
-                                {#<li>{{ form_row(formTricks.photos.vars.prototype.namePhoto)|e }}</li>#}
+                            {{ form_errors(photo) }}
+                            {{ form_widget(photo) }}
                             {% endfor %}
                         </ul>
                         <div><button type="button" class="btn btn-outline-primary btn-sm add-photos mb-4" data-collection-holder-class="photos">Ajouter une Photo</button></div>
                         
                         <ul class="videos list-unstyled" data-prototype="{{ form_widget(formTricks.videos.vars.prototype)|e('html_attr') }}">
                             {% for video in formTricks.videos %}
-                                {#<li>{{ form_row(formTricks.videos.vars.prototype.link)|e }}</li>#}
+                            {{ form_errors(video) }}
+                            {{ form_widget(video) }}
                             {% endfor %}
                         </ul>
                         <div><button type="button" class="btn btn-outline-primary btn-sm add-videos" data-collection-holder-class="videos">Ajouter une Vidéo</button></div>
@@ -54,8 +56,11 @@
                     </div>
                     <div class="card-body d-flex justify-content-between">
                         {{ form_row(formTricks.category, {'label': 'Category du tricks :'}) }}
-                        
+                        {% if tricks.id == null %}
                         <div class="text-right"><button type="submit" class="btn btn-outline-primary mt-4">Créer le tricks</button></div>
+                        {% else %}
+                        <div class="text-right"><button type="submit" class="btn btn-outline-primary mt-4">Modifier le tricks</button></div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -67,6 +72,7 @@
 {% block javascripts %}
     <script type="text/javascript" src="{{ asset('js/slider.js')}}"></script>
     <script type="text/javascript" src="{{ asset('js/show.js')}}"></script>
+    <!--<script type="text/javascript" src="{{ asset('js/add-collection-widget.js')}}"></script>-->
     <script type="text/javascript" src="{{ asset('js/addTricksPhotos.js')}}"></script>
     <script type="text/javascript" src="{{ asset('js/addTricksVideos.js')}}"></script>
 {% endblock %}

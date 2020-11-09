@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Photo;
+use App\Entity\Video;
 use App\Entity\Tricks;
 use App\Form\TricksType;
 use App\Repository\TricksRepository;
@@ -22,15 +23,18 @@ class MemberController extends AbstractController
      * @Route("/ajout",     name="addTricks")
      * @Route("/edit/{id}", name="editTricks")
      */
-    public function addTricks(UserInterface $user, Request $request, EntityManagerInterface $manager, TricksRepository $tricksRepository = null, $id = null)
-    {
+    public function addTricks(UserInterface $user, Request $request, 
+        EntityManagerInterface $manager, TricksRepository $tricksRepository = null, 
+        $id = null
+    ) {
         //We check if the user has activated his account 
         if ($user->getActivationToken() != '') {
             throw new \Exception('Vous devez activez votre compte !!');
         }
-        
+        //If we want to create a new tricks
         if ($id == null) {
             $tricks = new Tricks();
+        //If we want to edit a tricks
         } else {
             $tricks = $tricksRepository->findOneBy(['id' => $id]);
         }
@@ -39,28 +43,37 @@ class MemberController extends AbstractController
         $formTricks->handleRequest($request);
 
         if ($formTricks->isSubmitted() && $formTricks->isValid()) {
-
-            //We copy the images to the server
+            //We get the images and the videos iframe from the form fields in array
             $photos = $formTricks->get('photos')->getData();
+            $videos = $formTricks->get('videos')->getData();
+
             if ($photos) {
                 foreach ($photos as $photo) {
-                    //We call private method in this controller
+                    //We call private method in this controller for copy images on the server
                     $file = $this->copyTricksPhotosOnServer($photo);
-
                     //Name photo is placed in Photo entity and add in Photo collection in Tricks entity
                     $photoTricks = new Photo();
                     $photoTricks->setNamePhoto($file);
                     $tricks->addPhoto($photoTricks);
                 }
             }
-            dump($tricks);
+
+            if ($videos) {
+                foreach ($videos as $video) {
+                    //iframe video is placed in Video entity and add in Video collection in Tricks entity
+                    $videoTricks = new Video();
+                    $videoTricks->setLink($video);
+                    $tricks->addVideo($videoTricks);
+                }
+            }
+            
             $tricks->setDateAtCreated(new \Datetime())
                    ->setUser($user);
 
             $manager->persist($tricks);
             $manager->flush();
             
-            return $this->redirect('/tricks/' . $tricks->getId());
+            return $this->redirectToRoute('show_tricks', ['id' => $tricks->getId()]);
         }
 
         return $this->render('member/addTricks.html.twig', [

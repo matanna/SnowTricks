@@ -21,7 +21,7 @@ function addFormToCollection($collectionHolderClass) {
 
     // get the new index
     var index = $collectionHolder.data('index');
-
+    
     var newForm = prototype;
     // You need this only if you didn't set 'label' => false in your tags field in TaskType
     // Replace '__name__label__' in the prototype's HTML to
