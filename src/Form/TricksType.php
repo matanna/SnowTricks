@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -46,6 +47,14 @@ class TricksType extends AbstractType
             ])
             ->add('videos', CollectionType::class, [
                 'entry_type' => TextType::class,
+                'entry_options' => [
+                    'label' => false,
+                    'constraints' => [
+                        new Regex([
+                            'pattern' => '#^<iframe.+></iframe>$#'
+                        ])
+                    ]
+                ],
                 'allow_add' => true,
                 'allow_delete' => true,
                 'label' => false,
