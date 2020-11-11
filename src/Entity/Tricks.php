@@ -54,7 +54,8 @@ class Tricks
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="tricks")
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="tricks",
+     * cascade={"persist"}, orphanRemoval=true)
      */
     private $messages;
 

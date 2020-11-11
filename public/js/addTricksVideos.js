@@ -40,3 +40,4 @@ function addFormToCollection($collectionHolderClass) {
     // Add the new form at the end of the list
     $collectionHolder.append($newFormLi)
 }
+

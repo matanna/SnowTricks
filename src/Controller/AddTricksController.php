@@ -6,18 +6,18 @@ use App\Entity\Photo;
 use App\Entity\Video;
 use App\Entity\Tricks;
 use App\Form\TricksType;
+use App\Utils\ManageImageOnServer;
 use App\Repository\TricksRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 /**
 * @Route("/membre", name="member_")
 */
-class MemberController extends AbstractController
+class AddTricksController extends AbstractController
 {
     /**
      * @Route("/ajout",     name="addTricks")
@@ -49,11 +49,12 @@ class MemberController extends AbstractController
 
             if ($photos) {
                 foreach ($photos as $photo) {
-                    //We call private method in this controller for copy images on the server
-                    $file = $this->copyTricksPhotosOnServer($photo);
-                    //Name photo is placed in Photo entity and add in Photo collection in Tricks entity
+                    //We copy the image on server
+                    $copyPhoto = new ManageImageOnServer($photo, $tricks, $this->getParameter('images_directory'));
+                    $newNamePhoto = $copyPhoto->copyImageOnServer();
+                    //We add photo in Photo collection
                     $photoTricks = new Photo();
-                    $photoTricks->setNamePhoto($file);
+                    $photoTricks->setNamePhoto($newNamePhoto);
                     $tricks->addPhoto($photoTricks);
                 }
             }
@@ -62,8 +63,11 @@ class MemberController extends AbstractController
                 foreach ($videos as $video) {
                     //iframe video is placed in Video entity and add in Video collection in Tricks entity
                     $videoTricks = new Video();
-                    $videoTricks->setLink($video);
-                    $tricks->addVideo($videoTricks);
+                    //If video field is emty, we do anything
+                    if ($video != null) {
+                        $videoTricks->setLink($video);
+                        $tricks->addVideo($videoTricks);
+                    }
                 }
             }
             
@@ -80,22 +84,5 @@ class MemberController extends AbstractController
             'formTricks' => $formTricks->createView(),
             'tricks' => $tricks
         ]);
-    }
-    
-    /**
-     * This function is use for copy images on server
-     */
-    private function copyTricksPhotosOnServer($photo) 
-    {
-        $file = md5(uniqid()) . '.' . $photo->guessExtension();
-        try {
-            $photo->move(
-                $this->getParameter('images_directory'),
-                $file
-            ); 
-            return $file;
-        } catch (FileException $e){
-            echo $e->getMessage();
-        }
     }
 }

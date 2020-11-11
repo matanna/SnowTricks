@@ -32,6 +32,7 @@ class TricksType extends AbstractType
                 'label' => false,
                 'entry_options' => [
                     'label' => false,
+                    'required' => false,
                     'constraints' => [
                         new Image([
                             'maxSize' => '2M',
@@ -49,9 +50,11 @@ class TricksType extends AbstractType
                 'entry_type' => TextType::class,
                 'entry_options' => [
                     'label' => false,
+                    'required' => false,
                     'constraints' => [
                         new Regex([
-                            'pattern' => '#^<iframe.+></iframe>$#'
+                            'pattern' => '#^<iframe.+></iframe>$#',
+                            'message' => 'Le format n\'est pas valide'
                         ])
                     ]
                 ],

@@ -41,5 +41,5 @@ function addFormToCollection($collectionHolderClass) {
     $collectionHolder.append($newFormLi)
 }
 
-
+$('#delete-photo').appendTo("body").modal('show');
 

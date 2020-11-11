@@ -183,9 +183,22 @@ footer {
     width: 250px;
     height: 125px;
 }
+
 .modify-delete {
     position: absolute;
     top: 0;
     right: 0;
     padding: 1em;
+    background-color: rgba(247, 247, 247, 0.6);
+    margin: 1em;
+}
+
+.modify-delete-slider {
+    position: absolute;
+    background-color: rgba(247, 247, 247, 0.8);
+    top: 60%;
+    left: 50%;
+    margin-left: -30px;
+    padding: 10px;
+    z-index: 10;
 }
