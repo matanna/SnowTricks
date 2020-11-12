@@ -60,6 +60,8 @@ class DeleteController extends AbstractController
             throw new \Exception('Cette photo n\'existe pas');
         }
         
+        //Delete Photo on server... To Do
+
         $tricks->removePhoto($photo);
         $manager->persist($photo);
         $manager->flush();
@@ -67,7 +69,6 @@ class DeleteController extends AbstractController
         return $this->redirectToRoute('member_editTricks', [
             'id' => $tricksId
         ]);
-
     }
 
     /**

@@ -47,17 +47,20 @@ class AddTricksController extends AbstractController
         if ($request->isXmlHttpRequest()) { 
             $photoId = $request->request->get('photoId');
             $videoId = $request->request->get('videoId');
+            $action = $request->request->get('action');
 
             if ($photoId != null) {
-                $jsonResponse =$this->render('modal/confirmDelete.html.twig', [
+                $jsonResponse =$this->render('modal/modifyElement.html.twig', [
                     'tricks' => $tricks,
-                    'photoId' => $photoId
+                    'photoId' => $photoId,
+                    'action' => $action
                 ]);
 
             } elseif ($videoId != null) {
-                $jsonResponse =$this->render('modal/confirmDelete.html.twig', [
+                $jsonResponse =$this->render('modal/modifyElement.html.twig', [
                     'tricks' => $tricks,
-                    'videoId' => $videoId
+                    'videoId' => $videoId,
+                    'action' => $action
                 ]);
 
             } else {
@@ -67,7 +70,7 @@ class AddTricksController extends AbstractController
             return new JsonResponse(['modal' => $jsonResponse->getContent()]);
         }
 
-        
+
         if ($formTricks->isSubmitted() && $formTricks->isValid()) {
             //We get the images and the videos iframe from the form fields in array
             $photos = $formTricks->get('photos')->getData();

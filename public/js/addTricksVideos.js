@@ -43,20 +43,21 @@ function addFormToCollection($collectionHolderClass) {
 
 $(document).ready(function(){
 
-    $('.deleteVideo').click(function(){
+    $('.deleteVideo, .modifyVideo').click(function(){
         let videoId = $(this).attr('id');
+        let action = $(this).attr('class');
         let pathName = window.location.pathname;
 
         $.ajax({
             url:        pathName,
             type:       "POST",
-            data:       'videoId=' + videoId,
+            data:       {videoId: videoId, action: action},
             dataType:   'json',
             async:       true,
         
             success: function(data,status) {
                 $("#modal").html(data.modal);
-                $('#delete').modal('show');
+                $('#modal-window').modal('show');
 
             },
             error : function(xhr, textStatus, errorThrown) {  
