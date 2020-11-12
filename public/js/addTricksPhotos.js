@@ -43,24 +43,30 @@ function addFormToCollection($collectionHolderClass) {
 
 $(document).ready(function(){
 
-    $('.delete').click(function(){
+    $('.deletePhoto').click(function(){
         let photoId = $(this).attr('id');
         let pathName = window.location.pathname;
 
         $.ajax({
             url:        pathName,
             type:       "POST",
-            data:       photoId,
+            data:       'photoId=' + photoId,
             dataType:   'json',
             async:       true,
         
             success: function(data,status) {
-                alert(photoId);
+                $("#modal").html(data.modal);
+                $('#delete').modal('show');
+
             },
             error : function(xhr, textStatus, errorThrown) {  
                 alert('Demande échouée.');  
             }
         });
-    });  
+    });
+    
+    $("#modal").on('click', '#close-modal', function () {
+        $("#modal").empty();
+    })
 });
 

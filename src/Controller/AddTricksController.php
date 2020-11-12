@@ -43,12 +43,31 @@ class AddTricksController extends AbstractController
         $formTricks = $this->createForm(TricksType::class, $tricks);
         $formTricks->handleRequest($request);
 
+        //Use ajax for get id photo or video in confirm delete modal
         if ($request->isXmlHttpRequest()) { 
             $photoId = $request->request->get('photoId');
+            $videoId = $request->request->get('videoId');
 
-            return new JsonResponse(['photoId' => $photoId]);
+            if ($photoId != null) {
+                $jsonResponse =$this->render('modal/confirmDelete.html.twig', [
+                    'tricks' => $tricks,
+                    'photoId' => $photoId
+                ]);
+
+            } elseif ($videoId != null) {
+                $jsonResponse =$this->render('modal/confirmDelete.html.twig', [
+                    'tricks' => $tricks,
+                    'videoId' => $videoId
+                ]);
+
+            } else {
+                throw new \Exception('Cet élément n\'existe pas');
+            }
+
+            return new JsonResponse(['modal' => $jsonResponse->getContent()]);
         }
 
+        
         if ($formTricks->isSubmitted() && $formTricks->isValid()) {
             //We get the images and the videos iframe from the form fields in array
             $photos = $formTricks->get('photos')->getData();

@@ -41,3 +41,31 @@ function addFormToCollection($collectionHolderClass) {
     $collectionHolder.append($newFormLi)
 }
 
+$(document).ready(function(){
+
+    $('.deleteVideo').click(function(){
+        let videoId = $(this).attr('id');
+        let pathName = window.location.pathname;
+
+        $.ajax({
+            url:        pathName,
+            type:       "POST",
+            data:       'videoId=' + videoId,
+            dataType:   'json',
+            async:       true,
+        
+            success: function(data,status) {
+                $("#modal").html(data.modal);
+                $('#delete').modal('show');
+
+            },
+            error : function(xhr, textStatus, errorThrown) {  
+                alert('Demande échouée.');  
+            }
+        });
+    });
+    
+    $("#modal").on('click', '#close-modal', function () {
+        $("#modal").empty();
+    })
+});

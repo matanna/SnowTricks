@@ -74,13 +74,30 @@ class DeleteController extends AbstractController
      * @Route("/supprimer/video/{tricksId}/{videoId}", name="delete_video")
      */
     public function deleteVideo(UserInterface $user, Request $request, 
-    TricksRepository $tricksRepository, PhotoRepository $photoRepository,
-    EntityManagerInterface $manager, $tricksId, $videoId
+        TricksRepository $tricksRepository, VideoRepository $videoRepository,
+        EntityManagerInterface $manager, $tricksId, $videoId
     ) {     
         //We check if the user has activated his account 
         if ($user->getActivationToken() != '') {
             throw new \Exception('Vous devez activez votre compte !!');
         }
+        //We get the tricks in the route
+        $tricks = $tricksRepository->findOneBy(['id' => $tricksId]);
+        if (!$tricks) {
+              throw new \Exception('Ce tricks n\'existe pas');
+        }
+        //We get the photo if the tricks exist
+        $video = $videoRepository->findOneBy(['id' => $videoId]);
+        if (!$video) {
+            throw new \Exception('Cette video n\'existe pas');
+        }
         
+        $tricks->removeVideo($video);
+        $manager->persist($video);
+        $manager->flush();
+
+        return $this->redirectToRoute('member_editTricks', [
+            'id' => $tricksId
+        ]);
     }
 }
