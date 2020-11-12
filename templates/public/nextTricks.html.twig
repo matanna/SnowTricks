@@ -5,7 +5,7 @@
         {% if tricks.photos[0].namePhoto is not defined %}
             <img src="{{ asset('img/default_image.jpg') }}" alt="photo snowboard" class="homeFeaturedImage">
         {% else %}
-            <img style="height: 200px; width: 100%; display: block;" src="{{ tricks.photos[0].name }}" alt="Snowboard">
+            <img style="height: 200px; width: 100%; display: block;" src="{{ tricks.photos[0].namePhoto }}" alt="Snowboard">
         {% endif %}
         <h4 class="card-header">{{ tricks.name | u.truncate(20)}}</h4>
         <div class="card-body">

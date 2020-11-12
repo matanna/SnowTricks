@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
 * @Route("/membre", name="member_")
@@ -41,6 +42,12 @@ class AddTricksController extends AbstractController
         
         $formTricks = $this->createForm(TricksType::class, $tricks);
         $formTricks->handleRequest($request);
+
+        if ($request->isXmlHttpRequest()) { 
+            $photoId = $request->request->get('photoId');
+
+            return new JsonResponse(['photoId' => $photoId]);
+        }
 
         if ($formTricks->isSubmitted() && $formTricks->isValid()) {
             //We get the images and the videos iframe from the form fields in array

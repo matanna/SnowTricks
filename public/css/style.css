@@ -202,3 +202,7 @@ footer {
     padding: 10px;
     z-index: 10;
 }
+
+#delete-photo {
+    position: fixed;
+}

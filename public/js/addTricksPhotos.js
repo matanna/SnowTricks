@@ -41,5 +41,26 @@ function addFormToCollection($collectionHolderClass) {
     $collectionHolder.append($newFormLi)
 }
 
-$('#delete-photo').appendTo("body").modal('show');
+$(document).ready(function(){
+
+    $('.delete').click(function(){
+        let photoId = $(this).attr('id');
+        let pathName = window.location.pathname;
+
+        $.ajax({
+            url:        pathName,
+            type:       "POST",
+            data:       photoId,
+            dataType:   'json',
+            async:       true,
+        
+            success: function(data,status) {
+                alert(photoId);
+            },
+            error : function(xhr, textStatus, errorThrown) {  
+                alert('Demande échouée.');  
+            }
+        });
+    });  
+});
 
