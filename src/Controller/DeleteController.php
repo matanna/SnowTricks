@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Utils\ManageImageOnServer;
 use App\Repository\PhotoRepository;
 use App\Repository\VideoRepository;
 use App\Repository\TricksRepository;
@@ -28,6 +29,10 @@ class DeleteController extends AbstractController
         }
 
         $tricks = $tricksRepository->findOneBy(array('id' => $id));
+        
+
+        $photos = $tricks->getPhotos();
+        dump($tricks);
 
         if ($tricks) {
             $manager->remove($tricks);
@@ -60,7 +65,8 @@ class DeleteController extends AbstractController
             throw new \Exception('Cette photo n\'existe pas');
         }
         
-        //Delete Photo on server... To Do
+        $deletePhoto = new ManageImageOnServer();
+        $deletePhoto->removeImageOnServer($photo->getNamePhoto(), $this->getParameter('images_directory'));
 
         $tricks->removePhoto($photo);
         $manager->persist($photo);

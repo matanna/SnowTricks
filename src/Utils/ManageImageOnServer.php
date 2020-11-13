@@ -12,39 +12,29 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
  */
 class ManageImageOnServer
 {
-    private $_image;
-
-    private $_entity;
-
-    private $_directory;
-
-    public function __construct(UploadedFile $image, $entity, $directory)
-    {
-        $this->_image = $image;
-        $this->_entity = $entity;
-        $this->_directory = $directory;
-    }
-
     /**
      * This function copy image on server in the correct folder depending on the entity 
      */
-    public function copyImageOnServer()
-    {
-        $entityName = new \ReflectionClass($this->_entity);
-        $entityName->getShortName();
+    public function copyImageOnServer(UploadedFile $image, $directory)
+    {  
+        $file = md5(uniqid()) . '.' . $image->guessExtension();
+        try {
+            $image->move($directory, $file); 
+            return $file;
+        } catch (FileException $e){
+            echo $e->getMessage();
+        }
+    }
 
-        if ($entityName->getShortName() == 'Tricks') {
-            
-            $file = md5(uniqid()) . '.' . $this->_image->guessExtension();
-            try {
-                $this->_image->move(
-                    $this->_directory,
-                    $file
-                ); 
-                return $file;
-            } catch (FileException $e){
-                echo $e->getMessage();
-            }
-        }  
+    /**
+     * This function remove image on server in the correct folder depending on the entity 
+    */
+    public function removeImageOnServer($imageName, $directory)
+    {
+        try {
+            unlink($directory . '/' . $imageName);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
     }
 }

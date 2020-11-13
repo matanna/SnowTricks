@@ -79,8 +79,8 @@ class AddTricksController extends AbstractController
             if ($photos) {
                 foreach ($photos as $photo) {
                     //We copy the image on server
-                    $copyPhoto = new ManageImageOnServer($photo, $tricks, $this->getParameter('images_directory'));
-                    $newNamePhoto = $copyPhoto->copyImageOnServer();
+                    $copyPhoto = new ManageImageOnServer();
+                    $newNamePhoto = $copyPhoto->copyImageOnServer($photo, $this->getParameter('images_directory'));
                     //We add photo in Photo collection
                     $photoTricks = new Photo();
                     $photoTricks->setNamePhoto($newNamePhoto);
