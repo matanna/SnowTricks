@@ -5,11 +5,108 @@
 {% block body %}
 
     <div class="container">
-        <h1>Ajouter un tricks</h1>
-        <hr>
+
         {{ form_start(formTricks) }}
-        {{ form_widget(formTricks) }}
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-3 shadow">
+                    <div class="featuredImage">
+                        {% if (tricks.id == null) or (tricks.photos[0].namePhoto is not defined) %}
+                            <img src="{{ asset('img/default_image.jpg') }}" alt="photo snowboard">
+                        {% else %}
+                            <img src="{{ asset('img_uploads/' ~ tricks.photos[0].namePhoto) }}" alt="photo snowboard">
+                        {% endif %}
+                        {{ form_row(formTricks.name, {'attr': {'class': 'input-tricksName', 'placeholder': 'Nom du tricks'}}) }}
+                    </div>
+                    <div class="card-body border-top">
+                        <div class="row slider">
+                            {% for photos in tricks.photos %}
+                            
+                            <div class="col-xl-4">
+                                <div><img src="{{ asset('img_uploads/' ~ photos.namePhoto) }}" alt="photos snowboard" class="shadow"></div>
+                                <div class="modify-delete-slider shadow">
+                                    <!--Modify icon-->
+                                    <a href="#" data-toggle="modal" id="{{ photos.id }}" class="modifyPhoto">
+                                      <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                          <path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                      </svg>
+                                    </a>
+                                    <!--Delete icon-->
+                                    <a href="#" data-toggle="modal" id="{{ photos.id }}" class="deletePhoto">
+                                        <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                           
+                            {% for videos in tricks.videos %}
+                            <div class="col-xl-4 videos-tricks">
+                                <div>{{ videos.link | raw }}</div>
+                                <div class="modify-delete-slider shadow">
+                                    <!--Modify icon-->
+                                    <a href="#" data-toggle="modal" id="{{ videos.id }}" class="modifyVideo">
+                                      <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                          <path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                      </svg>
+                                    </a>
+                                    <!--Delete icon-->
+                                    <a href="#" data-toggle="modal" id="{{ videos.id }}" class="deleteVideo">
+                                        <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="card-body border-top">
+
+                        <ul class="photos list-unstyled" data-prototype="{{ form_row(formTricks.photos.vars.prototype)|e('html_attr') }}">
+                            {% for photo in formTricks.photos %}
+                            {{ form_errors(photo) }}
+                            {{ form_widget(photo) }}
+                            {% endfor %}
+                        </ul>
+                        <div><button type="button" class="btn btn-outline-primary btn-sm add-photos mb-4" data-collection-holder-class="photos">Ajouter une Photo</button></div>
+                        
+                        <ul class="videos list-unstyled" data-prototype="{{ form_widget(formTricks.videos.vars.prototype)|e('html_attr') }}">
+                            {% for video in formTricks.videos %}
+                            {{ form_errors(video) }}
+                            {{ form_widget(video) }}
+                            {% endfor %}
+                        </ul>
+                        <div><button type="button" class="btn btn-outline-primary btn-sm add-videos" data-collection-holder-class="videos">Ajouter une Vidéo</button></div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <p class="card-text">{{ form_row(formTricks.description, {'label': 'Description du tricks :' }) }}</p>
+                    </div>
+                    <div class="card-body d-flex justify-content-between">
+                        {{ form_row(formTricks.category, {'label': 'Category du tricks :'}) }}
+                        {% if tricks.id == null %}
+                        <div class="text-right"><button type="submit" class="btn btn-outline-primary mt-4">Créer le tricks</button></div>
+                        {% else %}
+                        <div class="text-right"><button type="submit" class="btn btn-outline-primary mt-4">Modifier le tricks</button></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
         {{ form_end(formTricks) }}
     </div>
+    <div id="modal"></div>
+    
+{% endblock %}
 
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('js/slider.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('js/show.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('js/addTricksPhotos.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('js/addTricksVideos.js')}}"></script>
 {% endblock %}

@@ -30,7 +30,7 @@ security:
             guard:
                 authenticators: 
                     - App\Security\TokenAuthenticator
-            
+
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
             # https://symfony.com/doc/current/security/impersonating_user.html

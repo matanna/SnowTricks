@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Snowtricks - Compte activé !!!{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h1>Bienvenue {{ user.username }} !!</h1>
+        <hr>
+        <p>Votre compte est activé !!!</p>
+        <p>Vous pouvez maintenant vous connecter :) !!!</p>
+        <p><a href="{{ path('login') }}" class="btn btn-outline-primary">Se Connecter</a></p>
+    </div>
+
+{% endblock %}

@@ -41,7 +41,7 @@ class PublicController extends AbstractController
         if ($request->isXmlHttpRequest()) {
 
             $offset = (($request->request->get('numPage'))-1)*10;
-            dump($offset);
+            
             $nextMessages = $messageRepository->findByTricks($id, 10, $offset);
             $jsonResponse =$this->render('public/nextMessages.html.twig', [
                 'nextMessages' => $nextMessages
@@ -52,6 +52,7 @@ class PublicController extends AbstractController
         }
 
         $tricks = $tricksRepository->find($id);
+        dump($tricks);
 
         $numberMessages = $messageRepository->countByTricks($id);
         $messages = $messageRepository->findByTricks($id, 10, 0);

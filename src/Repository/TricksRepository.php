@@ -52,5 +52,4 @@ class TricksRepository extends ServiceEntityRepository
         return $query->getResult();
         
     }
-
 }

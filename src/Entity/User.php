@@ -100,6 +100,16 @@ class User implements UserInterface
      */
     private $token;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true,  unique=true)
+     */
+    private $resetPasswordToken;
+
+    /**
+     * @ORM\Column(type="string", length=255,  nullable=true,  unique=true)
+     */
+    private $activationToken;
+
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
@@ -296,6 +306,30 @@ class User implements UserInterface
     public function setToken(?string $token): self
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    public function getResetPasswordToken(): ?string
+    {
+        return $this->resetPasswordToken;
+    }
+
+    public function setResetPasswordToken(?string $resetPasswordToken): self
+    {
+        $this->resetPasswordToken = $resetPasswordToken;
+
+        return $this;
+    }
+
+    public function getActivationToken(): ?string
+    {
+        return $this->activationToken;
+    }
+
+    public function setActivationToken(string $activationToken): self
+    {
+        $this->activationToken = $activationToken;
 
         return $this;
     }

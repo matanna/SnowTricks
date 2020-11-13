@@ -4,7 +4,11 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    jwt_secret: 73e92a6874877339cb8152549ba1f7a3
+    app.supported_locales: ['en', 'fr']
+    app.notifications.email_sender: support@snowtricks.com
+    url_pattern: 'http://127.0.0.1:8000'
+    images_directory: '%kernel.project_dir%/public/img_uploads/'
+    mimes_upload: ['jpg', 'png', 'jpeg']
 
 services:
     # default configuration for services in *this* file
@@ -42,3 +46,11 @@ services:
               event: 'Symfony\Component\Security\Http\Event\LogoutEvent'
               method: 'onSymfonyComponentSecurityHttpEventLogoutEvent'
               
+    App\EventListener\RegisterSubscriber:
+        tags:
+            - name: 'user.registered'
+              event: 'App\Event\RegisterUserEvent'
+              method: 'activationAccountMailSended'
+        bind:
+              $sender: '%app.notifications.email_sender%'
+              $url: '%url_pattern%'

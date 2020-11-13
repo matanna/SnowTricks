@@ -20,7 +20,7 @@ class Tricks
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $name;
 
@@ -30,12 +30,14 @@ class Tricks
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="tricks")
+     * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="tricks", 
+     * cascade={"persist"}, orphanRemoval=true)
      */
     private $photos;
 
     /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="tricks")
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="tricks",
+     * cascade={"persist"}, orphanRemoval=true)
      */
     private $videos;
 
@@ -52,7 +54,8 @@ class Tricks
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="tricks")
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="tricks",
+     * cascade={"persist"}, orphanRemoval=true)
      */
     private $messages;
 
