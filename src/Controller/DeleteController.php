@@ -28,15 +28,16 @@ class DeleteController extends AbstractController
             throw new \Exception('Vous devez activez votre compte !!');
         }
 
-        $tricks = $tricksRepository->findOneBy(array('id' => $id));
+        $tricks = $tricksRepository->find($id);
         
 
         $photos = $tricks->getPhotos();
-        dump($tricks);
+        dump($photos);
+        dump($tricks->photos);
 
         if ($tricks) {
-            $manager->remove($tricks);
-            $manager->flush();
+            //$manager->remove($tricks);
+            //$manager->flush();
         }
 
         return $this->redirectToRoute('home');

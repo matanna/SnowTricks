@@ -52,6 +52,7 @@ class PublicController extends AbstractController
         }
 
         $tricks = $tricksRepository->find($id);
+        dump($tricks);
 
         $numberMessages = $messageRepository->countByTricks($id);
         $messages = $messageRepository->findByTricks($id, 10, 0);
