@@ -29,15 +29,13 @@
           {% endif %}
 
           {% if action == 'modifyPhoto' %}
-            <form action="{{ path('member_change_photo', {tricksId: tricks.id, photoId: photoId}) }}" method="post" class="form-group"  enctype='multipart/form-data'>
-              <div class="form-control">
-                <input type="file" name="change-photo" id="change-photo"/>
-              </div>
+            {{ form_start(changePhotoForm) }}
+              {{  form_row(changePhotoForm.photo)}}
               <div class="modal-footer">
                 <button type="submit" class="btn btn-outline-primary btn-sm">Modifier</button>
                 <button type="button" class="btn btn-outline-primary btn-sm" id="close-modal" data-dismiss="modal">X</button>
               </div>
-            </form>
+            {{ form_end(changePhotoForm) }}
           {% endif %}
 
         {% elseif videoId is defined %}
@@ -52,13 +50,13 @@
           {% endif %}
 
           {% if action == 'modifyVideo' %}
-            <form action="" method="post" class="form-group">
-              <input type="text" name="change-video" id="change-video" class="form-control"/>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-outline-primary btn-sm">Modifier</button>
-                <button type="button" class="btn btn-outline-primary btn-sm" id="close-modal" data-dismiss="modal">X</button>
-              </div>
-            </form>
+          {{ form_start(changeVideoForm) }}
+            {{  form_row(changeVideoForm.video)}}
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-outline-primary btn-sm">Modifier</button>
+              <button type="button" class="btn btn-outline-primary btn-sm" id="close-modal" data-dismiss="modal">X</button>
+            </div>
+        {{ form_end(changeVideoForm) }}
           {% endif %}
 
         {% endif %} 

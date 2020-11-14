@@ -44,7 +44,9 @@
                            
                             {% for videos in tricks.videos %}
                             <div class="col-xl-4 videos-tricks">
-                                <div>{{ videos.link | raw }}</div>
+                                <div>
+                                    <iframe width="1280" height="720" src="{{ videos.link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
                                 <div class="modify-delete-slider shadow">
                                     <!--Modify icon-->
                                     <a href="#" data-toggle="modal" id="{{ videos.id }}" class="modifyVideo">

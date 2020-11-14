@@ -106,7 +106,7 @@ class User implements UserInterface
     private $resetPasswordToken;
 
     /**
-     * @ORM\Column(type="string", length=255,  nullable=true,  unique=true)
+     * @ORM\Column(type="string", length=255,  nullable=true)
      */
     private $activationToken;
 
