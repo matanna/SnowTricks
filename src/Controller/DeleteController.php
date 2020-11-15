@@ -79,6 +79,10 @@ class DeleteController extends AbstractController
             $this->getParameter('images_directory')
         );
 
+        if ($photo->getNamePhoto() == $tricks->getPrincipalPhoto()) {
+            $tricks->setPrincipalPhoto(null);
+        }
+
         $tricks->removePhoto($photo);
         $manager->persist($photo);
 

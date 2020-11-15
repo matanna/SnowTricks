@@ -8,11 +8,13 @@
         <div class="col-12">
             <div class="card mb-3 shadow">
                 <div class="featuredImage">
-                    {% if tricks.photos[0].namePhoto is not defined %}
-                      <img src="{{ asset('img/default_image.jpg') }}" alt="photo snowboard">
-                    {% else %}
-                      <img src="{{ asset('img_uploads/' ~ tricks.photos[0].namePhoto) }}" alt="photo snowboard">
-                    {% endif %}
+                  {% if (tricks.id == null) or (tricks.photos[0].namePhoto is not defined) %}
+                    <img src="{{ asset('img/default_image.jpg') }}" alt="photo snowboard">
+                  {% elseif tricks.principalPhoto == null %}
+                    <img src="{{ asset('img_uploads/' ~ tricks.photos[0].namePhoto) }}" alt="photo snowboard">
+                  {% else %}
+                    <img src="{{ asset('img_uploads/' ~ tricks.principalPhoto) }}" alt="photo snowboard">
+                  {% endif %}
                     <h1 class="text-center">{{ tricks.name }}</h1>
                     {% if app.user and app.user.activationToken == '' %}
                     <div class="modify-delete shadow">

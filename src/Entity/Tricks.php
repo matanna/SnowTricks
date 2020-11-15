@@ -77,6 +77,11 @@ class Tricks
      */
     private $dateAtUpdate;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $principalPhoto;
+
     public function __construct()
     {
         $this->photos = new ArrayCollection();
@@ -250,6 +255,18 @@ class Tricks
     public function setDateAtUpdate(?\DateTimeInterface $dateAtUpdate): self
     {
         $this->dateAtUpdate = $dateAtUpdate;
+
+        return $this;
+    }
+
+    public function getPrincipalPhoto(): ?string
+    {
+        return $this->principalPhoto;
+    }
+
+    public function setPrincipalPhoto(?string $principalPhoto): self
+    {
+        $this->principalPhoto = $principalPhoto;
 
         return $this;
     }

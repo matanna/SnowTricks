@@ -13,6 +13,7 @@ use App\Utils\ManageImageOnServer;
 use App\Repository\PhotoRepository;
 use App\Repository\VideoRepository;
 use App\Repository\TricksRepository;
+use App\Form\ChangePrincipalPhotoType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -53,8 +54,6 @@ class AddTricksController extends AbstractController
         //We create form for the modal for change only one photo or one video
         $changePhotoForm = $this->createForm(ChangePhotoType::class);
         $changeVideoForm = $this->createForm(ChangeVideoType::class);
-
-        $formTricks->handleRequest($request);
 
         //Use ajax for get id photo or video in confirm delete modal
         if ($request->isXmlHttpRequest()) { 
@@ -98,6 +97,11 @@ class AddTricksController extends AbstractController
                     $photoToEdit->getNamePhoto(),
                     $this->getParameter('images_directory')
                 );
+
+                if ($photoToEdit->getNamePhoto() == $tricks->getPrincipalPhoto()) {
+                    $tricks->setPrincipalPhoto(null);
+                }
+
                 $newNamePhoto = $manageImageOnServer->copyImageOnServer(
                     $photo, 
                     $this->getParameter('images_directory')
@@ -141,6 +145,7 @@ class AddTricksController extends AbstractController
         }
 
         //Form for update a tricks
+        $formTricks->handleRequest($request);
         if ($formTricks->isSubmitted() && $formTricks->isValid()) {
             //We get the images and the videos link from the form fields in array
             $photos = $formTricks->get('photos')->getData();
@@ -193,7 +198,29 @@ class AddTricksController extends AbstractController
 
         return $this->render('member/addTricks.html.twig', [
             'formTricks' => $formTricks->createView(),
-            'tricks' => $tricks
+            'tricks' => $tricks,
         ]);
+    }
+
+    /**
+     * @Route("/edit-photo-principal/{tricksId}/{photoId}", name="change-principal-photo")
+     */
+    public function modifyPrincipalPhoto(TricksRepository $tricksRepository, 
+        PhotoRepository $photoRepository, EntityManagerInterface $manager,
+        $tricksId, $photoId
+    ) {
+        $tricks = $tricksRepository->find($tricksId);
+
+        if ($tricks) {
+            $photo = $photoRepository->findOneBy([
+                'id' => $photoId
+            ]);
+
+            $tricks->setPrincipalPhoto($photo->getNamePhoto());
+            $manager->persist($tricks);
+            $manager->flush();
+
+            return $this->redirectToRoute('member_editTricks', ['id' => $tricksId]);
+        }
     }
 }
