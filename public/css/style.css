@@ -205,3 +205,7 @@ footer {
 #delete-photo {
     position: fixed;
 }
+
+.label-addComment {
+    font-size: 1.5rem;
+}

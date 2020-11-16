@@ -96,11 +96,21 @@
                   </table>
                 </div>
 
+                {% if app.user and app.user.activationToken == '' %}
                 <div class="card-body border">
-                  <h3 id="message">//Ajouter un commentaire//</h3>
+                  {{ form_start(messageForm) }}
+                    {{ form_label(messageForm, 'Ajoute ton commentaire ! :', {'label_attr': {'class': 'label-addComment'}} ) }}
+                    {{ form_errors(messageForm) }}
+                    {{ form_widget(messageForm) }}
+                    <div class="text-right">
+                      <button type="submit" class="btn btn-outline-primary btn-sm">Poster !</button>
+                    </div> 
+                  {{ form_end(messageForm) }}
                 </div>
+                {% endif %}
 
                 <div class="card-footer comment">
+                  <h4 class="mb-5">Tous les commentaires :</h4>
                   <div class="row">
                     <div class="col-8 offset-2" id="commentList">
                       {% for message in messages %}
@@ -111,8 +121,12 @@
                         </div>
                         <div class="row mb-4 d-flex align-items-center p-3 shadow">
                           <div class="col-1">
-                            <div class="text-right"><img src="{{ message.user.profilPicture }}" alt="photo de profil" class="profilPicture align-middle"></div>
-                          </div>
+                            {% if message.user.profilPicture == null %}
+                              <div class="text-right"><img src="{{ asset('img/default_profil.png') }}" alt="photo de profil" class="profilPicture align-middle"></div>
+                            {% else %}
+                              <div class="text-right"><img src="{{ message.user.profilPicture }}" alt="photo de profil" class="profilPicture align-middle"></div>
+                            {% endif %}
+                            </div>
                           <div class="col-2 text-center">
                             <span class="mt-2 d-inline">{{ message.user.username }}</span>
                           </div>
