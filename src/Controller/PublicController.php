@@ -38,7 +38,6 @@ class PublicController extends AbstractController
     public function show(TricksRepository $tricksRepository, MessageRepository $messageRepository, $name, Request $request)
     {
         $id = $tricksRepository->findTricksIdByName($name);
-        dump($id);
 
         if ($request->isXmlHttpRequest()) {
 

@@ -92,7 +92,7 @@ class DeleteController extends AbstractController
         $manager->flush();
 
         return $this->redirectToRoute('member_editTricks', [
-            'id' => $tricksId
+            'name' => $tricks->getName()
         ]);
     }
 
@@ -127,7 +127,7 @@ class DeleteController extends AbstractController
         $manager->flush();
 
         return $this->redirectToRoute('member_editTricks', [
-            'id' => $tricksId
+            'name' => $tricks->getName()
         ]);
     }
 }

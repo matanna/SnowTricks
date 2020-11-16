@@ -13,7 +13,6 @@ use App\Utils\ManageImageOnServer;
 use App\Repository\PhotoRepository;
 use App\Repository\VideoRepository;
 use App\Repository\TricksRepository;
-use App\Form\ChangePrincipalPhotoType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,25 +27,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AddTricksController extends AbstractController
 {
     /**
-     * @Route("/ajout",     name="addTricks")
-     * @Route("/edit/{id}", name="editTricks")
+     * @Route("/ajout",       name="addTricks")
+     * @Route("/edit/{name}", name="editTricks")
      */
     public function addTricks(UserInterface $user, Request $request, 
         Session $session, EntityManagerInterface $manager, 
         TricksRepository $tricksRepository = null,
         PhotoRepository $photoRepository, VideoRepository $videoRepository,
-        $id = null
+        $name = null
     ) {
         //We check if the user has activated his account 
         if ($user->getActivationToken() != '') {
             throw new \Exception('Vous devez activez votre compte !!');
         }
+
         //If we want to create a new tricks
-        if ($id == null) {
+        if ($name == null) {
             $tricks = new Tricks();
         //If we want to edit a tricks
         } else {
-            $tricks = $tricksRepository->findOneBy(['id' => $id]);
+            //$id = $tricksRepository->findTricksIdByName($name);
+            $tricks = $tricksRepository->findOneBy(['name' => $name]);
         }
         
         $formTricks = $this->createForm(TricksType::class, $tricks);
@@ -193,7 +194,7 @@ class AddTricksController extends AbstractController
             $manager->persist($tricks);
             $manager->flush();
             
-            return $this->redirectToRoute('show_tricks', ['id' => $tricks->getId()]);
+            return $this->redirectToRoute('show_tricks', ['name' => $tricks->getName()]);
         }
 
         return $this->render('member/addTricks.html.twig', [
@@ -220,7 +221,9 @@ class AddTricksController extends AbstractController
             $manager->persist($tricks);
             $manager->flush();
 
-            return $this->redirectToRoute('member_editTricks', ['id' => $tricksId]);
+            return $this->redirectToRoute('member_editTricks', [
+                'name' => $tricks->getName()]
+            );
         }
     }
 }

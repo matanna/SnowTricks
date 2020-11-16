@@ -5,12 +5,14 @@
     <div class="card m-5 shadow">
         {% if oneTricks.photos[0].namePhoto is not defined %}
             <img src="{{ asset('img/default_image.jpg') }}" alt="photo snowboard" class="homeFeaturedImage">
+        {% elseif oneTricks.principalPhoto == null  %}
+            <img style="height: 200px; width: 100%; display: block;" src="{{ asset('img_uploads/' ~ oneTricks.photos[0].namePhoto) }}" alt="Snowboard">
         {% else %}
-            <img style="height: 200px; width: 100%; display: block;" src="{{ oneTricks.photos[0].namePhoto }}" alt="Snowboard">
+            <img style="height: 200px; width: 100%; display: block;" src="{{ asset('img_uploads/' ~ oneTricks.principalPhoto) }}" alt="photo snowboard">
         {% endif %}
         <h4 class="card-header">{{ oneTricks.name | u.truncate(20)}}</h4>
         <div class="card-body">
-            <a href="{{ path('show_tricks', {'id': oneTricks.id} ) }}" class="btn btn-outline-primary btn-sm">Voir le tricks</a>
+            <a href="{{ path('show_tricks', {'name': oneTricks.name} ) }}" class="btn btn-outline-primary btn-sm">Voir le tricks</a>
         </div>
         {% if app.user and app.user.activationToken == '' %}
                     <div class="modify-delete shadow">
