@@ -47,5 +47,22 @@ class RegisterSubscriber implements EventSubscriberInterface
         $this->_mailer->send($email);
     }
 
+    public function resetPasswordMailSender(RegisterUserEvent $event)
+    {
+        $resetPasswordUrl = $this->_url.'/activation/'.$event->getUser()->getResetPasswordToken();
+
+        $email = (new TemplatedEmail())
+            ->from($this->_sender)
+            ->to($event->getUser()->getEmail())
+            ->subject('Réinitialiser votre mot de passe sur Snowtricks !!!')
+            ->text('Suivez ce lien pour réinitialiser votre mot de passe :')
+            ->htmlTemplate('register/accountValidation.html.twig')
+            ->context([
+                'activeAccountUrl' => $activeAccountUrl
+            ]);
+            
+        $this->_mailer->send($email);
+    }
+
     
 }
