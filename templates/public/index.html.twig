@@ -22,7 +22,7 @@
             {% endif %}
             <h4 class="card-header">{{ oneTricks.name | u.truncate(15)}}</h4>
             <div class="card-body">
-                <a href="{{ path('show_tricks', {'id': oneTricks.id} ) }}" class="btn btn-outline-primary btn-sm">Voir le tricks</a>
+                <a href="{{ path('show_tricks', {'name': oneTricks.name} ) }}" class="btn btn-outline-primary btn-sm">Voir le tricks</a>
             </div>
             {% if app.user and app.user.activationToken == '' %}
                     <div class="modify-delete shadow">

@@ -33,11 +33,13 @@ class PublicController extends AbstractController
     }
 
     /**
-     * @Route("/tricks/{id}", name="show_tricks")
+     * @Route("/tricks/{name}", name="show_tricks")
      */
-    public function show(TricksRepository $tricksRepository, MessageRepository $messageRepository, $id, Request $request)
+    public function show(TricksRepository $tricksRepository, MessageRepository $messageRepository, $name, Request $request)
     {
-       
+        $id = $tricksRepository->findTricksIdByName($name);
+        dump($id);
+
         if ($request->isXmlHttpRequest()) {
 
             $offset = (($request->request->get('numPage'))-1)*10;
