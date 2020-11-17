@@ -55,3 +55,12 @@ services:
         bind:
               $sender: '%app.notifications.email_sender%'
               $url: '%url_pattern%'
+
+    App\EventListener\ForgotPasswordSubscriber:
+        tags: 
+            - name: 'user.forgot-password'
+              event: 'App\Event\ForgotPasswordEvent'
+              method: 'resetPasswordMailSended'
+        bind: 
+              $sender: '%app.notifications.email_sender%'
+              $url: '%url_pattern%'

@@ -9,9 +9,9 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class RegisterSubscriber implements EventSubscriberInterface
+class ForgotPasswordSubscriber implements EventSubscriberInterface
 {
-    const NAME = 'user.registered';
+    const NAME = 'user.forgot-password';
 
     private $_mailer;
     private $_sender;
@@ -27,22 +27,24 @@ class RegisterSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ForgotPasswordEvent::NAME => 'resetPasswordMailSender',
+            ForgotPasswordEvent::NAME => 'resetPasswordMailSended',
         ];
     }
 
-    public function resetPasswordMailSender(ForgotPasswordEvent $event)
+    public function resetPasswordMailSended(ForgotPasswordEvent $event)
     {
-        $resetPasswordUrl = $this->_url.'/activation/'.$event->getUser()->getResetPasswordToken();
+        $resetPasswordUrl = $this->_url.'/reinitialiser-password/'
+                            .$event->getUser()->getResetPasswordToken();
 
         $email = (new TemplatedEmail())
             ->from($this->_sender)
             ->to($event->getUser()->getEmail())
             ->subject('Réinitialiser votre mot de passe sur Snowtricks !!!')
             ->text('Suivez ce lien pour réinitialiser votre mot de passe :')
-            ->htmlTemplate('security/resetPassword.html.twig')
+            ->htmlTemplate('security/mailForgotPassword.html.twig')
             ->context([
-                'resetPasswordUrl' => $resetPasswordUrl
+                'resetPasswordUrl' => $resetPasswordUrl,
+                'username' => $event->getUser()->getUsername()
             ]);
             
         $this->_mailer->send($email);

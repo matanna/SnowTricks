@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\ResetPasswordType;
 use App\Event\RegisterUserEvent;
 use App\Form\ForgotPasswordType;
 use App\Event\ForgotPasswordEvent;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 class PasswordController extends AbstractController
@@ -38,12 +40,14 @@ class PasswordController extends AbstractController
                 ]);
             }
 
+            //We create token for reset password 
             $resetPasswordToken = md5(uniqid());
             $user->setResetPasswordToken($resetPasswordToken);
 
             $manager->persist($user);
             $manager->flush();
 
+            //we create an event and dispatch it for the listener - ForgotPasswordSubscriber
             $event = new ForgotPasswordEvent($user);
             $dispatcher->dispatch($event, ForgotPasswordEvent::NAME);
 
@@ -53,9 +57,46 @@ class PasswordController extends AbstractController
             ]);
         }
         
-
         return $this->render('security/forgotPassword.html.twig', [
             'forgotPasswordForm' => $forgotPasswordForm->createView()
         ]);
+    }
+
+    /**
+     * @Route("/reinitialiser-password/{resetPasswordToken}", name="reset_password")
+     */
+    public function resetPassword(UserRepository $userRepository, 
+        Request $request,EntityManagerInterface $manager, 
+        UserPasswordEncoderInterface $encoder, $resetPasswordToken
+    ) {
+        //We get the user tha match this token
+        $user = $userRepository->findOneBy([
+            'resetPasswordToken' => $resetPasswordToken
+        ]);
+
+        if (!$user) {
+            throw $this->createNotFoundException();
+        }
+
+        $resetPasswordForm = $this->createForm(ResetPasswordType::class, $user);
+
+        $resetPasswordForm->handleRequest($request);
+        if ($resetPasswordForm->isSubmitted() && $resetPasswordForm->isValid()) {
+            
+            $user->setResetPasswordToken(null);
+
+            $hash = $encoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($hash);
+            $manager->persist($user);
+            $manager->flush();
+            
+            return $this->redirectToRoute('login');
+        }
+
+        return $this->render('security/resetPassword.html.twig', [
+            'resetPasswordForm' => $resetPasswordForm->createView(),
+            'username' => $user->getUsername()
+        ]);
+
     }
 }
