@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Event\RegisterUserEvent;
 use App\Form\ForgotPasswordType;
+use App\Event\ForgotPasswordEvent;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,8 +44,8 @@ class PasswordController extends AbstractController
             $manager->persist($user);
             $manager->flush();
 
-            $event = new RegisterUserEvent($user);
-            $dispatcher->dispatch($event, RegisterUserEvent::NAME);
+            $event = new ForgotPasswordEvent($user);
+            $dispatcher->dispatch($event, ForgotPasswordEvent::NAME);
 
             return $this->render('security/forgotPassword.html.twig', [
                 'forgotPasswordForm' => $forgotPasswordForm->createView(),

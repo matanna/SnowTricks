@@ -27,28 +27,11 @@ class RegisterSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RegisterUserEvent::NAME => 'activationAccountMailSended',
+            ForgotPasswordEvent::NAME => 'resetPasswordMailSender',
         ];
     }
 
-    public function activationAccountMailSended(RegisterUserEvent $event)
-    {
-        $activeAccountUrl = $this->_url.'/activation/'.$event->getUser()->getActivationToken(); 
-    
-        $email = (new TemplatedEmail())
-            ->from($this->_sender)
-            ->to($event->getUser()->getEmail())
-            ->subject('Valider votre compte SnowTricks !!!')
-            ->text('Suivez ce lien pour activer votre compte :')
-            ->htmlTemplate('register/accountValidation.html.twig')
-            ->context([
-                'activeAccountUrl' => $activeAccountUrl
-            ]);
-            
-        $this->_mailer->send($email);
-    }
-
-    public function resetPasswordMailSender(RegisterUserEvent $event)
+    public function resetPasswordMailSender(ForgotPasswordEvent $event)
     {
         $resetPasswordUrl = $this->_url.'/activation/'.$event->getUser()->getResetPasswordToken();
 
