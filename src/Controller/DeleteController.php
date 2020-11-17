@@ -8,7 +8,9 @@ use App\Repository\VideoRepository;
 use App\Repository\TricksRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -21,7 +23,7 @@ class DeleteController extends AbstractController
      */
     public function deleteTricks(UserInterface $user, 
         TricksRepository $tricksRepository, PhotoRepository $photoRepository,  
-        EntityManagerInterface $manager, $id
+        EntityManagerInterface $manager, NotifierInterface $notifier,$id
     ) {
         //We check if the user has activated his account 
         if ($user->getActivationToken() != '') {
@@ -48,6 +50,8 @@ class DeleteController extends AbstractController
         $manager->remove($tricks);
         $manager->flush();
         
+        $notifier->send(new Notification("Le tricks " . $tricks->getName() . " a bien été supprimé !", ['browser']));
+
         return $this->redirectToRoute('home');
     }
 

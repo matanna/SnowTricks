@@ -10,6 +10,9 @@
 {% if app.user and app.user.activationToken == '' %}
 <p class="ml-5"><a href="{{ path("member_addTricks") }}" class="btn btn-outline-primary btn-sm text-center">Ajouter un tricks</a></p>
 {% endif %}
+{% for message in app.flashes('notification') %}
+  <div class="alert alert-light text-center">{{ message }}</div>
+{% endfor %}
 <hr class="ml-5 mr-5">
 <div class="row" id="firstTricks">
 {% for oneTricks in tricks %}

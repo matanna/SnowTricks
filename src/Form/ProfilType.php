@@ -11,18 +11,16 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
-class RegistrationType extends AbstractType
+class ProfilType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('username')
-            ->add('password', PasswordType::class)
-            ->add('confirmPassword', PasswordType::class)
             ->add('email', EmailType::class)
             ->add('fullName')
             ->add('profilPicture', FileType::class, [
-                'required' => false, 
+                'required' => false,
                 'mapped' => false,
                 'constraints' => [
                     new Image([

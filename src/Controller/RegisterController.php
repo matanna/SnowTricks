@@ -9,8 +9,10 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -22,7 +24,7 @@ class RegisterController extends AbstractController
     */
     public function register(Request $request, 
         EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, 
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher, NotifierInterface $notifier
     ) {
         $user = new User();
 
@@ -43,6 +45,8 @@ class RegisterController extends AbstractController
             $event = new RegisterUserEvent($user);
         
             $dispatcher->dispatch($event, RegisterUserEvent::NAME);
+
+            $notifier->send(new Notification('Bienvenue '. $user->getUsername() .' votre compte est créé, un email vous a été envoyé pour l\'activer !', ['browser']));
             
             return $this->redirectToRoute('home');
         }

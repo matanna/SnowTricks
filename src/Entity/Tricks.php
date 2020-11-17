@@ -33,6 +33,10 @@ class Tricks
 
     /**
      * @ORM\Column(type="text")
+     *  @Assert\Length(
+     *      min=20,
+     *      minMessage="La description du tricks doit comporter au moins 20 caractères",
+     *      allowEmptyString = false)
      */
     private $description;
 

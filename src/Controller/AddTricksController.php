@@ -16,9 +16,11 @@ use App\Repository\TricksRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -34,7 +36,7 @@ class AddTricksController extends AbstractController
         Session $session, EntityManagerInterface $manager, 
         TricksRepository $tricksRepository = null,
         PhotoRepository $photoRepository, VideoRepository $videoRepository,
-        $name = null
+        NotifierInterface $notifier, $name = null
     ) {
         //We check if the user has activated his account 
         if ($user->getActivationToken() != '') {
@@ -123,7 +125,7 @@ class AddTricksController extends AbstractController
         $changeVideoForm->handleRequest($request);
         if ($changeVideoForm->isSubmitted() && $changeVideoForm->isValid()) {
             $videoLink = $changeVideoForm->get('video')->getData();
-            dump($videoLink);
+            
             if ($videoLink != null) {
                 $videoToEdit = $videoRepository->find($session->get('videoId'));
 
@@ -194,6 +196,8 @@ class AddTricksController extends AbstractController
             $manager->persist($tricks);
             $manager->flush();
             
+            $notifier->send(new Notification('Le tricks a été ajouté avec succès !', ['browser']));
+
             return $this->redirectToRoute('show_tricks', ['name' => $tricks->getName()]);
         }
 
