@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationType;
 use App\Event\RegisterUserEvent;
 use App\Repository\UserRepository;
+use App\Utils\ManageImageOnServer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,6 +40,19 @@ class RegisterController extends AbstractController
             $activationToken = md5(uniqid());
             $user->setActivationToken($activationToken);
 
+            //Manage the profilPicture
+            $newProfilPicture = $registrationForm->get('profilPicture')->getData();
+
+            if ($newProfilPicture) {
+                $manageImage = new ManageImageOnServer();
+                $nameProfilPicture = $manageImage->copyImageOnServer(
+                    $newProfilPicture, 
+                    $this->getParameter('images_directory')
+                );
+
+                $user->setProfilPicture($nameProfilPicture);
+            }
+            
             $manager->persist($user);
             $manager->flush();
 

@@ -10,9 +10,9 @@
     <div class="row">
         <div class="col-4">
             {% if app.user.profilPicture == null %}
-            <img src="{{ asset('img/default_profil.png') }}" alt="photo de profil">
+            <img src="{{ asset('img/default_profil.png') }}" alt="photo de profil" id="profil">
             {% else %}
-            <img src="{{ asset('img_uploads/' ~ app.user.profilPicture) }}" alt="photo de profil">
+            <img src="{{ asset('img_uploads/' ~ app.user.profilPicture) }}" alt="photo de profil" id="profil">
             {% endif %}
         </div>
         <div class="col-8">

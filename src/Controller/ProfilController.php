@@ -33,20 +33,33 @@ class ProfilController extends AbstractController
         $profilForm = $this->createForm(ProfilType::class, $user);
 
         $profilForm->handleRequest($request);
+
         if ($profilForm->isSubmitted() && $profilForm->isValid()) {
-            $profilPicture = $profilForm->get('profilPicture')->getData();
 
             $manageImage = new ManageImageOnServer();
-            $nameProfilPicture = $manageImage->copyImageOnServer(
-                $profilPicture, 
+            
+            //We get and delete old profil picture
+            $oldProfilPicture = $user->getProfilPicture();
+            $manageImage->removeImageOnServer(
+                $oldProfilPicture, 
                 $this->getParameter('images_directory')
             );
 
-            $user->setProfilPicture($nameProfilPicture);
+            $newProfilPicture = $profilForm->get('profilPicture')->getData();
+            
+            if ($newProfilPicture) {
 
-            $manager->persist($user);
-            $manager->flush();
+                $nameProfilPicture = $manageImage->copyImageOnServer(
+                    $newProfilPicture, 
+                    $this->getParameter('images_directory')
+                );
 
+                $user->setProfilPicture($nameProfilPicture);
+
+                $manager->persist($user);
+                $manager->flush();
+
+            }
             
         }
 

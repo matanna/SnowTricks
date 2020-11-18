@@ -209,3 +209,13 @@ footer {
 .label-addComment {
     font-size: 1.5rem;
 }
+
+.profil-menu {
+    width: 50px;
+    border-radius: 50px;
+}
+
+#profil {
+    width: 50%;
+    height: auto;
+}
