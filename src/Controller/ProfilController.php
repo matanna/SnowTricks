@@ -68,4 +68,34 @@ class ProfilController extends AbstractController
             'profilForm' => $profilForm->createView()
         ]);
     }
+
+    /**
+     * @Route("/Supprimer-photo-profil/{userId}", name="delete_profilPicture")
+     */
+    public function deletePhotoProfil(UserRepository $userRepository,
+        EntityManagerInterface $manager, $userId
+    ) {
+        $user = $userRepository->find($userId);
+
+        if (!$user) {
+            throw $this->createNotFoundException(); 
+        }
+
+        $manageImage = new ManageImageOnServer();
+        //We get and delete old profil picture
+        $oldProfilPicture = $user->getProfilPicture();
+        $manageImage->removeImageOnServer(
+            $oldProfilPicture, 
+            $this->getParameter('images_directory')
+        );
+
+        $user->setProfilPicture(null);
+
+        $manager->persist($user);
+        $manager->flush();
+
+        return $this->redirectToRoute('member_profil', [
+            'username' => $user->getUsername()
+        ]);
+    }
 }

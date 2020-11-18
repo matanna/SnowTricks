@@ -54,7 +54,7 @@ class TricksRepository extends ServiceEntityRepository
     }
 
     /**
-     * 
+     * @return Tricks[] Returns an array of Tricks objects
      */
     public function findTricksIdByName($name)
     {
@@ -68,7 +68,16 @@ class TricksRepository extends ServiceEntityRepository
 
         $result = $query->getResult();
 
-        return $result[0]['id'];
-        
+        return $result[0]['id']; 
+    }
+
+    public function findTricksByCategory($categoryId)
+    {
+        return $this->createQueryBuilder('tricks')
+        ->select('tricks')
+        ->where('tricks.category = :category')
+        ->setParameter('category', $categoryId)
+        ->getQuery()
+        ->getResult();
     }
 }

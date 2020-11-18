@@ -1,20 +1,104 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminController!{% endblock %}
+{% block title %}Snowtricks - Backoffice{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="container">
+    <h1>Backoffice</h1>
+    <hr>
+    <h3 class="mt-4 mb-4">Categories de tricks :</h3>
+    
+    <table class="table table-hover text-center">
+        <thead>
+          <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Nombre de Tricks</th>
+            <th scope="col">Editer</th>
+          </tr>
+        </thead>
+        {% for category in categories %}
+        <tbody>
+          <tr class="table-secondary">
+            <th scope="row">{{ category.name }}</th>
+            {% set numberTricks = 0 %}
+            {% for tricks in category.tricks %}
+                {% set numberTricks = numberTricks + 1 %}
+            {% endfor %}
+            <td>{{ numberTricks }}</td>
+            <td>
+                <!--Modif icon - Open the modal-->
+                <a href="#" data-toggle="modal" data-target="{{'#modif-category' ~ category.id}}">
+                    <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                    </svg> 
+                </a>
+                   <!--The Modal-->
+                <div class="modal fade" id="{{'modif-category' ~ category.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title">Modifier le nom de la categorie :</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="{{ path('admin_admin-home') }}" class="form-group" method="post">
+                            <div class="modal-body">  
+                            <input type="text" class="form-control" value="{{ category.name }}" name="category-name">  
+                            <input type="hidden" value="{{ category.id }}" name="category-id">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-outline-primary btn-sm">Modifier</button> 
+                                <button type="button" class="btn btn-outline-primary btn-sm" data-dismiss="modal">X</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </td>
+          </tr>
+          
+        </tbody>
+        {% endfor %}
+      </table>
+      {{ form_start(categoryForm) }}
+      {{ form_row(categoryForm, {'label': 'Ajouter une categorie :'}) }}
+      <div class="text-right"><button type="submit" class="btn btn-outline-primary btn-sm ">Ajouter</button></div>
+      {{ form_end(categoryForm) }}
+      <hr class='mb-5'>
+    
+    <h3 class="mt-4 mb-4">Utilisateurs :</h3>
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Pseudo</th>
+            <th scope="col">Email</th>
+            <th scope="col">Nom complet</th>
+            <th scope="col">Role</th>
+            <th scope="col">Supprimer</th>
+          </tr>
+        </thead>
+        {% for rolesFields in usersRolesForm.rolesCollection %}
+        {{dump(rolesFields.roles)}}
+        {{ form_row(rolesFields.roles) }}
+        {% endfor %}
+        {% for user in users %}
+        <tbody>
+          <tr class="table-secondary">
+            <th scope="row">{{ user.username }}</th>
+            <td>{{ user.email }}</td>
+            <td>{{ user.fullName }}</td>
+            <td>
+               
+                
+                
+            </td>
+            <td>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/ProjetsSymfony/SnowTricks/src/Controller/AdminController.php'|file_link(0) }}">src/Controller/AdminController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/ProjetsSymfony/SnowTricks/templates/admin/index.html.twig'|file_link(0) }}">templates/admin/index.html.twig</a></code></li>
-    </ul>
+            </td>
+          </tr>
+        </tbody>
+        {% endfor %}
+        
+      </table>
 </div>
 {% endblock %}

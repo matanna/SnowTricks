@@ -12,8 +12,9 @@
             {% if app.user.profilPicture == null %}
             <img src="{{ asset('img/default_profil.png') }}" alt="photo de profil" id="profil">
             {% else %}
-            <img src="{{ asset('img_uploads/' ~ app.user.profilPicture) }}" alt="photo de profil" id="profil">
+            <img src="{{ asset('img_uploads/' ~ app.user.profilPicture) }}" alt="photo de profil" id="profil"  class="shadow">
             {% endif %}
+            <div class="mt-4"><a href="{{ path('member_delete_profilPicture', {userId: app.user.id}) }}">Supprimer la photo</a></div>
         </div>
         <div class="col-8">
             {{ form_row(profilForm.username, {'label': 'Votre pseudo :', 'attr': {'class': 'mb-4'}}) }}

@@ -40,7 +40,11 @@
                   <a class="nav-link" href="{{ path('logout') }}">Se déconnecter</a>
                 </li>
                 <li class="nav-item">
-                  <a class="navbar-link" href="{{ path('member_profil', {username: app.user.username}) }}"><img src="{{ asset('img_uploads/' ~ app.user.profilPicture) }}" class="profil-menu mr-2">{{ app.user.username }}</a>
+                  {% if app.user.profilPicture != null %}
+                  <a class="navbar-link" href="{{ path('member_profil', {username: app.user.username}) }}"><img src="{{ asset('img_uploads/' ~ app.user.profilPicture) }}" class="profil-menu mr-2 shadow">{{ app.user.username }}</a>
+                  {% else %}
+                  <a class="navbar-link" href="{{ path('member_profil', {username: app.user.username}) }}"><img src="{{ asset('img/default_profil.png') }}" class="profil-menu mr-2 shadow">{{ app.user.username }}</a>
+                  {% endif %}
                 </li>
                 {% else %}
                 <li class="nav-item">
