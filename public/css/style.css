@@ -106,7 +106,6 @@ header {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 30%;
     transform: translate(-50%, -50%);
     font-size: 3em;
     text-align: center;
@@ -205,4 +204,18 @@ footer {
 
 #delete-photo {
     position: fixed;
+}
+
+.label-addComment {
+    font-size: 1.5rem;
+}
+
+.profil-menu {
+    width: 50px;
+    border-radius: 50px;
+}
+
+#profil {
+    width: 50%;
+    height: auto;
 }

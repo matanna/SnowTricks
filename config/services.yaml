@@ -9,6 +9,7 @@ parameters:
     url_pattern: 'http://127.0.0.1:8000'
     images_directory: '%kernel.project_dir%/public/img_uploads/'
     mimes_upload: ['jpg', 'png', 'jpeg']
+    host_accepted_videos: ['www.youtube.com', 'youtu.be', 'www.dailymotion.com', 'dai.ly']
 
 services:
     # default configuration for services in *this* file
@@ -52,5 +53,14 @@ services:
               event: 'App\Event\RegisterUserEvent'
               method: 'activationAccountMailSended'
         bind:
+              $sender: '%app.notifications.email_sender%'
+              $url: '%url_pattern%'
+
+    App\EventListener\ForgotPasswordSubscriber:
+        tags: 
+            - name: 'user.forgot-password'
+              event: 'App\Event\ForgotPasswordEvent'
+              method: 'resetPasswordMailSended'
+        bind: 
               $sender: '%app.notifications.email_sender%'
               $url: '%url_pattern%'

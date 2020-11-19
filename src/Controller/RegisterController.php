@@ -6,11 +6,14 @@ use App\Entity\User;
 use App\Form\RegistrationType;
 use App\Event\RegisterUserEvent;
 use App\Repository\UserRepository;
+use App\Utils\ManageImageOnServer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -22,7 +25,7 @@ class RegisterController extends AbstractController
     */
     public function register(Request $request, 
         EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, 
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher, NotifierInterface $notifier
     ) {
         $user = new User();
 
@@ -37,12 +40,27 @@ class RegisterController extends AbstractController
             $activationToken = md5(uniqid());
             $user->setActivationToken($activationToken);
 
+            //Manage the profilPicture
+            $newProfilPicture = $registrationForm->get('profilPicture')->getData();
+
+            if ($newProfilPicture) {
+                $manageImage = new ManageImageOnServer();
+                $nameProfilPicture = $manageImage->copyImageOnServer(
+                    $newProfilPicture, 
+                    $this->getParameter('images_directory')
+                );
+
+                $user->setProfilPicture($nameProfilPicture);
+            }
+            
             $manager->persist($user);
             $manager->flush();
 
             $event = new RegisterUserEvent($user);
         
             $dispatcher->dispatch($event, RegisterUserEvent::NAME);
+
+            $notifier->send(new Notification('Bienvenue '. $user->getUsername() .' votre compte est créé, un email vous a été envoyé pour l\'activer !', ['browser']));
             
             return $this->redirectToRoute('home');
         }

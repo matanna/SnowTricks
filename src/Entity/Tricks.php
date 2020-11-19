@@ -6,6 +6,7 @@ use App\Repository\TricksRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TricksRepository::class)
@@ -21,17 +22,28 @@ class Tricks
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Length(
+     *      min=5,
+     *      max=20,
+     *      minMessage="Le nom du tricks doit comporter au moins 4 caractères",
+     *      maxMessage="Le nom du tricks doit comporter au maximum 20 caractères",
+     *      allowEmptyString = false)
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     *  @Assert\Length(
+     *      min=20,
+     *      minMessage="La description du tricks doit comporter au moins 20 caractères",
+     *      allowEmptyString = false)
      */
     private $description;
 
     /**
      * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="tricks", 
      * cascade={"persist"}, orphanRemoval=true)
+     * @Assert\NotBlank
      */
     private $photos;
 
@@ -68,6 +80,11 @@ class Tricks
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateAtUpdate;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $principalPhoto;
 
     public function __construct()
     {
@@ -242,6 +259,18 @@ class Tricks
     public function setDateAtUpdate(?\DateTimeInterface $dateAtUpdate): self
     {
         $this->dateAtUpdate = $dateAtUpdate;
+
+        return $this;
+    }
+
+    public function getPrincipalPhoto(): ?string
+    {
+        return $this->principalPhoto;
+    }
+
+    public function setPrincipalPhoto(?string $principalPhoto): self
+    {
+        $this->principalPhoto = $principalPhoto;
 
         return $this;
     }

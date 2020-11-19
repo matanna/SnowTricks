@@ -52,4 +52,32 @@ class TricksRepository extends ServiceEntityRepository
         return $query->getResult();
         
     }
+
+    /**
+     * @return Tricks[] Returns an array of Tricks objects
+     */
+    public function findTricksIdByName($name)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT tricks.id
+             FROM App\Entity\Tricks tricks
+             WHERE tricks.name = :name'
+        )->setParameter('name', $name);
+
+        $result = $query->getResult();
+
+        return $result[0]['id']; 
+    }
+
+    public function findTricksByCategory($categoryId)
+    {
+        return $this->createQueryBuilder('tricks')
+        ->select('tricks')
+        ->where('tricks.category = :category')
+        ->setParameter('category', $categoryId)
+        ->getQuery()
+        ->getResult();
+    }
 }

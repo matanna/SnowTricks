@@ -53,7 +53,7 @@ class TricksType extends AbstractType
                     'required' => false,
                     'constraints' => [
                         new Regex([
-                            'pattern' => '#^<iframe.+></iframe>$#',
+                            'pattern' => '#^https://www.youtube.com/watch\?v=|https://youtu.be/|https://www.dailymotion.com/video/|https://dai.ly/.+$#',
                             'message' => 'Le format n\'est pas valide'
                         ])
                     ]

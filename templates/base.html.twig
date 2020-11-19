@@ -23,7 +23,7 @@
             </button>
           
             <div class="collapse navbar-collapse flex-row-reverse" id="navbarColor03">
-              <ul class="navbar-nav ">
+              <ul class="navbar-nav align-items-center">
                 
                 {% if app.request.get('_route') == "home" and app.request.get('_fragment') == null %}
                 <li class="nav-item active">
@@ -38,6 +38,13 @@
                 {% if app.user is not null %}
                 <li class="nav-item">
                   <a class="nav-link" href="{{ path('logout') }}">Se déconnecter</a>
+                </li>
+                <li class="nav-item">
+                  {% if app.user.profilPicture != null %}
+                  <a class="navbar-link" href="{{ path('member_profil', {username: app.user.username}) }}"><img src="{{ asset('img_uploads/' ~ app.user.profilPicture) }}" class="profil-menu mr-2 shadow">{{ app.user.username }}</a>
+                  {% else %}
+                  <a class="navbar-link" href="{{ path('member_profil', {username: app.user.username}) }}"><img src="{{ asset('img/default_profil.png') }}" class="profil-menu mr-2 shadow">{{ app.user.username }}</a>
+                  {% endif %}
                 </li>
                 {% else %}
                 <li class="nav-item">
