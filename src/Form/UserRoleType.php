@@ -20,6 +20,7 @@ class UserRoleType extends AbstractType
                 ],
                 'expanded' => true,
                 'multiple' => true,
+                'label' => false
             ])
             
         ;

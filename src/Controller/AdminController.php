@@ -70,18 +70,17 @@ class AdminController extends AbstractController
         //We get all users in array
         $users = $userRepository->findAll();
 
-
-        //We create form for roles of users
-        $usersRolesForm = $this->createForm(UsersCollectionRoleType::class, [
-            'rolesCollection' => $users
-        ]);
-        
+        //We create forms for roles of users
+        foreach ($users as $user) {
+            $userRoleForm  = $this->createForm(UserRoleType::class, $user);
+            $usersRolesForms[$user->getId()] = $userRoleForm->createView();
+        }
 
         return $this->render('admin/admin.html.twig', [
             'categories' => $categories,
             'categoryForm' => $categoryForm->createView(),
             'users' => $users,
-            'usersRolesForm' => $usersRolesForm->createView()
+            'usersRolesForms' => $usersRolesForms
         ]);
     }
 }
