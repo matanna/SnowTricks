@@ -72,15 +72,23 @@ class AdminController extends AbstractController
 
         //We create forms for roles of users
         foreach ($users as $user) {
-            $userRoleForm  = $this->createForm(UserRoleType::class, $user);
-            $usersRolesForms[$user->getId()] = $userRoleForm->createView();
+            $admin = $request->request->get('form-role' . $user->getId());
+            
+            if ($admin == 'Administrateur' && ) {
+                $user->setRoles(["ROLE_ADMIN"]);
+                
+            } else {
+                $user->setRoles([]);
+            }
+            $manager->persist($user);
+            $manager->flush();
         }
+        
 
         return $this->render('admin/admin.html.twig', [
             'categories' => $categories,
             'categoryForm' => $categoryForm->createView(),
-            'users' => $users,
-            'usersRolesForms' => $usersRolesForms
+            'users' => $users
         ]);
     }
 }

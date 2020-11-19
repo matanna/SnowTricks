@@ -219,3 +219,8 @@ footer {
     width: 50%;
     height: auto;
 }
+
+.valid-role {
+    border: none;
+    background: none;
+}
