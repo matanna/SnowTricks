@@ -4,13 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Form\CategoryType;
-use App\Form\UserRolesType;
 use App\Repository\UserRepository;
 use App\Repository\TricksRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -69,34 +70,81 @@ class AdminController extends AbstractController
         //We get all users in array
         $users = $userRepository->findAll();
 
-        $rolesForms = [];
+        //For each user, we get value of role checkbox and button for valid checkbox
         foreach ($users as $user) {
-            $roleForm = $this->createForm(UserRolesType::class, $user);
-            $rolesForms[$user->getId()] =  $roleForm->createView();
-            $roleForm->handleRequest($request);
-            
-            $valid =$request->request->get('valid-role'.$user->getId());
-            
-            if ($roleForm->isSubmitted() && $roleForm->isValid() && isset($valid)) {
-                dump($valid);
-                if ('roles' == 'Administrateur') {
-                    $user->setRoles(['ROLE_ADMIN']);
-                    
-                } else {
-                    $user->setRoles([]); 
-                }
+            $checkboxValue = $request->request->get('admin'.$user->getId());
+            $validRole = $request->request->get('valid'.$user->getId());
+
+            if ($checkboxValue == "on" && isset($validRole)) {
+                $user->setRoles(['ROLE_ADMIN']);
                 $manager->persist($user);
                 $manager->flush();
-                return $this->redirectToRoute('admin_admin-home');    
+
+                return $this->redirectToRoute('admin_admin-home');
             }
-            
+
+            if (isset($validRole)) {
+                $user->setRoles([]);
+                $manager->persist($user);
+                $manager->flush();
+
+                return $this->redirectToRoute('admin_admin-home');
+            }
         }
 
         return $this->render('admin/admin.html.twig', [
             'categories' => $categories,
             'categoryForm' => $categoryForm->createView(),
             'users' => $users,
-            'rolesForms' => $rolesForms
+            
         ]);
+    }
+
+    /**
+     * @Route("/delete/user/{id}", name="delete_user")
+     */
+    public function deleteUser(UserRepository $userRepository, 
+        EntityManagerInterface $manager, TricksRepository $tricksRepository,
+        NotifierInterface $notifier, $id
+    ) {
+        $user = $userRepository->find($id);
+
+        if (!$user) {
+            throw new \Exception('Cet utilisateur n\'existe pas !');
+        }
+        $tricks = $tricksRepository->findBy(['user' => $user]);
+        if ($tricks) {
+            $notifier->send(new Notification("Vous ne pouvez pas supprimer " . $user->getUsername() ." . Des tricks sont lui sont liés !", ['browser']));
+            return $this->redirectToRoute('admin_admin-home', ['_fragment' => 'table-category']);
+        }
+        
+        $manager->remove($user);
+        $manager->flush();
+
+        return $this->redirectToRoute('admin_admin-home');
+    }
+
+    /**
+     * @Route("/delete/category/{id}", name="delete_category")
+     */
+    public function deleteCategory(CategoryRepository $categoryRepository, 
+        TricksRepository $tricksRepository, EntityManagerInterface $manager,
+        NotifierInterface $notifier, $id
+    ) {
+        $category = $categoryRepository->find($id);
+
+        if (!$category) {
+            throw new \Exception('Cette categorie n\'existe pas !');
+        }
+        $tricks = $tricksRepository->findBy(['category' => $category]);
+        if ($tricks) {
+            $notifier->send(new Notification("Vous ne pouvez pas supprimer la categorie : " . $category->getName() ." . Des tricks sont lui sont liés !", ['browser']));
+            return $this->redirectToRoute('admin_admin-home', ['_fragment' => 'table-category']);
+        }
+
+        $manager->remove($category);
+        $manager->flush();
+
+        return $this->redirectToRoute('admin_admin-home');
     }
 }

@@ -65,7 +65,18 @@
     </body>
     
     <footer class="bg-primary">
-      <p class="text-center text-bg-light p-5">Copyright - All rights reserved</p>
+      <div class="row">
+        <div class="col-4">
+          {% if is_granted('ROLE_ADMIN') %}
+            <p class="text-center p-5"><a href="{{ path('admin_admin-home') }}" class="text-center text-bg-light">Backoffice >>></a></p>
+          {% endif %}
+        </div>
+        <div class="col-4">
+          <p class="text-center text-bg-light p-5">Copyright - All rights reserved</p>
+        </div>
+      </div>
+      
+      
     </footer>
 
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>

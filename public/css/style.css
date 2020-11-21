@@ -2,8 +2,8 @@ html {
     scroll-behavior: smooth;
 }
 
-.text-light {
-    color: rgba(255, 255, 255);
+.text-bg-light {
+    color: #919aa1 !important;
 }
 
 body {
