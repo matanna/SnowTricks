@@ -70,6 +70,7 @@ class PasswordController extends AbstractController
         UserPasswordEncoderInterface $encoder, $resetPasswordToken
     ) {
         //We get the user tha match this token
+        $userRepository = $this->getDoctrine()->getRepository(User::class);
         $user = $userRepository->findOneBy([
             'resetPasswordToken' => $resetPasswordToken
         ]);

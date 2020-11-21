@@ -161,12 +161,12 @@ class AddTricksController extends AbstractController
      * @Route("/edit-photo-principal/{tricksId}/{photoId}", name="change-principal-photo")
      */
     public function modifyPrincipalPhoto(TricksRepository $tricksRepository, 
-        PhotoRepository $photoRepository, EntityManagerInterface $manager,
-        $tricksId, $photoId
+        EntityManagerInterface $manager, $tricksId, $photoId
     ) {
         $tricks = $tricksRepository->find($tricksId);
 
         if ($tricks) {
+            $photoRepository = $this->getDoctrine()->getRepository(Photo::class);
             $photo = $photoRepository->findOneBy([
                 'id' => $photoId
             ]);

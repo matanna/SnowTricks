@@ -24,8 +24,8 @@ class RegisterController extends AbstractController
     * @Route("/inscription", name="registration")
     */
     public function register(Request $request, 
-        EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, 
-        EventDispatcherInterface $dispatcher, NotifierInterface $notifier
+        UserPasswordEncoderInterface $encoder, EventDispatcherInterface $dispatcher, 
+        NotifierInterface $notifier
     ) {
         $user = new User();
 
@@ -52,7 +52,7 @@ class RegisterController extends AbstractController
 
                 $user->setProfilPicture($nameProfilPicture);
             }
-            
+            $manager = $this->getDoctrine()->getManager();
             $manager->persist($user);
             $manager->flush();
 

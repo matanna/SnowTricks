@@ -24,10 +24,11 @@ class AdminController extends AbstractController
      * @Route("/home", name="admin-home")
      */
     public function adminHome(EntityManagerInterface $manager,
-        CategoryRepository $categoryRepository, TricksRepository $tricksRepository,
-        UserRepository $userRepository, Request $request
+        TricksRepository $tricksRepository, UserRepository $userRepository, 
+        Request $request
     ) {
         //We get all category in array
+        $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
         $categories = $categoryRepository->findAll();
 
         //For each category, we get the tricks in array

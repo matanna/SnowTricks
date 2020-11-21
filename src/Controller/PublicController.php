@@ -41,7 +41,7 @@ class PublicController extends AbstractController
      */
     public function show(TricksRepository $tricksRepository,  
         MessageRepository $messageRepository, $name, Request $request,
-        EntityManagerInterface $manager, UserInterface $user = null
+        UserInterface $user = null
     ) {
         //We get id of tricks by slug 'name' in the route
         $id = $tricksRepository->findTricksIdByName($name);
@@ -79,6 +79,8 @@ class PublicController extends AbstractController
             $newMessage->setUser($user)
                        ->setDateMessage(new \Datetime())
                        ->setTricks($tricks);
+
+            $manager = $this->getDoctrine()->getManager();
             $manager->persist($newMessage);
             $manager->flush();
 
