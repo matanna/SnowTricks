@@ -10,8 +10,6 @@ use App\Form\ChangePhotoType;
 use App\Form\ChangeVideoType;
 use App\Utils\ManageVideoUrl;
 use App\Utils\ManageImageOnServer;
-use App\Repository\PhotoRepository;
-use App\Repository\VideoRepository;
 use App\Repository\TricksRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,11 +31,9 @@ class AddTricksController extends AbstractController
      * @Route("/edit/{name}", name="editTricks")
      */
     public function addTricks(UserInterface $user, Request $request, 
-        Session $session, EntityManagerInterface $manager, 
-        TricksRepository $tricksRepository = null,
-        VideoRepository $videoRepository,
         NotifierInterface $notifier, $name = null
     ) {
+        $session = new Session();
 
         //We check if the user has activated his account 
         if ($user->getActivationToken() != '') {
@@ -50,6 +46,7 @@ class AddTricksController extends AbstractController
         //If we want to edit a tricks
         } else {
             //$id = $tricksRepository->findTricksIdByName($name);
+            $tricksRepository = $this->getDoctrine()->getRepository(Tricks::class);
             $tricks = $tricksRepository->findOneBy(['name' => $name]);
         }
         
@@ -143,6 +140,7 @@ class AddTricksController extends AbstractController
             $tricks->setDateAtUpdate(new \Datetime())
                    ->setUser($user);
 
+            $manager = $this->getDoctrine()->getManager();
             $manager->persist($tricks);
             $manager->flush();
             
