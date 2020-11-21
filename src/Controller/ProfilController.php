@@ -22,9 +22,7 @@ class ProfilController extends AbstractController
         Request $request, EntityManagerInterface $manager, 
         $username
     ) {
-        $user = $userRepository->findOneBy([
-            'username' => $username
-        ]);
+        $user = $userRepository->findOneBy(['username' => $username]);
 
         if (!$user) {
             throw $this->createNotFoundException();  
@@ -41,8 +39,7 @@ class ProfilController extends AbstractController
             //We get and delete old profil picture
             $oldProfilPicture = $user->getProfilPicture();
             $manageImage->removeImageOnServer(
-                $oldProfilPicture, 
-                $this->getParameter('images_directory')
+                $oldProfilPicture, $this->getParameter('images_directory')
             );
 
             $newProfilPicture = $profilForm->get('profilPicture')->getData();
@@ -58,9 +55,7 @@ class ProfilController extends AbstractController
 
                 $manager->persist($user);
                 $manager->flush();
-
-            }
-            
+            } 
         }
 
         return $this->render('member/profil.html.twig', [

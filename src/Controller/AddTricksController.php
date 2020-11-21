@@ -194,8 +194,7 @@ class AddTricksController extends AbstractController
                     return;
                 }
                 $photoRepository = $this->getDoctrine()->getRepository(Photo::class);
-                $photoToEdit = $photoRepository
-                    ->find($session->get('photoId'));
+                $photoToEdit = $photoRepository->find($session->get('photoId'));
                 
                 $manageImageOnServer = new ManageImageOnServer();
                 $manageImageOnServer->removeImageOnServer(
@@ -208,8 +207,7 @@ class AddTricksController extends AbstractController
                 }
 
                 $newNamePhoto = $manageImageOnServer->copyImageOnServer(
-                    $photo, 
-                    $this->getParameter('images_directory')
+                    $photo, $this->getParameter('images_directory')
                 );
                 //We change the photoName in the entity
                 $photoToEdit->setNamePhoto($newNamePhoto);
@@ -234,31 +232,36 @@ class AddTricksController extends AbstractController
         if ($changeVideoForm->isSubmitted() && $changeVideoForm->isValid()) {
             $videoLink = $changeVideoForm->get('video')->getData();
             
-            if ($videoLink != null) {
-                $session = $request->getSession();
-                if ($session->get('videoId') == null) {
-                    return;
-                }
-                $videoRepository = $this->getDoctrine()->getRepository(Video::class);
-                $videoToEdit = $videoRepository->find($session->get('videoId'));
-
-                $newVideo = new ManageVideoUrl();
-                $newVideo = $newVideo->getParametersOnUrl(
-                    $videoLink, 
-                    $this->getParameter('host_accepted_videos')
-                );
-                //We change the video link in the entity
-                $videoToEdit->setLink($newVideo);
-
-                $manager = $this->getDoctrine()->getManager();
-                $manager->persist($videoToEdit);
-
-                $tricks->setDateAtUpdate(new \Datetime());
-                $manager->persist($tricks);
-
-                $manager->flush();
-                $session->remove('videoId');
+            if ($videoLink == null) {
+                return;
             }
+            
+            $session = $request->getSession();
+
+            if ($session->get('videoId') == null) {
+                return;
+            }
+
+            $videoRepository = $this->getDoctrine()->getRepository(Video::class);
+            $videoToEdit = $videoRepository->find($session->get('videoId'));
+
+            $newVideo = new ManageVideoUrl();
+            $newVideo = $newVideo->getParametersOnUrl(
+                $videoLink, 
+                $this->getParameter('host_accepted_videos')
+            );
+            //We change the video link in the entity
+            $videoToEdit->setLink($newVideo);
+
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($videoToEdit);
+
+            $tricks->setDateAtUpdate(new \Datetime());
+            $manager->persist($tricks);
+
+            $manager->flush();
+            $session->remove('videoId');
+        
         }
     }
 }

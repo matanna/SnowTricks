@@ -66,8 +66,8 @@ class PasswordController extends AbstractController
      * @Route("/reinitialiser-password/{resetPasswordToken}", name="reset_password")
      */
     public function resetPassword(UserRepository $userRepository, 
-        Request $request,EntityManagerInterface $manager, 
-        UserPasswordEncoderInterface $encoder, $resetPasswordToken
+        Request $request, UserPasswordEncoderInterface $encoder, 
+        $resetPasswordToken
     ) {
         //We get the user tha match this token
         $userRepository = $this->getDoctrine()->getRepository(User::class);
@@ -75,6 +75,7 @@ class PasswordController extends AbstractController
             'resetPasswordToken' => $resetPasswordToken
         ]);
 
+        $manager = $this->getDoctrine()->getManager();
         if (!$user) {
             throw $this->createNotFoundException();
         }
