@@ -35,7 +35,7 @@ class AddTricksController extends AbstractController
     public function addTricks(UserInterface $user, Request $request, 
         Session $session, EntityManagerInterface $manager, 
         TricksRepository $tricksRepository = null,
-        PhotoRepository $photoRepository, VideoRepository $videoRepository,
+        VideoRepository $videoRepository,
         NotifierInterface $notifier, $name = null
     ) {
 
@@ -72,6 +72,7 @@ class AddTricksController extends AbstractController
                     'action' => $action,
                     'changePhotoForm' => $changePhotoForm->createView()
                 ]);
+                //When the modal open for change one photo, we create session videoId
                 $session->set('photoId', $photoId);
 
             } elseif ($videoId != null) {
@@ -81,6 +82,7 @@ class AddTricksController extends AbstractController
                     'action' => $action,
                     'changeVideoForm' => $changeVideoForm->createView()
                 ]);
+                //When the modal open for change one video, we create session videoId
                 $session->set('videoId', $videoId);
 
             } else {
@@ -90,63 +92,10 @@ class AddTricksController extends AbstractController
         }
 
         //If the user want to change only one photo - The form is in the modal
-        $changePhotoForm->handleRequest($request);
-        if ($changePhotoForm->isSubmitted() && $changePhotoForm->isValid()) {
-            $photo = $changePhotoForm->get('photo')->getData();
-
-            if ($photo) {
-                $photoToEdit = $photoRepository->find($session->get('photoId'));
-                $manageImageOnServer = new ManageImageOnServer();
-                $manageImageOnServer->removeImageOnServer(
-                    $photoToEdit->getNamePhoto(),
-                    $this->getParameter('images_directory')
-                );
-
-                if ($photoToEdit->getNamePhoto() == $tricks->getPrincipalPhoto()) {
-                    $tricks->setPrincipalPhoto(null);
-                }
-
-                $newNamePhoto = $manageImageOnServer->copyImageOnServer(
-                    $photo, 
-                    $this->getParameter('images_directory')
-                );
-                //We change the photoName in the entity
-                $photoToEdit->setNamePhoto($newNamePhoto);
-                $manager->persist($photoToEdit);
-
-                $tricks->setDateAtUpdate(new \Datetime());
-                $manager->persist($tricks);
-
-                $manager->flush();
-                $session->remove('photoId');
-            }
-        }
+        $this->changeOnePhoto($request, $changePhotoForm, $tricks);
 
         //if the user want to change only one video - The form is in the modal
-        $changeVideoForm->handleRequest($request);
-        if ($changeVideoForm->isSubmitted() && $changeVideoForm->isValid()) {
-            $videoLink = $changeVideoForm->get('video')->getData();
-            
-            if ($videoLink != null) {
-                $videoToEdit = $videoRepository->find($session->get('videoId'));
-
-                $newVideo = new ManageVideoUrl();
-                $newVideo = $newVideo->getParametersOnUrl(
-                    $videoLink, 
-                    $this->getParameter('host_accepted_videos')
-                );
-                //We change the video link in the entity
-                $videoToEdit->setLink($newVideo);
-
-                $manager->persist($videoToEdit);
-
-                $tricks->setDateAtUpdate(new \Datetime());
-                $manager->persist($tricks);
-
-                $manager->flush();
-                $session->remove('VideoId');
-            }
-        }
+        $this->changeOneVideo($request, $changeVideoForm, $tricks);
 
         //Form for update a tricks
         $formTricks->handleRequest($request);
@@ -229,6 +178,89 @@ class AddTricksController extends AbstractController
             return $this->redirectToRoute('member_editTricks', [
                 'name' => $tricks->getName()]
             );
+        }
+    }
+
+    /**
+     * This method is use for change only one photo in the page for modify one tricks
+     */
+    private function changeOnePhoto(Request $request, $changePhotoForm, $tricks)
+    {
+        $changePhotoForm->handleRequest($request);
+        if ($changePhotoForm->isSubmitted() && $changePhotoForm->isValid()) {
+            $photo = $changePhotoForm->get('photo')->getData();
+
+            if ($photo) {
+                $session = $request->getSession();
+                if ($session->get('photoId') == null) {
+                    return;
+                }
+                $photoRepository = $this->getDoctrine()->getRepository(Photo::class);
+                $photoToEdit = $photoRepository
+                    ->find($session->get('photoId'));
+                
+                $manageImageOnServer = new ManageImageOnServer();
+                $manageImageOnServer->removeImageOnServer(
+                    $photoToEdit->getNamePhoto(),
+                    $this->getParameter('images_directory')
+                );
+
+                if ($photoToEdit->getNamePhoto() == $tricks->getPrincipalPhoto()) {
+                    $tricks->setPrincipalPhoto(null);
+                }
+
+                $newNamePhoto = $manageImageOnServer->copyImageOnServer(
+                    $photo, 
+                    $this->getParameter('images_directory')
+                );
+                //We change the photoName in the entity
+                $photoToEdit->setNamePhoto($newNamePhoto);
+                $manager = $this->getDoctrine()->getManager();
+                $manager->persist($photoToEdit);
+
+                $tricks->setDateAtUpdate(new \Datetime());
+                $manager->persist($tricks);
+
+                $manager->flush();
+                $session->remove('photoId');
+            }
+        }
+    }
+
+    /**
+     * This method is use for change only one video in the page for modify one tricks
+     */
+    private function changeOneVideo(Request $request, $changeVideoForm, $tricks) 
+    {
+        $changeVideoForm->handleRequest($request);
+        if ($changeVideoForm->isSubmitted() && $changeVideoForm->isValid()) {
+            $videoLink = $changeVideoForm->get('video')->getData();
+            
+            if ($videoLink != null) {
+                $session = $request->getSession();
+                if ($session->get('videoId') == null) {
+                    return;
+                }
+                $videoRepository = $this->getDoctrine()->getRepository(Video::class);
+                $videoToEdit = $videoRepository->find($session->get('videoId'));
+
+                $newVideo = new ManageVideoUrl();
+                $newVideo = $newVideo->getParametersOnUrl(
+                    $videoLink, 
+                    $this->getParameter('host_accepted_videos')
+                );
+                //We change the video link in the entity
+                $videoToEdit->setLink($newVideo);
+
+                $manager = $this->getDoctrine()->getManager();
+                $manager->persist($videoToEdit);
+
+                $tricks->setDateAtUpdate(new \Datetime());
+                $manager->persist($tricks);
+
+                $manager->flush();
+                $session->remove('videoId');
+            }
         }
     }
 }
