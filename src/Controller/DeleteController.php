@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Photo;
+use App\Entity\Tricks;
 use App\Utils\ManageImageOnServer;
 use App\Repository\PhotoRepository;
 use App\Repository\VideoRepository;
@@ -22,10 +24,8 @@ class DeleteController extends AbstractController
     /**
      * @Route("/supprimer/tricks/{id}", name="delete_tricks")
      */
-    public function deleteTricks(UserInterface $user, 
-        TricksRepository $tricksRepository, PhotoRepository $photoRepository,  
-        EntityManagerInterface $manager, NotifierInterface $notifier,
-        Request $request, $id
+    public function deleteTricks(UserInterface $user,  
+        NotifierInterface $notifier, $id
     ) {
         //We check if the user has activated his account 
         if ($user->getActivationToken() != '') {
@@ -33,11 +33,14 @@ class DeleteController extends AbstractController
         }
 
         //We get the tricks by the route parameter
+        $tricksRepository = $this->getDoctrine()->getRepository(Tricks::class);
         $tricks = $tricksRepository->find($id);
         if (!$tricks) {
             throw new \Exception('Ce tricks n\'existe pas'); 
         }
+        
         //We get photos if the tricks exist
+        $photoRepository = $this->getDoctrine()->getRepository(Photo::class);
         $photos = $photoRepository->findBy(['tricks' => $tricks]);
 
         //We loop on $photos array for delete image on server
@@ -49,6 +52,7 @@ class DeleteController extends AbstractController
             );
         }
 
+        $manager = $this->getDoctrine()->getManager();
         $manager->remove($tricks);
         $manager->flush();
         
