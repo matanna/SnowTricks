@@ -38,6 +38,7 @@ class AddTricksController extends AbstractController
         PhotoRepository $photoRepository, VideoRepository $videoRepository,
         NotifierInterface $notifier, $name = null
     ) {
+
         //We check if the user has activated his account 
         if ($user->getActivationToken() != '') {
             throw new \Exception('Vous devez activez votre compte !!');
