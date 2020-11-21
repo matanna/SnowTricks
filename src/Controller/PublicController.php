@@ -55,7 +55,7 @@ class PublicController extends AbstractController
             $offset = (($request->request->get('numPage'))-1)*10;
             
             $nextMessages = $messageRepository->findByTricks($id, 10, $offset);
-            $jsonResponse =$this->render('public/nextMessages.html.twig', [
+            $jsonResponse = $this->render('public/nextMessages.html.twig', [
                 'nextMessages' => $nextMessages
             ]);
             return new JsonResponse(['body' => $jsonResponse->getContent()]);

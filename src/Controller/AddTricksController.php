@@ -232,13 +232,9 @@ class AddTricksController extends AbstractController
         if ($changeVideoForm->isSubmitted() && $changeVideoForm->isValid()) {
             $videoLink = $changeVideoForm->get('video')->getData();
             
-            if ($videoLink == null) {
-                return;
-            }
-            
             $session = $request->getSession();
 
-            if ($session->get('videoId') == null) {
+            if ($videoLink == null || $session->get('videoId') == null) {
                 return;
             }
 

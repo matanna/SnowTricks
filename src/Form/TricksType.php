@@ -20,54 +20,33 @@ class TricksType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
-                'label' => false
-            ])
-            ->add('description', TextareaType::class, [
-                'required' => false
-            ])
+            ->add('name', TextType::class, ['label' => false])
+            ->add('description', TextareaType::class, ['required' => false])
             ->add('photos', CollectionType::class, [
-                'entry_type' => FileType::class,
-                'label' => false,
-                'entry_options' => [
-                    'label' => false,
-                    'required' => false,
-                    'constraints' => [
-                        new Image([
-                            'maxSize' => '2M',
+                'entry_type' => FileType::class,'label' => false,
+                'entry_options' => ['label' => false, 'required' => false,
+                    'constraints' => [new Image(['maxSize' => '2M',
                             'maxSizeMessage' => 'Votre image ne doit pas dépasser 2Mo',
                             'mimeTypesMessage' => 'Le format de votre image est invalide'
-                        ])
-                    ],
+                    ])],
                 ],
-                'allow_add' => true,
-                'allow_delete' => true,
-                'mapped' => false,
+                'allow_add' => true, 'allow_delete' => true,'mapped' => false, 
                 'prototype' => true,
             ])
             ->add('videos', CollectionType::class, [
-                'entry_type' => TextType::class,
-                'entry_options' => [
-                    'label' => false,
-                    'required' => false,
-                    'constraints' => [
-                        new Regex([
+                'entry_type' => TextType::class, 'entry_options' => [
+                    'label' => false, 'required' => false,
+                    'constraints' => [new Regex([
                             'pattern' => '#^https://www.youtube.com/watch\?v=|https://youtu.be/|https://www.dailymotion.com/video/|https://dai.ly/.+$#',
                             'message' => 'Le format n\'est pas valide'
-                        ])
-                    ]
+                    ])]
                 ],
-                'allow_add' => true,
-                'allow_delete' => true,
-                'label' => false,
-                'mapped' => false,
-                'prototype' => true,
+                'allow_add' => true, 'allow_delete' => true,
+                'label' => false, 'mapped' => false, 'prototype' => true,
             ])
-            ->add('category', EntityType::class, [
-                'class' => Category::class,
+            ->add('category', EntityType::class, ['class' => Category::class,
                 'choice_label' => 'name',
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
