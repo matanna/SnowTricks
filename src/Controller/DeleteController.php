@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Photo;
+use App\Entity\Video;
 use App\Entity\Tricks;
 use App\Utils\ManageImageOnServer;
 use App\Repository\PhotoRepository;
@@ -65,7 +66,6 @@ class DeleteController extends AbstractController
      * @Route("/supprimer/photo/{tricksId}/{photoId}", name="delete_photo")
      */
     public function deletePhoto(UserInterface $user, 
-        TricksRepository $tricksRepository, PhotoRepository $photoRepository,
         EntityManagerInterface $manager, $tricksId, $photoId
     ) {
         //We check if the user has activated his account 
@@ -73,11 +73,13 @@ class DeleteController extends AbstractController
             throw new \Exception('Vous devez activez votre compte !!');
         }
         //We get the tricks by the route parameter
+        $tricksRepository = $this->getDoctrine()->getRepository(Tricks::class);
         $tricks = $tricksRepository->findOneBy(['id' => $tricksId]);
         if (!$tricks) {
               throw new \Exception('Ce tricks n\'existe pas');
         }
         //We get the photo if the tricks exist
+        $photoRepository = $this->getDoctrine()->getRepository(Photo::class);
         $photo = $photoRepository->findOneBy(['id' => $photoId]);
         if (!$photo) {
             throw new \Exception('Cette photo n\'existe pas');
@@ -110,7 +112,6 @@ class DeleteController extends AbstractController
      * @Route("/supprimer/video/{tricksId}/{videoId}", name="delete_video")
      */
     public function deleteVideo(UserInterface $user,
-        TricksRepository $tricksRepository, VideoRepository $videoRepository,
         EntityManagerInterface $manager, $tricksId, $videoId
     ) {     
         //We check if the user has activated his account 
@@ -118,11 +119,13 @@ class DeleteController extends AbstractController
             throw new \Exception('Vous devez activez votre compte !!');
         }
         //We get the tricks by the route parameter
+        $tricksRepository = $this->getDoctrine()->getRepository(Tricks::class);
         $tricks = $tricksRepository->findOneBy(['id' => $tricksId]);
         if (!$tricks) {
               throw new \Exception('Ce tricks n\'existe pas');
         }
         //We get the video if the tricks exist
+        $videoRepository = $this->getDoctrine()->getRepository(Video::class);
         $video = $videoRepository->findOneBy(['id' => $videoId]);
         if (!$video) {
             throw new \Exception('Cette video n\'existe pas');

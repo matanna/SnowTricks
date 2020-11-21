@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\UserRepository;
@@ -103,10 +104,10 @@ class AdminController extends AbstractController
     /**
      * @Route("/delete/user/{id}", name="delete_user")
      */
-    public function deleteUser(UserRepository $userRepository, 
-        EntityManagerInterface $manager, TricksRepository $tricksRepository,
-        NotifierInterface $notifier, $id
+    public function deleteUser(EntityManagerInterface $manager, 
+        TricksRepository $tricksRepository, NotifierInterface $notifier, $id
     ) {
+        $userRepository = $this->getDoctrine()->getRepository(User::class);
         $user = $userRepository->find($id);
 
         if (!$user) {
@@ -127,10 +128,10 @@ class AdminController extends AbstractController
     /**
      * @Route("/delete/category/{id}", name="delete_category")
      */
-    public function deleteCategory(CategoryRepository $categoryRepository, 
-        TricksRepository $tricksRepository, EntityManagerInterface $manager,
-        NotifierInterface $notifier, $id
+    public function deleteCategory(TricksRepository $tricksRepository, 
+        EntityManagerInterface $manager,NotifierInterface $notifier, $id
     ) {
+        $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
         $category = $categoryRepository->find($id);
 
         if (!$category) {
