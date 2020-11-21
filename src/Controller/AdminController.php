@@ -4,8 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Form\CategoryType;
-use App\Form\UserRoleType;
-use App\Form\UsersCollectionRoleType;
+use App\Form\UserRolesType;
 use App\Repository\UserRepository;
 use App\Repository\TricksRepository;
 use App\Repository\CategoryRepository;
@@ -70,25 +69,34 @@ class AdminController extends AbstractController
         //We get all users in array
         $users = $userRepository->findAll();
 
-        //We create forms for roles of users
+        $rolesForms = [];
         foreach ($users as $user) {
-            $admin = $request->request->get('form-role' . $user->getId());
+            $roleForm = $this->createForm(UserRolesType::class, $user);
+            $rolesForms[$user->getId()] =  $roleForm->createView();
+            $roleForm->handleRequest($request);
             
-            if ($admin == 'Administrateur' && ) {
-                $user->setRoles(["ROLE_ADMIN"]);
-                
-            } else {
-                $user->setRoles([]);
+            $valid =$request->request->get('valid-role'.$user->getId());
+            
+            if ($roleForm->isSubmitted() && $roleForm->isValid() && isset($valid)) {
+                dump($valid);
+                if ('roles' == 'Administrateur') {
+                    $user->setRoles(['ROLE_ADMIN']);
+                    
+                } else {
+                    $user->setRoles([]); 
+                }
+                $manager->persist($user);
+                $manager->flush();
+                return $this->redirectToRoute('admin_admin-home');    
             }
-            $manager->persist($user);
-            $manager->flush();
+            
         }
-        
 
         return $this->render('admin/admin.html.twig', [
             'categories' => $categories,
             'categoryForm' => $categoryForm->createView(),
-            'users' => $users
+            'users' => $users,
+            'rolesForms' => $rolesForms
         ]);
     }
 }
