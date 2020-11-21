@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Message;
 use App\Entity\Category;
+use App\Utils\ManageUser;
 use App\Form\CategoryType;
+use App\Utils\ManageCategory;
 use App\Repository\UserRepository;
 use App\Repository\TricksRepository;
 use App\Repository\CategoryRepository;
@@ -41,18 +43,27 @@ class AdminController extends AbstractController
                 $category->addTrick($trick);
             }
         }
-        
+
+        $manager = $this->getDoctrine()->getManager();
+        $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
+
+        $manageCategory = new ManageCategory($manager, $categoryRepository);
+
         //We call this method for change name of category when the user click on edit icon
-        $this->changeNameCategory($request);
+        $manageCategory->changeNameCategory($request);
 
         //We create form for add a new category
-        $categoryForm = $this->addNewCategory($request);
+        $categoryForm = $this->createForm(CategoryType::class);
+        //$manageCategory->addNewCategory($request, $categoryForm);
         
         //We get all users in array
         $users = $userRepository->findAll();
 
-        //For each user, we get value of role checkbox and button for valid checkbox
-        $this->manageUserRoles($users, $request);
+        //For each user, we call this method for manage roles
+        foreach ($users as $user) {
+            $manageUser = new ManageUser($manager);
+            $manageUser->manageUserRoles($user, $request);
+        } 
 
         return $this->render('admin/admin.html.twig', [
             'categories' => $categories,
@@ -116,79 +127,5 @@ class AdminController extends AbstractController
         $manager->flush();
 
         return $this->redirectToRoute('admin_admin-home');
-    }
-
-    /**
-     * This method is use for change name of category 
-     * when the user click on the edit icon
-     */
-    private function changeNameCategory($request)
-    {
-        $newName = $request->request->get('category-name');
-        $categoryId = $request->request->get('category-id');
-
-        if ($newName != null && $categoryId != null) {
-            $categoryRepository = $this->getDoctrine()
-                                       ->getRepository(Category::class);
-            $category = $categoryRepository->find($categoryId);
-
-            if ($category) {
-                $category->setName($newName);
-                $manager = $this->getDoctrine()->getManager();
-                $manager->persist($category);
-                $manager->flush();
-            }
-        }
-    }
-
-    /**
-     * This method is use for add a new category
-     */
-    private function addNewCategory($request)
-    {
-        $categoryForm = $this->createForm(CategoryType::class);
-
-        $categoryForm->handleRequest($request);
-        if ($categoryForm->isSubmitted() && $categoryForm->isValid()) {
-            $newCategoryName = $categoryForm->get('name')->getData();
-            $newCategory = new Category();
-            $newCategory->setName($newCategoryName);
-
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($newCategory);
-            $manager->flush();
-
-            return $this->redirectToRoute('admin_admin-home');
-        }
-        return $categoryForm;
-    }
-
-    /**
-     * This method is use for change the user roles on the user list in admin page
-     */
-    private function manageUserRoles($users, $request)
-    {
-        $manager = $this->getDoctrine()->getManager();
-
-        foreach ($users as $user) {
-            $checkboxValue = $request->request->get('admin'.$user->getId());
-            $validRole = $request->request->get('valid'.$user->getId());
-
-            if ($checkboxValue == "on" && isset($validRole)) {
-                $user->setRoles(['ROLE_ADMIN']);
-                $manager->persist($user);
-                $manager->flush();
-
-                return $this->redirectToRoute('admin_admin-home');
-            }
-
-            if (isset($validRole)) {
-                $user->setRoles([]);
-                $manager->persist($user);
-                $manager->flush();
-
-                return $this->redirectToRoute('admin_admin-home');
-            }
-        }
     }
 }
