@@ -188,38 +188,38 @@ class AddTricksController extends AbstractController
         if ($changePhotoForm->isSubmitted() && $changePhotoForm->isValid()) {
             $photo = $changePhotoForm->get('photo')->getData();
 
-            if ($photo) {
-                $session = $request->getSession();
-                if ($session->get('photoId') == null) {
-                    return;
-                }
-                $photoRepository = $this->getDoctrine()->getRepository(Photo::class);
-                $photoToEdit = $photoRepository->find($session->get('photoId'));
-                
-                $manageImageOnServer = new ManageImageOnServer();
-                $manageImageOnServer->removeImageOnServer(
-                    $photoToEdit->getNamePhoto(),
-                    $this->getParameter('images_directory')
-                );
+            $session = $request->getSession();
 
-                if ($photoToEdit->getNamePhoto() == $tricks->getPrincipalPhoto()) {
-                    $tricks->setPrincipalPhoto(null);
-                }
-
-                $newNamePhoto = $manageImageOnServer->copyImageOnServer(
-                    $photo, $this->getParameter('images_directory')
-                );
-                //We change the photoName in the entity
-                $photoToEdit->setNamePhoto($newNamePhoto);
-                $manager = $this->getDoctrine()->getManager();
-                $manager->persist($photoToEdit);
-
-                $tricks->setDateAtUpdate(new \Datetime());
-                $manager->persist($tricks);
-
-                $manager->flush();
-                $session->remove('photoId');
+            if (!$photo && $session->get('photoId') == null) {
+                return;
             }
+
+            $photoRepository = $this->getDoctrine()->getRepository(Photo::class);
+            $photoToEdit = $photoRepository->find($session->get('photoId'));
+            
+            $manageImageOnServer = new ManageImageOnServer();
+            $manageImageOnServer->removeImageOnServer(
+                $photoToEdit->getNamePhoto(),
+                $this->getParameter('images_directory')
+            );
+
+            if ($photoToEdit->getNamePhoto() == $tricks->getPrincipalPhoto()) {
+                $tricks->setPrincipalPhoto(null);
+            }
+
+            $newNamePhoto = $manageImageOnServer->copyImageOnServer(
+                $photo, $this->getParameter('images_directory')
+            );
+            //We change the photoName in the entity
+            $photoToEdit->setNamePhoto($newNamePhoto);
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($photoToEdit);
+
+            $tricks->setDateAtUpdate(new \Datetime());
+            $manager->persist($tricks);
+
+            $manager->flush();
+            $session->remove('photoId');
         }
     }
 
