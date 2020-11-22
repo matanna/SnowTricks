@@ -1,4 +1,7 @@
 {
+    "aalaap/faker-youtube": {
+        "version": "1.2.1"
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99"
     },
@@ -23,6 +26,9 @@
     "doctrine/common": {
         "version": "3.0.2"
     },
+    "doctrine/data-fixtures": {
+        "version": "1.4.4"
+    },
     "doctrine/dbal": {
         "version": "2.11.1"
     },
@@ -39,6 +45,18 @@
             "./config/packages/prod/doctrine.yaml",
             "./src/Entity/.gitignore",
             "./src/Repository/.gitignore"
+        ]
+    },
+    "doctrine/doctrine-fixtures-bundle": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "e5b542d4ef47d8a003c91beb35650c76907f7e53"
+        },
+        "files": [
+            "./src/DataFixtures/AppFixtures.php"
         ]
     },
     "doctrine/doctrine-migrations-bundle": {
@@ -86,6 +104,9 @@
     },
     "fzaninotto/faker": {
         "version": "v1.9.1"
+    },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.1.1"
     },
     "monolog/monolog": {
         "version": "2.1.1"
@@ -409,6 +430,15 @@
     "symfony/security-http": {
         "version": "v5.1.7"
     },
+    "symfony/sendgrid-mailer": {
+        "version": "4.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.4",
+            "ref": "b46e4f8f1adb2864f0aa9c0ff57aea3324a07199"
+        }
+    },
     "symfony/serializer": {
         "version": "v5.1.7"
     },
@@ -512,10 +542,19 @@
         "version": "v5.1.7"
     },
     "twig/extra-bundle": {
+        "version": "v3.1.0"
+    },
+    "twig/intl-extra": {
+        "version": "v3.1.0"
+    },
+    "twig/string-extra": {
         "version": "v3.0.5"
     },
     "twig/twig": {
         "version": "v3.0.5"
+    },
+    "webimpress/safe-writer": {
+        "version": "2.1.0"
     },
     "webmozart/assert": {
         "version": "1.9.1"

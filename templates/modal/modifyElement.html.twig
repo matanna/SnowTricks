@@ -1,0 +1,67 @@
+<div class="modal fade" id="modal-window" tabindex="2" aria-labelledby="ModalLabel" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          
+          {% if (action == 'modifyPhoto') or (action == 'modifyVideo') %}
+          <h5 class="modal-title">Modification </h5>
+          {% endif %}
+          
+          {% if (action == 'deletePhoto') or (action == 'deleteVideo') %}
+          <h5 class="modal-title">Suppression </h5>
+          {% endif %}
+          
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+        {% if photoId is defined %}
+          
+          {% if action == 'deletePhoto' %}
+            <p>Voulez vous vraiment supprimer cette photo ?</p>
+          </div>
+          <div class="modal-footer">
+              <a href="{{ path('member_delete_photo', {tricksId: tricks.id, photoId: photoId}) }}">Supprimer</a>
+              <button type="button" class="btn btn-outline-primary btn-sm" id="close-modal" data-dismiss="modal">X</button>
+          </div>
+          {% endif %}
+
+          {% if action == 'modifyPhoto' %}
+            {{ form_start(changePhotoForm) }}
+              {{  form_row(changePhotoForm.photo)}}
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-primary btn-sm">Modifier</button>
+                <button type="button" class="btn btn-outline-primary btn-sm" id="close-modal" data-dismiss="modal">X</button>
+              </div>
+            {{ form_end(changePhotoForm) }}
+          {% endif %}
+
+        {% elseif videoId is defined %}
+
+          {% if action == 'deleteVideo' %}
+            <p>Voulez vous vraiment supprimer cette video ?</p>
+          </div>
+          <div class="modal-footer">
+              <a href="{{ path('member_delete_video', {tricksId: tricks.id, videoId: videoId}) }}">Supprimer</a>
+              <button type="button" class="btn btn-outline-primary btn-sm" id="close-modal" data-dismiss="modal">X</button>
+          </div>
+          {% endif %}
+
+          {% if action == 'modifyVideo' %}
+          {{ form_start(changeVideoForm) }}
+            {{  form_row(changeVideoForm.video)}}
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-outline-primary btn-sm">Modifier</button>
+              <button type="button" class="btn btn-outline-primary btn-sm" id="close-modal" data-dismiss="modal">X</button>
+            </div>
+        {{ form_end(changeVideoForm) }}
+          {% endif %}
+
+        {% endif %} 
+
+            
+      </div>
+    </div>
+</div>   

@@ -25,7 +25,7 @@ class Category
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tricks::class, mappedBy="catgory")
+     * @ORM\OneToMany(targetEntity=Tricks::class, mappedBy="category")
      */
     private $tricks;
 
@@ -63,7 +63,7 @@ class Category
     {
         if (!$this->tricks->contains($trick)) {
             $this->tricks[] = $trick;
-            $trick->setCatgory($this);
+            $trick->setCategory($this);
         }
 
         return $this;
@@ -74,8 +74,8 @@ class Category
         if ($this->tricks->contains($trick)) {
             $this->tricks->removeElement($trick);
             // set the owning side to null (unless already changed)
-            if ($trick->getCatgory() === $this) {
-                $trick->setCatgory(null);
+            if ($trick->getCategory() === $this) {
+                $trick->setCategory(null);
             }
         }
 

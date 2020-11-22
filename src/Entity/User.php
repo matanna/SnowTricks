@@ -2,15 +2,26 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(
+ *      fields={"email"},
+ *      message="Cet email est déjà utilisé"
+ * )
+ * @UniqueEntity(
+ *      fields={"username"},
+ *      message="Ce pseudo est déjà utilisé"
+ * )
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -21,16 +32,39 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min=5, 
+     *      max=30,
+     *      minMessage = "Votre pseudo doit contenir au mons 5 caractères",
+     *      maxMessage = "Votre pseudo ne doit pas dépasser 30 caractères",
+     *      allowEmptyString = false
+     * )
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min=5,
+     *      minMessage="Votre mot de passe doit contenir au moins 8 caractères",
+     *      allowEmptyString = false
+     * )
      */
     private $password;
 
     /**
+     * @Assert\EqualTo(
+     *      propertyPath="password",
+     *      message="Les mots de passes doivent être identiques"
+     * )
+     */
+    private $confirmPassword;
+
+    /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email(
+     *      message="Cet email n'est pas valide"
+     * )
      */
     private $email;
 
@@ -54,10 +88,31 @@ class User
      */
     private $messages;
 
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
+     */
+    private $token;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true,  unique=true)
+     */
+    private $resetPasswordToken;
+
+    /**
+     * @ORM\Column(type="string", length=255,  nullable=true)
+     */
+    private $activationToken;
+
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
         $this->messages = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -85,6 +140,18 @@ class User
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getConfirmPassword(): ?string
+    {
+        return $this->confirmPassword;
+    }
+
+    public function setConfirmPassword(string $confirmPassword): self
+    {
+        $this->confirmPassword = $confirmPassword;
 
         return $this;
     }
@@ -183,6 +250,84 @@ class User
                 $message->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+        return $this;
+    }
+
+    public function getSalt() {}
+
+    public function eraseCredentials() {}
+
+    /** 
+     * @see \Serializable::unserialize() 
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+        ));
+    }
+
+    /** 
+     * @see \Serializable::unserialize() 
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+        ) = unserialize($serialized, array('allowed_classes' => false));
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): self
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    public function getResetPasswordToken(): ?string
+    {
+        return $this->resetPasswordToken;
+    }
+
+    public function setResetPasswordToken(?string $resetPasswordToken): self
+    {
+        $this->resetPasswordToken = $resetPasswordToken;
+
+        return $this;
+    }
+
+    public function getActivationToken(): ?string
+    {
+        return $this->activationToken;
+    }
+
+    public function setActivationToken(string $activationToken): self
+    {
+        $this->activationToken = $activationToken;
 
         return $this;
     }

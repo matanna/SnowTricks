@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<main id="header">
+    <img src="../img/background_home.jpg" alt="Snowboard" id="homeImage">
+    <h1 class="text-center">SNOWTRICKS</h1>
+    <p class="text-center mb-5">catchphrase</p>
+</main>
+<h2 class="text-left m-5" id="tricks">Les derniers tricks ajoutés...</h2>
+{% if app.user and app.user.activationToken == '' %}
+<p class="ml-5"><a href="{{ path("member_addTricks") }}" class="btn btn-outline-primary btn-sm text-center">Ajouter un tricks</a></p>
+{% endif %}
+{% for message in app.flashes('notification') %}
+  <div class="alert alert-light text-center">{{ message }}</div>
+{% endfor %}
+<hr class="ml-5 mr-5">
+<div class="row" id="firstTricks">
+{% for oneTricks in tricks %}
+{% set deleteTricks = 'deleteTricks' ~ oneTricks.id %}
+    <div class="col-xl-3">
+        <div class="card m-5 shadow">
+            {% if oneTricks.photos[0].namePhoto is not defined %}
+                <img src="{{ asset('img/default_image.jpg') }}" alt="photo snowboard" class="homeFeaturedImage">
+            {% elseif oneTricks.principalPhoto == null  %}
+                <img style="height: 200px; width: 100%; display: block;" src="{{ asset('img_uploads/' ~ oneTricks.photos[0].namePhoto) }}" alt="Snowboard">
+            {% else %}
+                <img style="height: 200px; width: 100%; display: block;" src="{{ asset('img_uploads/' ~ oneTricks.principalPhoto) }}" alt="photo snowboard">
+            {% endif %}
+            <h4 class="card-header">{{ oneTricks.name | u.truncate(15)}}</h4>
+            <div class="card-body">
+                <a href="{{ path('show_tricks', {'name': oneTricks.name} ) }}" class="btn btn-outline-primary btn-sm">Voir le tricks</a>
+            </div>
+            {% if app.user and app.user.activationToken == '' %}
+                    <div class="modify-delete shadow">
+                      <!--Modify icon-->
+                      <a href="{{ path('member_editTricks', {name: oneTricks.name}) }}">
+                        <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                        </svg>
+                      </a>
+                      <!--Delete icon - Open the modal-->
+                      <a href="#" data-toggle="modal" data-target="{{ '#' ~ deleteTricks }}">
+                        <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>
+                      </a>
+                       <!--The Modal-->
+                      <div class="modal fade" id="{{ deleteTricks }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Suppression </h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <p>Voulez vous vraiment supprimer ce tricks ?</p>
+                            </div>
+                            <div class="modal-footer">
+                              <a href="{{ path('member_delete_tricks', {id: oneTricks.id}) }}">Supprimer</a>
+                              <button type="button" class="btn btn-outline-primary btn-sm" data-dismiss="modal">X</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {% endif %}
+            <div class="card-footer text-muted">
+                <p>Style : <span class="badge badge-primary">{{ oneTricks.category.name }}</span></p>
+                <p>Crée le {{ oneTricks.dateAtCreated | date("m/d/Y") }}<br />
+                   Ajouté par {{ oneTricks.user.fullname }}</p>
+            </div>
+          </div>
+    </div>
+{% endfor %}
+</div>
+
+<p class="text-center" id="moreOrLessTricks"><a href="#moreTricks" id="moreTricks" class="btn btn-outline-primary text-center">Voir plus de tricks</a></p>
+
+<div class="arrow text-right" id="arrowDown">
+    <a href="#tricks">
+        <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-arrow-down-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+        </svg>
+    </a>
+</div>
+<div class="arrow text-right" id="arrowUp">
+    <a href="#header">
+        <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-arrow-up-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+        </svg>
+    </a>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('js/home.js') }}"></script>
+{% endblock %}

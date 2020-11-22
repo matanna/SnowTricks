@@ -4,6 +4,12 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    app.supported_locales: ['en', 'fr']
+    app.notifications.email_sender: support@snowtricks.com
+    url_pattern: 'http://127.0.0.1:8000'
+    images_directory: '%kernel.project_dir%/public/img_uploads/'
+    mimes_upload: ['jpg', 'png', 'jpeg']
+    host_accepted_videos: ['www.youtube.com', 'youtu.be', 'www.dailymotion.com', 'dai.ly']
 
 services:
     # default configuration for services in *this* file
@@ -29,3 +35,32 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\EventListener\LoginListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.response', method: 'onKernelResponse' }
+            
+    
+    App\EventListener\LogoutListener:
+        tags:
+            - name: 'kernel.event_listener'
+              event: 'Symfony\Component\Security\Http\Event\LogoutEvent'
+              method: 'onSymfonyComponentSecurityHttpEventLogoutEvent'
+              
+    App\EventListener\RegisterSubscriber:
+        tags:
+            - name: 'user.registered'
+              event: 'App\Event\RegisterUserEvent'
+              method: 'activationAccountMailSended'
+        bind:
+              $sender: '%app.notifications.email_sender%'
+              $url: '%url_pattern%'
+
+    App\EventListener\ForgotPasswordSubscriber:
+        tags: 
+            - name: 'user.forgot-password'
+              event: 'App\Event\ForgotPasswordEvent'
+              method: 'resetPasswordMailSended'
+        bind: 
+              $sender: '%app.notifications.email_sender%'
+              $url: '%url_pattern%'

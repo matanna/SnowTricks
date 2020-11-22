@@ -1,0 +1,20 @@
+
+{% for message in nextMessages %}
+    <div class="row">
+        <div class="offset-3 col-9">
+        <span class="date-comment text-muted">Le {{ message.dateMessage | format_datetime('full', 'medium', locale='fr') }}</span>
+        </div>
+    </div>
+    <div class="row mb-4 d-flex align-items-center p-3 shadow">
+        <div class="col-1">
+        <div class="text-right"><img src="{{ message.user.profilPicture }}" alt="photo de profil" class="profilPicture align-middle"></div>
+        </div>
+        <div class="col-2 text-center">
+        <span class="mt-2 d-inline">{{ message.user.username }}</span>
+        </div>
+        <div class="col-9 p-3 bg-light">
+        <span class="">{{ message.content }}</span>
+        </div>
+    </div>
+    <hr>
+{% endfor %}

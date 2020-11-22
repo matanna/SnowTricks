@@ -19,32 +19,65 @@ class TricksRepository extends ServiceEntityRepository
         parent::__construct($registry, Tricks::class);
     }
 
-    // /**
-    //  * @return Tricks[] Returns an array of Tricks objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+    /**
+    * @return Tricks[] Returns an array of Tricks objects
     */
+    public function findFirstTricks($limit)
+    {
+        $entityManager = $this->getEntityManager();
 
-    /*
-    public function findOneBySomeField($value): ?Tricks
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $query = $entityManager->createQuery(
+            'SELECT tricks
+             FROM App\Entity\Tricks tricks
+             ORDER BY tricks.dateAtCreated DESC' 
+        )->setMaxResults($limit);
+        
+        return $query->getResult();
+
     }
+
+    /**
+    * @return Tricks[] Returns an array of Tricks objects
     */
+    public function findMoreTricks($offset)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT tricks
+             FROM App\Entity\Tricks tricks
+             ORDER BY tricks.dateAtCreated DESC' 
+        )->setFirstResult($offset);
+        
+        return $query->getResult();
+        
+    }
+
+    /**
+     * @return Tricks[] Returns an array of Tricks objects
+     */
+    public function findTricksIdByName($name)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT tricks.id
+             FROM App\Entity\Tricks tricks
+             WHERE tricks.name = :name'
+        )->setParameter('name', $name);
+
+        $result = $query->getResult();
+
+        return $result[0]['id']; 
+    }
+
+    public function findTricksByCategory($categoryId)
+    {
+        return $this->createQueryBuilder('tricks')
+        ->select('tricks')
+        ->where('tricks.category = :category')
+        ->setParameter('category', $categoryId)
+        ->getQuery()
+        ->getResult();
+    }
 }

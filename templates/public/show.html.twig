@@ -1,0 +1,168 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Snowtricks - {{ tricks.name }}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            {% for message in app.flashes('notification') %}
+              <div class="alert alert-light text-center">{{ message }}</div>
+            {% endfor %}
+            <div class="card mb-3 shadow">
+                <div class="featuredImage">
+                  {% if (tricks.id == null) or (tricks.photos[0].namePhoto is not defined) %}
+                    <img src="{{ asset('img/default_image.jpg') }}" alt="photo snowboard">
+                  {% elseif tricks.principalPhoto == null %}
+                    <img src="{{ asset('img_uploads/' ~ tricks.photos[0].namePhoto) }}" alt="photo snowboard">
+                  {% else %}
+                    <img src="{{ asset('img_uploads/' ~ tricks.principalPhoto) }}" alt="photo snowboard">
+                  {% endif %}
+                    <h1 class="text-center">{{ tricks.name }}</h1>
+                    {% if app.user and app.user.activationToken == '' %}
+                    <div class="modify-delete shadow">
+                      <!--Modify icon-->
+                      <a href="{{ path('member_editTricks', {name: tricks.name}) }}">
+                        <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                        </svg>
+                      </a>
+                      <!--Delete icon - Open the modal-->
+                      <a href="#" data-toggle="modal" data-target="#delete-tricks">
+                        <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>
+                      </a>
+                       <!--The Modal-->
+                      <div class="modal fade" id="delete-tricks" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Suppression </h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <p>Voulez vous vraiment supprimer ce tricks ?</p>
+                            </div>
+                            <div class="modal-footer">
+                              <a href="{{ path('member_delete_tricks', {id: tricks.id}) }}">Supprimer</a>
+                              <button type="button" class="btn btn-outline-primary btn-sm" data-dismiss="modal">X</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="card-body border-top">
+                    <div class="row slider">
+                        {% for photos in tricks.photos %}
+                        <div class="col-xl-4">
+                            <div>
+                              <img src="{{ asset('img_uploads/' ~ photos.namePhoto) }}" alt="photos snowboard" class="shadow">
+                            </div>
+                        </div>
+                        {% endfor %} 
+                        {% for videos in tricks.videos %}
+                        <div class="col-xl-4 videos-tricks">
+                          <iframe width="1280" height="720" src="{{ videos.link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="card-body">
+                  <p class="card-text">{{ tricks.description | raw }}</p>
+                  <table class="table table-hover mt-5">
+                    <thead>
+                      <tr class="text-center">
+                        <th scope="col">Ajouté par :</th>
+                        <th scope="col">Style :</th>
+                        <th scope="col">Ajouté le :</th>
+                        <th scope="col">Modifié le :</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="text-center">
+                        <th scope="row"><span class="border text-light bg-primary p-2 shadow">{{ tricks.user.fullname }}</span></th>
+                        <td><span class="border text-light bg-primary p-2 shadow">{{ tricks.category.name }}</span></td>
+                        <td><span class="border text-light bg-primary p-2 shadow">{{ tricks.dateAtCreated | format_date('medium', locale='fr') }}</span></td>
+                        {% if tricks.dateAtUpdate != null %}
+                        <td><span class="border text-light bg-primary p-2 shadow">{{ tricks.dateAtUpdate | format_date('medium', locale='fr')  }}</span></td>
+                        {% else %}
+                        <td><span class="border text-light bg-primary p-2 shadow">{{ tricks.dateAtCreated | format_date('medium', locale='fr') }}</span></td>
+                        {% endif %}
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {% if app.user and app.user.activationToken == '' %}
+                <div class="card-body border">
+                  {{ form_start(messageForm) }}
+                    {{ form_label(messageForm, 'Ajoute ton commentaire ! :', {'label_attr': {'class': 'label-addComment'}} ) }}
+                    {{ form_errors(messageForm) }}
+                    {{ form_widget(messageForm) }}
+                    <div class="text-right">
+                      <button type="submit" class="btn btn-outline-primary btn-sm">Poster !</button>
+                    </div> 
+                  {{ form_end(messageForm) }}
+                </div>
+                {% endif %}
+
+                <div class="card-footer comment">
+                  <h4 class="mb-5">Tous les commentaires :</h4>
+                  <div class="row">
+                    <div class="col-8 offset-2" id="commentList">
+                      {% for message in messages %}
+                        <div class="row">
+                          <div class="offset-3 col-9">
+                            <span class="date-comment text-muted">Le {{ message.dateMessage | format_datetime('full', 'medium', locale='fr') }}</span>
+                          </div>
+                        </div>
+                        <div class="row mb-4 d-flex align-items-center p-3 shadow">
+                          <div class="col-1">
+                            {% if message.user.profilPicture == null %}
+                              <div class="text-right"><img src="{{ asset('img/default_profil.png') }}" alt="photo de profil" class="profilPicture align-middle"></div>
+                            {% else %}
+                              <div class="text-right"><img src="{{ asset('img_uploads/' ~ message.user.profilPicture) }}" alt="photo de profil" class="profilPicture align-middle"></div>
+                            {% endif %}
+                            </div>
+                          <div class="col-2 text-center">
+                            <span class="mt-2 d-inline">{{ message.user.username }}</span>
+                          </div>
+                          <div class="col-9 p-3 bg-light">
+                            <span class="">{{ message.content }}</span>
+                          </div>
+                        </div>
+                        <hr>
+                        
+                      {% endfor %}
+                    </div>
+                  </div> 
+                  {% set pages = (numberMessages // 10)+1 %}
+                  <div class="d-flex justify-content-around">
+                    <ul class="pagination pagination">
+
+                      {% for i in 1..pages %}
+                      <li class="page-item num-page">
+                        <a class="page-link" id="{{ 'page' ~ i }}" href="#message">{{ i }}</a>
+                      </li>
+                      {% endfor %}
+
+                    </ul>
+                  </div>  
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+  <script type="text/javascript" src="{{ asset('js/slider.js')}}"></script>
+  <script type="text/javascript" src="{{ asset('js/show.js')}}"></script>
+{% endblock %}
+

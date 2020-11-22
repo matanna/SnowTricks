@@ -20,7 +20,7 @@ class Photo
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $namePhoto;
 
     /**
      * @ORM\ManyToOne(targetEntity=Tricks::class, inversedBy="photos")
@@ -33,14 +33,14 @@ class Photo
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getNamePhoto(): ?string
     {
-        return $this->name;
+        return $this->namePhoto;
     }
 
-    public function setName(string $name): self
+    public function setNamePhoto(string $namePhoto): self
     {
-        $this->name = $name;
+        $this->namePhoto = $namePhoto;
 
         return $this;
     }

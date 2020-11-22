@@ -6,6 +6,7 @@ use App\Repository\TricksRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TricksRepository::class)
@@ -20,22 +21,35 @@ class Tricks
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Length(
+     *      min=5,
+     *      max=20,
+     *      minMessage="Le nom du tricks doit comporter au moins 4 caractères",
+     *      maxMessage="Le nom du tricks doit comporter au maximum 20 caractères",
+     *      allowEmptyString = false)
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     *  @Assert\Length(
+     *      min=20,
+     *      minMessage="La description du tricks doit comporter au moins 20 caractères",
+     *      allowEmptyString = false)
      */
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="tricks")
+     * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="tricks", 
+     * cascade={"persist"}, orphanRemoval=true)
+     * @Assert\NotBlank
      */
     private $photos;
 
     /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="tricks")
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="tricks",
+     * cascade={"persist"}, orphanRemoval=true)
      */
     private $videos;
 
@@ -43,7 +57,7 @@ class Tricks
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="tricks")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $catgory;
+    private $category;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks")
@@ -52,9 +66,25 @@ class Tricks
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="tricks")
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="tricks",
+     * cascade={"persist"}, orphanRemoval=true)
      */
     private $messages;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $dateAtCreated;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateAtUpdate;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $principalPhoto;
 
     public function __construct()
     {
@@ -154,14 +184,14 @@ class Tricks
         return $this;
     }
 
-    public function getCatgory(): ?Category
+    public function getCategory(): ?Category
     {
-        return $this->catgory;
+        return $this->category;
     }
 
-    public function setCatgory(?Category $catgory): self
+    public function setCategory(?Category $category): self
     {
-        $this->catgory = $catgory;
+        $this->category = $category;
 
         return $this;
     }
@@ -205,6 +235,42 @@ class Tricks
                 $message->setTricks(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateAtCreated(): ?\DateTimeInterface
+    {
+        return $this->dateAtCreated;
+    }
+
+    public function setDateAtCreated(\DateTimeInterface $dateAtCreated): self
+    {
+        $this->dateAtCreated = $dateAtCreated;
+
+        return $this;
+    }
+
+    public function getDateAtUpdate(): ?\DateTimeInterface
+    {
+        return $this->dateAtUpdate;
+    }
+
+    public function setDateAtUpdate(?\DateTimeInterface $dateAtUpdate): self
+    {
+        $this->dateAtUpdate = $dateAtUpdate;
+
+        return $this;
+    }
+
+    public function getPrincipalPhoto(): ?string
+    {
+        return $this->principalPhoto;
+    }
+
+    public function setPrincipalPhoto(?string $principalPhoto): self
+    {
+        $this->principalPhoto = $principalPhoto;
 
         return $this;
     }
