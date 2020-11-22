@@ -24,8 +24,8 @@ class ProfilController extends AbstractController
     ) {
         $user = $userRepository->findOneBy(['username' => $username]);
 
-        if (!$user) {
-            throw $this->createNotFoundException();  
+        if (!$user) { 
+            throw $this->createNotFoundException(); 
         }
         
         $profilForm = $this->createForm(ProfilType::class, $user);
@@ -45,10 +45,8 @@ class ProfilController extends AbstractController
             $newProfilPicture = $profilForm->get('profilPicture')->getData();
             
             if ($newProfilPicture) {
-
                 $nameProfilPicture = $manageImage->copyImageOnServer(
-                    $newProfilPicture, 
-                    $this->getParameter('images_directory')
+                    $newProfilPicture, $this->getParameter('images_directory')
                 );
 
                 $user->setProfilPicture($nameProfilPicture);
@@ -59,8 +57,7 @@ class ProfilController extends AbstractController
         }
 
         return $this->render('member/profil.html.twig', [
-            'username' => $username,
-            'profilForm' => $profilForm->createView()
+            'username' => $username, 'profilForm' => $profilForm->createView()
         ]);
     }
 

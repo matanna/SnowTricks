@@ -60,11 +60,10 @@ class DeleteController extends AbstractController
     /**
      * @Route("/supprimer/photo/{tricksId}/{photoId}", name="delete_photo")
      */
-    public function deletePhoto(UserInterface $user, 
+    public function deletePhoto(TricksRepository $tricksRepository, 
         EntityManagerInterface $manager, $tricksId, $photoId
     ) {
         //We get the tricks by the route parameter
-        $tricksRepository = $this->getDoctrine()->getRepository(Tricks::class);
         $tricks = $tricksRepository->findOneBy(['id' => $tricksId]);
         if (!$tricks) {
               throw new \Exception('Ce tricks n\'existe pas');
