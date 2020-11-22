@@ -35,11 +35,6 @@ class AddTricksController extends AbstractController
     ) {
         $session = new Session();
 
-        //We check if the user has activated his account 
-        if ($user->getActivationToken() != '') {
-            throw new \Exception('Vous devez activez votre compte !!');
-        }
-
         //If we want to create a new tricks
         if ($name == null) {
             $tricks = new Tricks();

@@ -28,11 +28,6 @@ class DeleteController extends AbstractController
     public function deleteTricks(UserInterface $user,  
         NotifierInterface $notifier, $id
     ) {
-        //We check if the user has activated his account 
-        if ($user->getActivationToken() != '') {
-            throw new \Exception('Vous devez activez votre compte !!');
-        }
-
         //We get the tricks by the route parameter
         $tricksRepository = $this->getDoctrine()->getRepository(Tricks::class);
         $tricks = $tricksRepository->find($id);
@@ -68,10 +63,6 @@ class DeleteController extends AbstractController
     public function deletePhoto(UserInterface $user, 
         EntityManagerInterface $manager, $tricksId, $photoId
     ) {
-        //We check if the user has activated his account 
-        if ($user->getActivationToken() != '') {
-            throw new \Exception('Vous devez activez votre compte !!');
-        }
         //We get the tricks by the route parameter
         $tricksRepository = $this->getDoctrine()->getRepository(Tricks::class);
         $tricks = $tricksRepository->findOneBy(['id' => $tricksId]);
@@ -114,10 +105,6 @@ class DeleteController extends AbstractController
     public function deleteVideo(UserInterface $user,
         EntityManagerInterface $manager, $tricksId, $videoId
     ) {     
-        //We check if the user has activated his account 
-        if ($user->getActivationToken() != '') {
-            throw new \Exception('Vous devez activez votre compte !!');
-        }
         //We get the tricks by the route parameter
         $tricksRepository = $this->getDoctrine()->getRepository(Tricks::class);
         $tricks = $tricksRepository->findOneBy(['id' => $tricksId]);
