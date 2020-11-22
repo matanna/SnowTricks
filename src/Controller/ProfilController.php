@@ -41,7 +41,6 @@ class ProfilController extends AbstractController
             $manageImage->removeImageOnServer(
                 $oldProfilPicture, $this->getParameter('images_directory')
             );
-
             $newProfilPicture = $profilForm->get('profilPicture')->getData();
             
             if ($newProfilPicture) {

@@ -127,7 +127,7 @@
                             {% if message.user.profilPicture == null %}
                               <div class="text-right"><img src="{{ asset('img/default_profil.png') }}" alt="photo de profil" class="profilPicture align-middle"></div>
                             {% else %}
-                              <div class="text-right"><img src="{{ asset('img_upload/' ~ message.user.profilPicture) }}" alt="photo de profil" class="profilPicture align-middle"></div>
+                              <div class="text-right"><img src="{{ asset('img_uploads/' ~ message.user.profilPicture) }}" alt="photo de profil" class="profilPicture align-middle"></div>
                             {% endif %}
                             </div>
                           <div class="col-2 text-center">

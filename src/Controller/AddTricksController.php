@@ -97,6 +97,7 @@ class AddTricksController extends AbstractController
             $videos = $formTricks->get('videos')->getData();
 
             if ($photos) {
+                
                 foreach ($photos as $photo) {
                     //We copy the image on server
                     $copyPhoto = new ManageImageOnServer();
