@@ -3,8 +3,13 @@
 {% block body %}
 <main id="header">
     <img src="../img/background_home.jpg" alt="Snowboard" id="homeImage">
-    <h1 class="text-center">SNOWTRICKS</h1>
-    <p class="text-center mb-5">catchphrase</p>
+    <div class="row">
+      <div class="col-4 offset-8">
+        <p class="mb-5 catchphrase">LE SNOWBOARD RECRUTE... </p>
+        <p class="catchphrase">ENGAGEZ-VOUS !!</p>
+      </div>
+    </div>
+    
 </main>
 <h2 class="text-left m-5" id="tricks">Les derniers tricks ajoutés...</h2>
 {% if app.user and app.user.activationToken == '' %}

@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'black_bones_personal_useRg';
+    src: url('../fonts\black_bones.woff2') format('woff2'),
+         url('../fonts/black_bones.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -20,6 +28,23 @@ main {
     height: 900px;
 }
 
+#logo {
+    font-family: 'black_bones_personal_useRg'; 
+    text-shadow: 2px 2px 2px rgba(26, 26, 26);
+    font-size: 2em; 
+    color: rgba(240, 240, 240);
+}
+
+#logo img{
+    width: 70px;
+}
+
+.catchphrase {
+    text-shadow: 2px 2px 2px rgba(240, 240, 240);
+    font-size: 2em; 
+    color:  rgba(26, 26, 26);
+}
+
 #homeImage {
     position: absolute;
     object-fit: cover;
@@ -28,9 +53,15 @@ main {
     z-index: -1;
 }
 
+.collapse .nav-item .nav-link {
+    font-size: 1.1em;
+    color: rgba(26, 26, 26);
+    text-shadow: 1px 1px 1px rgba(240, 240, 240);
+}
+
 main h1, main p {
     position: relative;
-    top: 150px;
+    top: 250px;
 }
 
 main h1 {
