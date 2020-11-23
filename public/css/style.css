@@ -1,10 +1,3 @@
-@font-face {
-    font-family: 'black_bones_personal_useRg';
-    src: url('../fonts\black_bones.woff2') format('woff2'),
-         url('../fonts/black_bones.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
 
 html {
     scroll-behavior: smooth;
@@ -28,21 +21,19 @@ main {
     height: 900px;
 }
 
-#logo {
-    font-family: 'black_bones_personal_useRg'; 
-    text-shadow: 2px 2px 2px rgba(26, 26, 26);
-    font-size: 2em; 
-    color: rgba(240, 240, 240);
-}
-
 #logo img{
-    width: 70px;
+    width: 250px;
 }
 
 .catchphrase {
     text-shadow: 2px 2px 2px rgba(240, 240, 240);
     font-size: 2em; 
     color:  rgba(26, 26, 26);
+}
+
+.first-letter {
+    font-size: 2.3em;
+    letter-spacing: 0.5rem;
 }
 
 #homeImage {
@@ -53,10 +44,18 @@ main {
     z-index: -1;
 }
 
+.navbar {
+    padding: 0.5rem 1.5rem;
+}
+
 .collapse .nav-item .nav-link {
     font-size: 1.1em;
     color: rgba(26, 26, 26);
     text-shadow: 1px 1px 1px rgba(240, 240, 240);
+}
+.collapse .nav-item .nav-link:hover {
+    color: rgba(240, 240, 240);
+    text-shadow: 1px 1px 1px rgba(26, 26, 26);
 }
 
 main h1, main p {
@@ -89,7 +88,7 @@ header {
 }
 
 #tricks:target {
-    padding-top: 9em;
+    padding-top: 7em;
     margin-top: -7em !important;
 }
 
