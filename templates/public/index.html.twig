@@ -2,9 +2,8 @@
 
 {% block body %}
 <main id="header">
-    <img src="../img/background_home.jpg" alt="Snowboard" id="homeImage">
     <div class="row">
-      <div class="col-4 offset-8">
+      <div class="col-lg-6 offset-1 col-xl-5 offset-xl-7">
         <p class="mb-5 catchphrase"><span class="first-letter">L</span>E SNOWBOARD RECRUTE... </p>
         <p class="catchphrase"><span class="first-letter">E</span>NGAGEZ-VOUS !!</p>
       </div>
@@ -22,7 +21,7 @@
 <div class="row" id="firstTricks">
 {% for oneTricks in tricks %}
 {% set deleteTricks = 'deleteTricks' ~ oneTricks.id %}
-    <div class="col-xl-3">
+    <div class="col-md-6 col-lg-4 col-xl-3">
         <div class="card m-5 shadow">
             {% if oneTricks.photos[0].namePhoto is not defined %}
                 <img src="{{ asset('img/default_image.jpg') }}" alt="photo snowboard" class="homeFeaturedImage">
@@ -74,8 +73,8 @@
                     {% endif %}
             <div class="card-footer text-muted">
                 <p>Style : <span class="badge badge-primary">{{ oneTricks.category.name }}</span></p>
-                <p>Crée le {{ oneTricks.dateAtCreated | date("m/d/Y") }}<br />
-                   Ajouté par {{ oneTricks.user.fullname }}</p>
+                <p>Crée le : <br/>{{ oneTricks.dateAtCreated | date("m/d/Y") }}</p>
+                <p>Ajouté par : <br/>{{ oneTricks.user.fullname }}</p>
             </div>
           </div>
     </div>

@@ -16,8 +16,8 @@ body {
     padding-left: 0;
     padding-right: 0;
 }
-
 main {
+    background-image: url('../img/background_home.jpg');
     height: 900px;
 }
 
@@ -36,16 +36,8 @@ main {
     letter-spacing: 0.5rem;
 }
 
-#homeImage {
-    position: absolute;
-    object-fit: cover;
-    max-height: 900px;
-    width: 100%;
-    z-index: -1;
-}
-
 .navbar {
-    padding: 0.5rem 1.5rem;
+    padding: 0.8rem 1.5rem;
 }
 
 .collapse .nav-item .nav-link {
@@ -88,7 +80,7 @@ header {
 }
 
 #tricks:target {
-    padding-top: 7em;
+    padding-top: 9em;
     margin-top: -7em !important;
 }
 
