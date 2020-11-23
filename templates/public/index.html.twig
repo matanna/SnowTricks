@@ -21,7 +21,7 @@
 <div class="row" id="firstTricks">
 {% for oneTricks in tricks %}
 {% set deleteTricks = 'deleteTricks' ~ oneTricks.id %}
-    <div class="col-md-6 col-lg-4 col-xl-3">
+    <div class="col-lg-4 col-xl-3">
         <div class="card m-5 shadow">
             {% if oneTricks.photos[0].namePhoto is not defined %}
                 <img src="{{ asset('img/default_image.jpg') }}" alt="photo snowboard" class="homeFeaturedImage">
