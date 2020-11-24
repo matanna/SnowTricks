@@ -18,7 +18,9 @@ body {
 }
 main {
     background-image: url('../img/background_home.jpg');
-    height: 900px;
+    min-height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 #logo img{
@@ -38,6 +40,9 @@ main {
 
 .navbar {
     padding: 0.8rem 1.5rem;
+}
+.navbar-brand {
+    margin-right: 0;
 }
 
 .collapse .nav-item .nav-link {
