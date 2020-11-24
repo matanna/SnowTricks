@@ -16,21 +16,45 @@ body {
     padding-left: 0;
     padding-right: 0;
 }
+.container-fluid > .row {
+    margin-right: 0;
+    margin-left: 0;
+}
 main {
     background-image: url('../img/background_home.jpg');
     min-height: 100vh;
     background-size: cover;
     background-repeat: no-repeat;
 }
+@media(max-width: 900px) {
+    main {
+        background-image: url('../img/background_home_small_screen.jpg');
+    }
+}
+@media(max-width: 700px) {
+    main {
+        background-image: url('../img/background_home_very_small_screen.jpg');
+    }
+}
 
 #logo img{
     width: 250px;
+}
+@media(max-width: 400px) {
+    #logo img{
+        width: 200px;
+    }
 }
 
 .catchphrase {
     text-shadow: 2px 2px 2px rgba(240, 240, 240);
     font-size: 2em; 
     color:  rgba(26, 26, 26);
+}
+@media(max-width: 600px) {
+    .catchphrase {
+        font-size: 1.5em;
+    }
 }
 
 .first-letter {
@@ -59,6 +83,11 @@ main h1, main p {
     position: relative;
     top: 250px;
 }
+@media(max-width: 600px) {
+    main h1, main p {
+        top: 150px;
+    }
+}
 
 main h1 {
     font-size: 4rem;
@@ -74,6 +103,10 @@ header {
     width: 100%;
     z-index: 100;
 }
+#header > .row {
+    margin-right: 0;
+    margin-left: 0;
+}
 
 #homeMenu {
     background-color: rgba(255, 255, 255, 0);
@@ -82,6 +115,11 @@ header {
 #menu {
     background-color: rgba(247, 247, 247);
     border-bottom: 1px solid rgba(26, 26, 26);
+}
+@media(max-width: 568px) {
+    h2#tricks {
+        font-size: 1.5em;
+    }
 }
 
 #tricks:target {
@@ -112,6 +150,11 @@ header {
 }
 .homeFeaturedImage {
     height: 200px;
+}
+.homeFeaturedImage img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
 }
 .featuredImage {
     position: relative;
@@ -173,7 +216,6 @@ tbody .border {
 
 footer {
     position: relative;
-    height: 200px;
 }
 
 #arrowDown, #arrowUp {
@@ -250,4 +292,27 @@ footer {
 .valid-role {
     border: none;
     background: none;
+}
+
+footer > .row {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+footer p {
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+}
+
+.social {
+    color: #919aa1 ;
+    font-size: 2em;
+}
+
+.mentions {
+    border-top: 1px solid rgba(247, 247, 247);
+}
+
+.footer-img {
+    width: 200px;
 }

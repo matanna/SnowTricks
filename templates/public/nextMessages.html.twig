@@ -7,7 +7,11 @@
     </div>
     <div class="row mb-4 d-flex align-items-center p-3 shadow">
         <div class="col-1">
-        <div class="text-right"><img src="{{ message.user.profilPicture }}" alt="photo de profil" class="profilPicture align-middle"></div>
+            {% if message.user.profilPicture == null %}
+              <div class="text-right"><img src="{{ asset('img/default_profil.png') }}" alt="photo de profil" class="profilPicture align-middle"></div>
+            {% else %}
+              <div class="text-right"><img src="{{ asset('img_uploads/' ~ message.user.profilPicture) }}" alt="photo de profil" class="profilPicture align-middle"></div>
+            {% endif %}
         </div>
         <div class="col-2 text-center">
         <span class="mt-2 d-inline">{{ message.user.username }}</span>

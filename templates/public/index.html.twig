@@ -21,15 +21,17 @@
 <div class="row" id="firstTricks">
 {% for oneTricks in tricks %}
 {% set deleteTricks = 'deleteTricks' ~ oneTricks.id %}
-    <div class="col-lg-4 col-xl-3">
+    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
         <div class="card m-5 shadow">
+            <div class="homeFeaturedImage">
             {% if oneTricks.photos[0].namePhoto is not defined %}
-                <img src="{{ asset('img/default_image.jpg') }}" alt="photo snowboard" class="homeFeaturedImage">
+                <img src="{{ asset('img/default_image.jpg') }}" alt="photo snowboard">
             {% elseif oneTricks.principalPhoto == null  %}
-                <img style="height: 200px; width: 100%; display: block;" src="{{ asset('img_uploads/' ~ oneTricks.photos[0].namePhoto) }}" alt="Snowboard">
+                <img src="{{ asset('img_uploads/' ~ oneTricks.photos[0].namePhoto) }}" alt="Snowboard">
             {% else %}
-                <img style="height: 200px; width: 100%; display: block;" src="{{ asset('img_uploads/' ~ oneTricks.principalPhoto) }}" alt="photo snowboard">
+                <img src="{{ asset('img_uploads/' ~ oneTricks.principalPhoto) }}" alt="photo snowboard">
             {% endif %}
+            </div>
             <h4 class="card-header">{{ oneTricks.name | u.truncate(15)}}</h4>
             <div class="card-body">
                 <a href="{{ path('show_tricks', {'name': oneTricks.name} ) }}" class="btn btn-outline-primary btn-sm">Voir le tricks</a>

@@ -1,7 +1,7 @@
 
 {% for oneTricks in tricks %}
 {% set deleteTricks = 'deleteTricks' ~ oneTricks.id %}
-<div class="col-xl-3 ajaxTricks">
+<div class="col-xl-3 col-xl-3 col-lg-4 col-md-6 ajaxTricks">
     <div class="card m-5 shadow">
         {% if oneTricks.photos[0].namePhoto is not defined %}
             <img src="{{ asset('img/default_image.jpg') }}" alt="photo snowboard" class="homeFeaturedImage">
@@ -52,10 +52,10 @@
                     </div>
                     {% endif %}
         <div class="card-footer text-muted">
-            <p>Style : <span class="badge badge-primary">{{ oneTricks.category.name }}</span></p>
-            <p>Crée le {{ oneTricks.dateAtCreated | date("m/d/Y") }}<br />
-               Ajouté par {{ oneTricks.user.fullname }}</p>
-        </div>
+              <p>Style : <span class="badge badge-primary">{{ oneTricks.category.name }}</span></p>
+              <p>Crée le : <br/>{{ oneTricks.dateAtCreated | date("m/d/Y") }}</p>
+              <p>Ajouté par : <br/>{{ oneTricks.user.fullname }}</p>
+            </div>
       </div>
 </div>
 {% endfor %}
