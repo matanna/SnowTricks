@@ -116,9 +116,21 @@
     </footer>
     <div class="footer-nav text-center">
       <div class="row">
-        <div class="col-4">home</div>
-        <div class="col-4">up</div>
-        <div class="col-4">logout</div>
+        <div class="col-4">
+          <a href="{{ path('home') }}"><i class="fa fa-home fa-lg" aria-hidden="true"></i></a>
+        </div>
+        <div class="col-4">
+          <a href="#"><i class="fa fa-chevron-circle-up fa-lg" aria-hidden="true"></i></a>
+        </div>
+        {% if app.user is not null %}
+        <div class="col-4">
+          <a href="{{ path('logout') }}"><i class="fa fa-sign-out fa-lg" aria-hidden="true"></i></a>
+        </div>
+        {% else %}
+        <div class="col-4">
+          <a href="{{ path('login') }}"><i class="fa fa-sign-in fa-lg" aria-hidden="true"></i></a>
+        </div>
+        {% endif %}
       </div>
     </div>
 

@@ -1,5 +1,6 @@
 
 $(document).ready(function(){
+
     $("#page1").parent("li.num-page").addClass('active');
 
     $('.num-page a').click(function(){
@@ -23,6 +24,6 @@ $(document).ready(function(){
                 alert('Demande échouée.');  
             }
         });
-    });  
+    });
 });
 

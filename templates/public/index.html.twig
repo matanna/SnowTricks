@@ -10,14 +10,14 @@
     </div>
     
 </main>
-<h2 class="text-left m-5" id="tricks">Les derniers tricks ajoutés...</h2>
+<h2 class="text-left m-lg-5 ml-4 mt-3" id="tricks">Les derniers tricks...</h2>
 {% if app.user and app.user.activationToken == '' %}
-<p class="ml-5"><a href="{{ path("member_addTricks") }}" class="btn btn-outline-primary btn-sm text-center">Ajouter un tricks</a></p>
+<p class="ml-lg-5 ml-4"><a href="{{ path("member_addTricks") }}" class="btn btn-outline-primary btn-sm text-center">Ajouter un tricks</a></p>
 {% endif %}
 {% for message in app.flashes('notification') %}
   <div class="alert alert-light text-center">{{ message }}</div>
 {% endfor %}
-<hr class="ml-5 mr-5">
+<hr class="ml-lg-5 mr-lg-5 ml-4 mr-4">
 <div class="row" id="firstTricks">
 {% for oneTricks in tricks %}
 {% set deleteTricks = 'deleteTricks' ~ oneTricks.id %}

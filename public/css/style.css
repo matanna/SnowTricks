@@ -51,7 +51,7 @@ main {
     font-size: 2em; 
     color:  rgba(26, 26, 26);
 }
-@media(max-width: 600px) {
+@media(max-width: 768px) {
     .catchphrase {
         font-size: 1.5em;
     }
@@ -83,7 +83,7 @@ main h1, main p {
     position: relative;
     top: 250px;
 }
-@media(max-width: 600px) {
+@media(max-width: 768px) {
     main h1, main p {
         top: 150px;
     }
@@ -192,6 +192,14 @@ header {
 .slick-next, .slick-prev{
     display: none !important;
 }
+.slick-slide {
+    margin: 15px;
+}
+
+.photos-slick {
+    width: 900px;
+    height: 600px;
+}
 
 thead th {
     padding: 1rem !important;
@@ -200,6 +208,22 @@ tbody .border {
     border: 2px solid  rgba(26, 26, 26)!important;
 }
 
+.description p {
+    text-align: justify;
+}
+@media(max-width: 768px) {
+    .description-lg {
+        display: none;
+    }
+    .infos-tricks-sm {
+        font-size: 0.7em;
+    }
+}
+@media(min-width: 769px) {
+    .description-sm {
+        display: none;
+    }
+}
 .comment .border {
     border: 1px solid  rgba(26, 26, 26)!important;
 }
@@ -234,6 +258,7 @@ footer {
     visibility: hidden;
 }
 
+
 .photos li, .videos li  {
     margin-right: 2em;
     margin-top: 1em;
@@ -261,6 +286,11 @@ footer {
     margin: 1em;
 }
 
+.slider {
+    margin-left: 0;
+    margin-right: 0;
+}
+
 .modify-delete-slider {
     position: absolute;
     background-color: rgba(247, 247, 247, 0.8);
@@ -277,6 +307,11 @@ footer {
 
 .label-addComment {
     font-size: 1.5rem;
+}
+@media(max-width: 768px) {
+    .label-addComment, .comment h4 {
+        font-size: 1.1rem;
+    }
 }
 
 .profil-menu {
@@ -323,8 +358,16 @@ footer p {
     width: 100%;
     bottom: 0;
     background-color: rgba(247, 247, 247);
+    border-top: 1px solid rgba(26,26,26);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 0.5rem 1rem;
 }
 .footer-nav .row {
     padding-right: 0 !important;
     padding-left: 0 !important;
+}
+
+@media(min-width: 768px) {
+    .footer-nav {
+        display: none;
+    }
 }

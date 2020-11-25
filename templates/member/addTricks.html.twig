@@ -82,10 +82,8 @@
                             {% endfor %}
                            
                             {% for videos in tricks.videos %}
-                            <div class="col-xl-4 videos-tricks">
-                                <div>
-                                    <iframe width="1280" height="720" src="{{ videos.link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                </div>
+                            <div class="col-xl-4 col-lg-6 col-md-12 videos-tricks">
+                                <iframe src="{{ videos.link }}" frameborder="0" class="embed-responsive-item" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 <div class="modify-delete-slider shadow">
                                     <!--Modify icon-->
                                     <a href="#" data-toggle="modal" id="{{ videos.id }}" class="modifyVideo">

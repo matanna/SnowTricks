@@ -1,6 +1,8 @@
 
 window.onscroll = function () {
 
+    let screenWidth = screen.width;
+
     if (document.documentElement.scrollTop > 50) {
         document.getElementById("homeMenu").style.backgroundColor = "rgba(247, 247, 247)";
         document.getElementById("homeMenu").style.borderBottom = "1px solid rgba(26, 26, 26)";
@@ -13,7 +15,9 @@ window.onscroll = function () {
 
     if (document.documentElement.scrollTop > 200) {
         document.getElementById("arrowDown").style.visibility = "hidden";
-        document.getElementById("arrowUp").style.visibility = "visible";
+        if (screenWidth > 768) {
+            document.getElementById("arrowUp").style.visibility = "visible";
+        }
     } else {
         document.getElementById("arrowDown").style.visibility = "visible";
         document.getElementById("arrowUp").style.visibility = "hidden"; 

@@ -57,48 +57,61 @@
                     </div>
                     {% endif %}
                 </div>
+
                 <div class="card-body border-top">
-                    <div class="row slider">
+                    <div class="row slider justify-content-center">
                         {% for photos in tricks.photos %}
                         <div class="col-xl-4 col-lg-6 col-md-12">
                             <div>
-                              <img src="{{ asset('img_uploads/' ~ photos.namePhoto) }}" alt="photos snowboard" class="shadow">
+                              <img class="photos-slick" src="{{ asset('img_uploads/' ~ photos.namePhoto) }}" alt="photos snowboard" class="shadow">
                             </div>
                         </div>
                         {% endfor %} 
                         {% for videos in tricks.videos %}
                         <div class="col-xl-4 col-lg-6 col-md-12 videos-tricks">
-                          <iframe width="1280" height="720" src="{{ videos.link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                          <iframe src="{{ videos.link }}" class="embed-responsive-item videos-iframe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                         {% endfor %}
                     </div>
                 </div>
-                <div class="card-body table-responsive-lg">
+                <!--Large screen-->
+                <div class="card-body description description-lg">
                   <p class="card-text">{{ tricks.description | raw }}</p>
-                  <table class="table table-hover mt-5">
-                    <thead>
-                      <tr class="text-center">
-                        <th scope="col">Ajouté par :</th>
-                        <th scope="col">Style :</th>
-                        <th scope="col">Ajouté le :</th>
-                        <th scope="col">Modifié le :</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="text-center">
-                        <th scope="row"><span class="border text-light bg-primary p-2 shadow">{{ tricks.user.fullname }}</span></th>
-                        <td><span class="border text-light bg-primary p-2 shadow">{{ tricks.category.name }}</span></td>
-                        <td><span class="border text-light bg-primary p-2 shadow">{{ tricks.dateAtCreated | format_date('medium', locale='fr') }}</span></td>
-                        {% if tricks.dateAtUpdate != null %}
-                        <td><span class="border text-light bg-primary p-2 shadow">{{ tricks.dateAtUpdate | format_date('medium', locale='fr')  }}</span></td>
-                        {% else %}
-                        <td><span class="border text-light bg-primary p-2 shadow">{{ tricks.dateAtCreated | format_date('medium', locale='fr') }}</span></td>
-                        {% endif %}
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div class="row border-top mt-5 p-3"> 
+                    <div class="col-3 text-center">AJOUTER PAR :</div>
+                    <div class="col-3 text-center">CATEGORIE :</div>
+                    <div class="col-3 text-center">AJOUTE LE :</div>
+                    <div class="col-3 text-center">MODIFIE LE :</div>
+                  </div>
+                  <div class="row border-top pb-3 pt-4 pr-3 pl-3"> 
+                    <div class="col-3 text-center"><span class="text-light bg-primary p-2">{{ tricks.user.fullname }}</span></div>
+                    <div class="col-3 text-center"><span class="text-light bg-primary p-2">{{ tricks.category.name }}</span></div>
+                    <div class="col-3 text-center"><span class="text-light bg-primary p-2">{{ tricks.dateAtCreated | format_date('medium', locale='fr') }}</span></div>
+                    {% if tricks.dateAtUpdate != null %}
+                    <div class="col-3 text-center"><span class="text-light bg-primary p-2">{{ tricks.dateAtUpdate | format_date('medium', locale='fr')  }}</span></div>
+                    {% else %}
+                    <div class="col-3 text-center"><span class="text-light bg-primary p-2">{{ tricks.dateAtCreated | format_date('medium', locale='fr') }}</span></div>
+                    {% endif %}
+                  </div>
                 </div>
-
+                <!--Small screen-->
+                <div class="card-body description description-sm">
+                  <p class="card-text">{{ tricks.description | raw }}</p>
+                  <div class=" row border-top mt-3 pt-3 infos-tricks-sm"> 
+                    <div class="col-6 col-sm-4 offset-sm-2"><p>AJOUTER PAR :</p></div>
+                    <div class="col-6 col-sm-4 text-right"><span class="text-light bg-primary p-1">{{ tricks.user.fullname }}</span></div>
+                    <div class="col-6 col-sm-4 offset-sm-2"><p>CATEGORIE :</p></div>
+                    <div class="col-6 col-sm-4 text-right"><span class="text-light bg-primary p-1">{{ tricks.category.name }}</span></div>
+                    <div class="col-6 col-sm-4 offset-sm-2"><p>AJOUTE LE :</p></div>
+                    <div class="col-6 col-sm-4 text-right"><span class="text-light bg-primary p-1">{{ tricks.dateAtCreated | format_date('medium', locale='fr') }}</span></div>
+                    <div class="col-6 col-sm-4 offset-sm-2"><p>MODIFIE LE :</p></div>
+                    {% if tricks.dateAtUpdate != null %}
+                    <div class="col-6 col-sm-4 text-right"><span class="text-light bg-primary p-1">{{ tricks.dateAtUpdate | format_date('medium', locale='fr')  }}</span></div>
+                    {% else %}
+                    <div class="col-6 col-sm-4 text-right"><span class="text-light bg-primary p-1">{{ tricks.dateAtCreated | format_date('medium', locale='fr') }}</span></div>
+                    {% endif %}
+                  </div>
+                </div>
                 {% if app.user and app.user.activationToken == '' %}
                 <div class="card-body border">
                   {{ form_start(messageForm) }}
@@ -113,27 +126,27 @@
                 {% endif %}
 
                 <div class="card-footer comment">
-                  <h4 class="mb-5">Tous les commentaires :</h4>
+                  <h4 class="mb-5 mt-3">Commentaires :</h4>
                   <div class="row">
-                    <div class="col-8 offset-2" id="commentList">
+                    <div class="col-lg-10 offset-lg-1" id="commentList">
                       {% for message in messages %}
                         <div class="row">
-                          <div class="offset-3 col-9">
+                          <div class="col-lg-9 offset-lg-3">
                             <span class="date-comment text-muted">Le {{ message.dateMessage | format_datetime('full', 'medium', locale='fr') }}</span>
                           </div>
                         </div>
                         <div class="row mb-4 d-flex align-items-center p-3 shadow">
-                          <div class="col-1">
+                          <div class="col-lg-3 mb-2">
+                            <div>
                             {% if message.user.profilPicture == null %}
-                              <div class="text-right"><img src="{{ asset('img/default_profil.png') }}" alt="photo de profil" class="profilPicture align-middle"></div>
+                              <img src="{{ asset('img/default_profil.png') }}" alt="photo de profil" class="profilPicture align-middle">
                             {% else %}
-                              <div class="text-right"><img src="{{ asset('img_uploads/' ~ message.user.profilPicture) }}" alt="photo de profil" class="profilPicture align-middle"></div>
+                              <img src="{{ asset('img_uploads/' ~ message.user.profilPicture) }}" alt="photo de profil" class="profilPicture align-middle">
                             {% endif %}
+                              <span class="mt-2 d-inline">{{ message.user.username }}</span>
                             </div>
-                          <div class="col-2 text-center">
-                            <span class="mt-2 d-inline">{{ message.user.username }}</span>
                           </div>
-                          <div class="col-9 p-3 bg-light">
+                          <div class="col-lg-9 col-12 p-3 bg-light">
                             <span class="">{{ message.content }}</span>
                           </div>
                         </div>
