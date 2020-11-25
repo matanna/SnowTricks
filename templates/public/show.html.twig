@@ -60,20 +60,20 @@
                 <div class="card-body border-top">
                     <div class="row slider">
                         {% for photos in tricks.photos %}
-                        <div class="col-xl-4">
+                        <div class="col-xl-4 col-lg-6 col-md-12">
                             <div>
                               <img src="{{ asset('img_uploads/' ~ photos.namePhoto) }}" alt="photos snowboard" class="shadow">
                             </div>
                         </div>
                         {% endfor %} 
                         {% for videos in tricks.videos %}
-                        <div class="col-xl-4 videos-tricks">
+                        <div class="col-xl-4 col-lg-6 col-md-12 videos-tricks">
                           <iframe width="1280" height="720" src="{{ videos.link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                         {% endfor %}
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body table-responsive-lg">
                   <p class="card-text">{{ tricks.description | raw }}</p>
                   <table class="table table-hover mt-5">
                     <thead>

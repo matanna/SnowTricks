@@ -316,3 +316,15 @@ footer p {
 .footer-img {
     width: 200px;
 }
+
+.footer-nav {
+    padding: 0.8em;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    background-color: rgba(247, 247, 247);
+}
+.footer-nav .row {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
