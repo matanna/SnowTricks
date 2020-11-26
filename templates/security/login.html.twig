@@ -18,11 +18,11 @@
             </div>
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
             <div class="row">
-                <div class="col-6">
-                    <button type="submit" class="btn btn-outline-primary">Se Connecter !</button>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-outline-primary mb-4">Se Connecter !</button>
                 </div>
-                <div class="col-6 ">
-                    <div class="text-right"><a href="{{ path('forgot_password') }}">Mot de passe oublié ?</a></div>
+                <div class="col-md-6">
+                    <div class="text-right forgot-password"><a href="{{ path('forgot_password') }}">Mot de passe oublié ?</a></div>
                 </div>
             </div>
         </form>
