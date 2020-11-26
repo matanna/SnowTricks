@@ -126,15 +126,18 @@
                     <div class="card-body">
                         <p class="card-text">{{ form_row(formTricks.description, {'label': 'Description du tricks :' }) }}</p>
                     </div>
-                    <div class="card-body d-flex justify-content-between">
-                        {{ form_row(formTricks.category, {'label': 'Category du tricks :'}) }}
-                        {% if tricks.id == null %}
-                        <div class="text-right"><button type="submit" class="btn btn-outline-primary mt-4">Créer le tricks</button></div>
-                        {% else %}
-                        <div class="text-right">
-                            <button type="submit" class="btn btn-outline-primary mt-4">Modifier le tricks</button>
+                    <div class="card-body row">
+                            <div class="col-md-6">
+                            {{ form_row(formTricks.category, {'label': 'Category du tricks :'}) }}
+                            </div>
+                            {% if tricks.id == null %}
+                            <div class="text-right col-md-6"><button type="submit" class="btn btn-outline-primary mt-4">Créer le tricks</button></div>
+                            {% else %}
+                            <div class="text-right col-md-6 modif-trick-button">
+                                <button type="submit" class="btn btn-outline-primary mt-4">Modifier le tricks</button>
+                            </div>
+                            {% endif %}
                         </div>
-                        {% endif %}
                     </div>
                     {% if tricks.id != null %}
                     <div class="card-body">

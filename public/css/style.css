@@ -20,6 +20,11 @@ body {
     margin-right: 0;
     margin-left: 0;
 }
+@media(max-height: 730px) {
+    .container {
+        margin-top: 100px;
+    }
+}
 main {
     background-image: url('../img/background_home.jpg');
     min-height: 100vh;
@@ -370,6 +375,8 @@ footer p {
 .footer-nav .row {
     padding-right: 0 !important;
     padding-left: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 @media(min-width: 768px) {
@@ -382,4 +389,18 @@ footer p {
     .forgot-password {
         text-align: left !important;
     }
+}
+
+@media(max-width: 768px) {
+    .modif-trick-button {
+        text-align: left !important;
+    }
+}
+
+#backoffice h3 {
+    font-size: 1.1em;
+}
+
+#backoffice svg {
+    color: rgba(247,247,247);
 }
