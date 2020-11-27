@@ -273,6 +273,15 @@ footer {
     margin-right: 2em;
     margin-top: 1em;
 }
+.photos-slick-container {
+    width: 240px;
+    height: 125px;
+}
+.photos-slick-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
 
 .custom-file-label::after {
     content: "...";

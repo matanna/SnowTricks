@@ -9,7 +9,7 @@ window.onscroll = function () {
         document.getElementById("homeMenu").style.boxShadow = "0 .5rem 1rem rgba(0,0,0,.15)";
     } else {
         
-        if (typeof $('.navbar-toggler-icon') != undefined) {
+        if ($('.navbar-toggler').css('display') != 'none') {
             document.getElementById("homeMenu").style.backgroundColor = "rgba(247, 247, 247, 0.8)";
         } else {
             document.getElementById("homeMenu").style.backgroundColor = "rgba(255, 255, 255, 0)";

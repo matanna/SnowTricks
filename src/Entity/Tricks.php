@@ -23,9 +23,9 @@ class Tricks
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\Length(
-     *      min=5,
+     *      min=2,
      *      max=20,
-     *      minMessage="Le nom du tricks doit comporter au moins 4 caractères",
+     *      minMessage="Le nom du tricks doit comporter au moins 3 caractères",
      *      maxMessage="Le nom du tricks doit comporter au maximum 20 caractères",
      *      allowEmptyString = false)
      */
