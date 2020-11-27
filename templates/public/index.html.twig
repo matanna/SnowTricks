@@ -27,9 +27,9 @@
             {% if oneTricks.photos[0].namePhoto is not defined %}
                 <img src="{{ asset('img/default_image.jpg') }}" alt="photo snowboard">
             {% elseif oneTricks.principalPhoto == null  %}
-                <img src="{{ asset('img_uploads/' ~ oneTricks.photos[0].namePhoto) }}" alt="Snowboard">
+                <img src="{{ asset('img_uploads/' ~ oneTricks.photos[0].namePhoto) }}" alt="Photo de snowboard par défaut">
             {% else %}
-                <img src="{{ asset('img_uploads/' ~ oneTricks.principalPhoto) }}" alt="photo snowboard">
+                <img src="{{ asset('img_uploads/' ~ oneTricks.principalPhoto) }}" alt="Photo à la une correspondant à un tricks de snowboard">
             {% endif %}
             </div>
             <h4 class="card-header">{{ oneTricks.name | u.truncate(15)}}</h4>
@@ -103,5 +103,5 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script type="text/javascript" src="{{ asset('js/home.js') }}"></script>
+    <script src="{{ asset('js/home.js') }}"></script>
 {% endblock %}

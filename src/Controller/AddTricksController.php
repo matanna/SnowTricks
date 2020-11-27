@@ -60,7 +60,7 @@ class AddTricksController extends AbstractController
             if ($photoId != null) {
                 $jsonResponse =$this->render('modal/modifyElement.html.twig', [
                     'tricks' => $tricks,
-                    'photoId' => $photoId,
+                    'photoId' => explode("-", $photoId)[0],
                     'action' => $action,
                     'changePhotoForm' => $changePhotoForm->createView()
                 ]);
@@ -70,7 +70,7 @@ class AddTricksController extends AbstractController
             } elseif ($videoId != null) {
                 $jsonResponse =$this->render('modal/modifyElement.html.twig', [
                     'tricks' => $tricks,
-                    'videoId' => $videoId,
+                    'videoId' => explode("-", $videoId)[0],
                     'action' => $action,
                     'changeVideoForm' => $changeVideoForm->createView()
                 ]);

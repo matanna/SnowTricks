@@ -35,7 +35,7 @@
                         </svg>
                       </a>
                        <!--The Modal-->
-                      <div class="modal fade" id="delete-tricks" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal fade" id="delete-tricks" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                           <div class="modal-content">
                             <div class="modal-header">
@@ -63,13 +63,13 @@
                         {% for photos in tricks.photos %}
                         <div class="col-xl-4 col-lg-6 col-md-12">
                             <div class="photos-slick-container">
-                              <img class="photos-slick" src="{{ asset('img_uploads/' ~ photos.namePhoto) }}" alt="photos snowboard" class="shadow">
+                              <img class="photos-slick shadow" src="{{ asset('img_uploads/' ~ photos.namePhoto) }}" alt="photos snowboard">
                             </div>
                         </div>
                         {% endfor %} 
                         {% for videos in tricks.videos %}
                         <div class="col-xl-4 col-lg-6 col-md-12 videos-tricks">
-                          <iframe src="{{ videos.link }}" class="embed-responsive-item videos-iframe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                          <iframe src="{{ videos.link }}" class="embed-responsive-item videos-iframe" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                         {% endfor %}
                     </div>
@@ -115,7 +115,7 @@
                 {% if app.user and app.user.activationToken == '' %}
                 <div class="card-body border">
                   {{ form_start(messageForm) }}
-                    {{ form_label(messageForm, 'Ajoute ton commentaire ! :', {'label_attr': {'class': 'label-addComment'}} ) }}
+                    {{ form_label(messageForm, null, {'label': 'Ajoute ton commentaire ! :', 'label_attr': {'class': 'label-addComment'}} ) }}
                     {{ form_errors(messageForm) }}
                     {{ form_widget(messageForm) }}
                     <div class="text-right">
@@ -175,7 +175,7 @@
 {% endblock %}
 
 {% block javascripts %}
-  <script type="text/javascript" src="{{ asset('js/slider.js')}}"></script>
-  <script type="text/javascript" src="{{ asset('js/show.js')}}"></script>
+  <script src="{{ asset('js/slider.js')}}"></script>
+  <script src="{{ asset('js/show.js')}}"></script>
 {% endblock %}
 

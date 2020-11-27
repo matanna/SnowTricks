@@ -294,6 +294,7 @@ footer {
 .videos-tricks iframe {
     width: 250px;
     height: 125px;
+    border: 0;
 }
 
 .modify-delete {
