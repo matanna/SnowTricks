@@ -298,8 +298,10 @@ footer {
     height: 125px;
 }
 .videos-slick-container iframe {
-    height: 125px;
+    max-width: 100%;
+    max-height: 100%;
     border: 0;
+    object-fit: cover;
 }
 
 .modify-delete {
