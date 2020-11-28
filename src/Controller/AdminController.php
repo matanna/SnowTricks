@@ -54,7 +54,7 @@ class AdminController extends AbstractController
 
         //We create form for add a new category
         $categoryForm = $this->createForm(CategoryType::class);
-        //$manageCategory->addNewCategory($request, $categoryForm);
+        $manageCategory->addNewCategory($request, $categoryForm);
         
         //We get all users in array
         $users = $userRepository->findAll();

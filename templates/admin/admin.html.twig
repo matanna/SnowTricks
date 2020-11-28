@@ -49,20 +49,21 @@
                                   <span aria-hidden="true">&times;</span>
                               </button>
                             </div>
+                            <form action="{{ path('admin_admin-home') }}" class="form-group" method="post">
+                                <div class="modal-body">  
+                                  <input type="text" class="form-control" value="{{ category.name }}" name="category-name">  
+                                  <input type="hidden" value="{{ category.id }}" name="category-id">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-outline-primary btn-sm">Modifier</button> 
+                                    <button type="button" class="btn btn-outline-primary btn-sm" data-dismiss="modal">X</button>
+                                </div>
+                            </form>
                         </div>
-                        <form action="{{ path('admin_admin-home') }}" class="form-group" method="post">
-                            <div class="modal-body">  
-                            <input type="text" class="form-control" value="{{ category.name }}" name="category-name">  
-                            <input type="hidden" value="{{ category.id }}" name="category-id">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-outline-primary btn-sm">Modifier</button> 
-                                <button type="button" class="btn btn-outline-primary btn-sm" data-dismiss="modal">X</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </td>
+          </tr>
         </tbody>
         {% endfor %}
       </table>

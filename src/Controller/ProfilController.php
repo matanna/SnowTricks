@@ -16,13 +16,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ProfilController extends AbstractController
 {
     /**
-     * @Route("/profil/{username}", name="profil")
+     * @Route("/profil/{id}", name="profil")
      */
     public function profil(UserRepository $userRepository, 
         Request $request, EntityManagerInterface $manager, 
-        $username
+        $id
     ) {
-        $user = $userRepository->findOneBy(['username' => $username]);
+        $user = $userRepository->findOneBy(['id' => $id]);
 
         if (!$user) { 
             throw $this->createNotFoundException(); 
@@ -36,27 +36,28 @@ class ProfilController extends AbstractController
 
             $manageImage = new ManageImageOnServer();
             
-            //We get and delete old profil picture
-            $oldProfilPicture = $user->getProfilPicture();
-            $manageImage->removeImageOnServer(
-                $oldProfilPicture, $this->getParameter('images_directory')
-            );
+            
             $newProfilPicture = $profilForm->get('profilPicture')->getData();
             
             if ($newProfilPicture) {
+                //We get and delete old profil picture
+                $oldProfilPicture = $user->getProfilPicture();
+                $manageImage->removeImageOnServer(
+                    $oldProfilPicture, $this->getParameter('images_directory')
+                );
                 $nameProfilPicture = $manageImage->copyImageOnServer(
                     $newProfilPicture, $this->getParameter('images_directory')
                 );
 
                 $user->setProfilPicture($nameProfilPicture);
-
-                $manager->persist($user);
-                $manager->flush();
             } 
+            
+            $manager->persist($user);
+            $manager->flush();
         }
 
         return $this->render('member/profil.html.twig', [
-            'username' => $username, 'profilForm' => $profilForm->createView()
+            'id' => $id, 'profilForm' => $profilForm->createView()
         ]);
     }
 
@@ -86,7 +87,7 @@ class ProfilController extends AbstractController
         $manager->flush();
 
         return $this->redirectToRoute('member_profil', [
-            'username' => $user->getUsername()
+            'id' => $user->getId()
         ]);
     }
 }

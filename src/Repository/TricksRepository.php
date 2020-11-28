@@ -29,7 +29,7 @@ class TricksRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery(
             'SELECT tricks
              FROM App\Entity\Tricks tricks
-             ORDER BY tricks.dateAtCreated DESC' 
+             ORDER BY tricks.dateAtUpdate DESC' 
         )->setMaxResults($limit);
         
         return $query->getResult();
