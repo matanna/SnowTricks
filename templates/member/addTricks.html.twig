@@ -59,9 +59,9 @@
                             </div>
                         </div>
                         <div class="card-body border-top">
-                            <div class="row slider">
+                            <div class="slider">
                                 {% for photos in tricks.photos %}
-                                <div class="col-xl-4">
+                                <div class="photos-tricks">
                                     <div class="photos-slick-container"><img src="{{ asset('img_uploads/' ~ photos.namePhoto) }}" alt="photos snowboard" class="shadow"></div>
                                     <div class="modify-delete-slider shadow">
                                         <!--Modify icon-->
@@ -82,8 +82,10 @@
                                 {% endfor %}
                             
                                 {% for videos in tricks.videos %}
-                                <div class="col-xl-4 col-lg-6 col-md-12 videos-tricks">
-                                    <iframe src="{{ videos.link }}" class="embed-responsive-item" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <div class="videos-tricks">
+                                    <div class="videos-slick-container">
+                                        <iframe src="{{ videos.link }}" class="embed-responsive-item" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    </div>
                                     <div class="modify-delete-slider shadow">
                                         <!--Modify icon-->
                                         <a href="#" data-toggle="modal" id="{{ videos.id ~ '-mod' }}" class="modifyVideo">

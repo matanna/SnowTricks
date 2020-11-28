@@ -274,7 +274,6 @@ footer {
     margin-top: 1em;
 }
 .photos-slick-container {
-    width: 240px;
     height: 125px;
 }
 .photos-slick-container img {
@@ -291,8 +290,14 @@ footer {
     height: 45px;
 }
 
-.videos-tricks iframe {
-    width: 250px;
+.photos-tricks, .videos-tricks {
+    position: relative;
+}
+
+.videos-slick-container {
+    height: 125px;
+}
+.videos-slick-container iframe {
     height: 125px;
     border: 0;
 }
