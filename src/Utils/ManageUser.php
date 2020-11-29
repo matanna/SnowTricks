@@ -29,7 +29,6 @@ class ManageUser
         if ($checkboxValue == "on" && isset($validRole)) {
            
             $user->setRoles(['ROLE_ADMIN']);
-            dump($this->_manager);
             $this->_manager->persist($user);
             
             $this->_manager->flush();
@@ -40,7 +39,6 @@ class ManageUser
         } elseif (isset($validRole)) {
 
             $user->setRoles([]);
-            dump($this->_manager);
             $this->_manager->persist($user);
             $this->_manager->flush();
 
