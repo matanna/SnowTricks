@@ -10,7 +10,6 @@ class ManageVideoUrl
     public function getParametersOnUrl($videoLink, $hostAcceptedVideos)
     {
         $video = parse_url($videoLink);
-        dump($video);
         if (!(in_array($video["host"], $hostAcceptedVideos))) {
             throw new \Exception('Cette url ne peut pas être ajoutée');
         }

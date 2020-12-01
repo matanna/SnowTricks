@@ -116,7 +116,7 @@
                             </ul>
                             <div><button type="button" class="btn btn-outline-primary btn-sm add-photos mb-4" data-collection-holder-class="photos">Ajouter une Photo</button></div>
                             
-                            <ul class="videos list-unstyled" data-prototype="{{ form_widget(formTricks.videos.vars.prototype)|e('html_attr') }}">
+                            <ul class="videos list-unstyled" data-prototype="{{ form_widget(formTricks.videos.vars.prototype, {'attr': {'placeholder': 'Insérez une url Youtube ou Dailymotion'}})|e('html_attr') }}">
                                 {% for video in formTricks.videos %}
                                 {{ form_errors(video) }}
                                 {{ form_widget(video) }}
@@ -130,7 +130,7 @@
                         </div>
                         <div class="card-body row">
                                 <div class="col-md-6">
-                                {{ form_row(formTricks.category, {'label': 'Category du tricks :'}) }}
+                                {{ form_row(formTricks.category, {'label': 'Categorie du tricks :'}) }}
                                 </div>
                                 {% if tricks.id == null %}
                                 <div class="text-right col-md-6"><button type="submit" class="btn btn-outline-primary mt-4">Créer le tricks</button></div>
